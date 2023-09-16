@@ -8,6 +8,9 @@ import ru.sber.backend.entities.enums.EGender;
 
 import java.util.Date;
 
+/**
+ * Сущность клиента ресторана
+ */
 @Data
 @Table(name = "clients")
 @Entity

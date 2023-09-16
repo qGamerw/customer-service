@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+/**
+ * Сущность блюда
+ */
 @Data
 @Table(name = "dishes")
 @Entity
@@ -32,5 +33,7 @@ public class Dish {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "additive_id")
     private Additive additive;
+
+    private String urlImage;
 
 }

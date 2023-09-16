@@ -10,6 +10,9 @@ import ru.sber.backend.entities.enums.ETypeOrder;
 
 import java.time.LocalDateTime;
 
+/**
+ * Сущность заказа
+ */
 @Data
 @Table(name = "orders")
 @Entity

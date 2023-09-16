@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Сущность добавки к блюду
+ */
 @Data
 @Table(name = "additives")
 @Entity
