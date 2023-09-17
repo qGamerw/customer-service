@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 
 const DishesPage = () => {
-    const {location} = useLocation();
-    const {anchorId} = location; // Получаем anchorId из состояния
+    const location = useLocation();
+    const anchorId = location.state ? location.state.anchorId : "category:1";
+
     // const [anchorId, setAnchorId] = useState("category:1");
 
     useEffect(() => {
@@ -202,7 +203,58 @@ const DishesPage = () => {
             <div>1</div>
             <div>1</div>
             <div id={"category:4"}>Категория 4</div>
-
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
+            <div>1</div>
         </div>
     );
 };
