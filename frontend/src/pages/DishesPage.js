@@ -1,19 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useLocation} from "react-router-dom";
 
 const DishesPage = () => {
     const location = useLocation();
-    const anchorId = location.state ? location.state.anchorId : "category:1";
-
-    // const [anchorId, setAnchorId] = useState("category:1");
+    const anchorId = location.state ? location.state.anchorId : null;
 
     useEffect(() => {
-        console.log(anchorId);
         const element = document.getElementById(anchorId);
         if (element) {
             element.scrollIntoView({behavior: 'smooth'});
         }
-    }, [anchorId]); // Убедитесь, что useEffect срабатывает при изменении anchorId
+    }, [anchorId]);
 
     return (
         <div>

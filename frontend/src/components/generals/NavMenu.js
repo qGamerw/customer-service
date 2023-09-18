@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Menu } from 'antd';
 import { AppstoreAddOutlined, SettingOutlined } from '@ant-design/icons';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
@@ -11,22 +11,11 @@ import { NotFoundPage } from '../../pages/NotFoundPage';
 const NavigationMenu = () => {
     const navigate = useNavigate();
 
-    const scrollToElement = (anchorId) => {
-        const element = document.getElementById(anchorId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     const handleMenuItemClick = (to, anchorId) => {
-        navigate(to, {state: {anchorId: anchorId}}); // Затем выполняем переход на указанный маршрут
-        scrollToElement(anchorId); // Сначала прокручиваем к элементу
-    };
+        navigate(to, {state: {anchorId: anchorId}});
+           };
 
-    useEffect(() => {
-        // Выполните скролл после монтирования компонента в DOM
 
-    }, []); // Пустой массив зависимостей означает, что useEffect будет выполняться только после монтирования
 
     return (
         <div>
@@ -34,7 +23,7 @@ const NavigationMenu = () => {
                 <Menu mode="horizontal">
                 <Menu.SubMenu key="restaurant-menu" title="Меню" icon={<SettingOutlined/>}>
                     <Menu.Item key="category:1">
-                        <Link to="/">Категория 1</Link>
+                        <a onClick={() => handleMenuItemClick('/', 'category:1')}>Категория 1</a>
                     </Menu.Item>
                     <Menu.Item key="category:2">
                         <a onClick={() => handleMenuItemClick('/', 'category:2')}>Категория 2</a>
