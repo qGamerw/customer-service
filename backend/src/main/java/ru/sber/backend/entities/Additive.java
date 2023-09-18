@@ -5,35 +5,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
- * Сущность блюда
+ * Сущность добавки к блюду
  */
 @Data
-@Table(name = "dishes")
+@Table(name = "additives")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Dish {
+public class Additive {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long Id;
 
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "category", nullable = false)
-    private Category category;
-
-    private double price;
 
     private double weight;
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "additive_id")
-    private Additive additive;
+    private String ingredients;
 
-    private String urlImage;
-
+    @OneToMany(mappedBy = "additive", cascade = CascadeType.ALL)
+    private List<Dish> dishes;
 }
