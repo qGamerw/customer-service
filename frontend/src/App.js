@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Preloader from "./components/generals/Preloader"
 import './App.css';
 import NavigationMenu from "./components/generals/NavMenu";
+import {FloatButton} from "antd";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         ) : (
             <div>
               <NavigationMenu/>
+              <FloatButton.BackTop />
             </div>
         )}
       </div>
