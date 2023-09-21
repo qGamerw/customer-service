@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 2);
   }, []);
 
   return (
@@ -21,7 +21,7 @@ function App() {
         ) : (
             <div>
               <NavigationMenu/>
-              <FloatButton.BackTop />
+              <FloatButton.BackTop style={{width: "2.5%", height:"5%"}} visibilityHeight={100} />
             </div>
         )}
       </div>
