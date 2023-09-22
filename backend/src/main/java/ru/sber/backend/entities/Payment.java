@@ -18,8 +18,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private User client;
+    @Column(nullable = false)
+    private long clientId;
 
     private long cardNumber;
 }

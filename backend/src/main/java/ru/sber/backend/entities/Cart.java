@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Сущность корзины клиента
  */
@@ -22,9 +24,10 @@ public class Cart {
     @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
-    @ManyToOne
-    @JoinColumn(name = "dish_id", nullable = false)
-    private Dish dish;
-
     private int quantity;
+
+    @ElementCollection
+    @CollectionTable(name = "cart_dishes", joinColumns = @JoinColumn(name = "cart_id"))
+    @Column(name = "dish_id")
+    private List<Long> dishIds;
 }

@@ -5,15 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.entities.Cart;
-import ru.sber.backend.entities.Dish;
 import ru.sber.backend.services.CartService;
 
 import java.net.URI;
 import java.util.List;
 
-/**
- * Контроллер для обработки запросов к корзине клиента
- */
 @Slf4j
 @RestController
 @RequestMapping("cart")
@@ -30,11 +26,11 @@ public class CartController {
      * Добавляет блюдо в корзину
      *
      * @param clientId  id клиента
-     * @param dishId id блюда
+     * @param dishId    id блюда
      * @return корзину с добавленными блюдами
      */
     @PostMapping("/{clientId}/dish/{dishId}")
-    public ResponseEntity<Cart> addProductToCart(@PathVariable long clientId, @PathVariable Long dishId, @RequestBody Dish dush) {
+    public ResponseEntity<Cart> addProductToCart(@PathVariable long clientId, @PathVariable Long dishId) {
 
         log.info("Добавление в корзину блюда с id: {}", dishId);
 
@@ -58,19 +54,19 @@ public class CartController {
 
         log.info("Получение корзины пользователя с id {}", cartId);
 
-        List<Dish> dishesInCart = cartService.getListOfDishesInCart(cartId);
+        List<Long> dishIdsInCart = cartService.getListOfDishIdsInCart(cartId);
 
-        return ResponseEntity.ok().body(dishesInCart);
+        return ResponseEntity.ok().body(dishIdsInCart);
     }
 
     /**
      * Удаляет блюдо из корзины
      *
-     * @param cartId    id корзины
-     * @param dishId    id блюда
+     * @param cartId id корзины
+     * @param dishId id блюда
      * @return корзина с внесенными изменениями
      */
-    @DeleteMapping("/{cartId}/product/{dishId}")
+    @DeleteMapping("/{cartId}/dish/{dishId}")
     public ResponseEntity<?> deleteDish(@PathVariable long cartId, @PathVariable long dishId) {
 
         log.info("Удаление из корзины блюда с id: {}", dishId);
