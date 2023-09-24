@@ -1,6 +1,8 @@
 package ru.sber.backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,8 @@ public class Cart {
     @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
+    @NotBlank
+    @Size(max = 100)
     private int quantity;
 
     @ElementCollection
