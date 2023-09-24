@@ -1,6 +1,7 @@
 package ru.sber.backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -28,11 +29,6 @@ public class User {
     @NotBlank
     @Size(max = 100)
     @Column(nullable = false)
-    private String login;
-
-    @NotBlank
-    @Size(max = 100)
-    @Column(nullable = false)
     private String username;
 
     @NotBlank
@@ -50,7 +46,8 @@ public class User {
 
     @NotBlank
     @Size(max = 100)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
+    @Email
     private String email;
 
     @NotBlank
