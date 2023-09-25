@@ -1,0 +1,6 @@
+/* Define the CSS class for hiding with a transition */
+.cartPage__total--hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}

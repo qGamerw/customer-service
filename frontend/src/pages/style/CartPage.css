@@ -1,0 +1,44 @@
+.cartPage{
+}
+
+.cartPage__content{
+    margin-left: 40px;
+}
+
+.cartPage__content__delivery{
+    margin-top: 40px;
+    height: 300px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.cartPage__content__payment{
+    margin-top: 40px;
+    height: 300px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+
+.cartPage__img--empty{
+    height: 500px;
+
+}
+
+.cartPage__total{
+    position: fixed;
+    bottom: 0;
+    z-index: 8;
+    box-shadow: 0 -1px 5px rgba(0,0,0,.1);
+    height: 100px;
+    width: 100%;
+    background: azure;
+}
+
+.cartPage__total__title--count{
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+}

@@ -24,6 +24,7 @@ const CardDishFromCart = ({dish}) => {
                 onChange={(amount) => handleUpdateAmount(dish.id,amount)}
             />
             <Button onClick={() => handleRemoveClick(dish.id)} type="text" icon={<CloseCircleOutlined />} />
+
         </div>
     );
 };

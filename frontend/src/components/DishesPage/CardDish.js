@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {addProduct, rewoveFromCart, updateAmount} from "../../slices/cartSlice"
+import { HappyProvider } from '@ant-design/happy-work-theme';
 
 const CardDish = ({dish}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,18 +32,20 @@ const CardDish = ({dish}) => {
             />
             <div className={"cardDish__title"}>
                 <div>{dish.name}</div>
-                <div>{dish.price} руб.</div>
+                <div>{dish.price} ₽</div>
             </div>
 
-            <Button
-                type="link"
-                shape="circle"
-                onClick={() => {
-                    setIsModalOpen(true)
-                }}
-            >
-                Выбрать
-            </Button>
+            <HappyProvider>
+                <Button
+                    type="primary"
+                    shape="circle"
+                    onClick={() => {
+                        setIsModalOpen(true)
+                    }}
+                >
+                    Выбрать
+                </Button>
+            </HappyProvider>
 
             <Modal
                 title={dish.name}
@@ -77,7 +80,7 @@ const CardDish = ({dish}) => {
                             </Button>
                         </Tooltip>
                         <div>
-                            <p>{dish.price} руб.</p>
+                            <p>{dish.price} ₽</p>
                             {itemFromCartById ? (
                                 <InputNumber
                                     value={itemFromCartById.amount}
