@@ -14,9 +14,9 @@ const Payment = ({amountInCart}) => {
         const cartTotal = document.querySelector('.cartPage__total');
         if (cartTotal) {
             if (!checkBoxOffer) {
-                cartTotal.classList.add('cartPage__total--hidden');
+                cartTotal.classList.add('cartPage-total-hidden');
             } else {
-                cartTotal.classList.remove('cartPage__total--hidden');
+                cartTotal.classList.remove('cartPage-total-hidden');
             }
         }
     }, [checkBoxOffer]);
