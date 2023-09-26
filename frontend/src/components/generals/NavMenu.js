@@ -1,7 +1,7 @@
 import React from 'react';
 import {Menu} from 'antd';
 import {ShoppingCartOutlined, UserOutlined, InfoCircleOutlined, MenuOutlined} from '@ant-design/icons';
-import {Link, Route, Routes, useNavigate} from 'react-router-dom';
+import {Link, Route, Routes} from 'react-router-dom';
 import AboutPage from '../../pages/AboutPage';
 import CartPage from '../../pages/CartPage';
 import ClientPage from '../../pages/ClientPage';
@@ -10,7 +10,6 @@ import {NotFoundPage} from '../../pages/NotFoundPage';
 import './style/NavMenu.css';
 import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
-import authService from "../../services/authService";
 
 const NavigationMenu = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -42,13 +41,13 @@ const NavigationMenu = () => {
                     </Menu.Item>
                     <Menu.SubMenu key="personal-account" title="Личный кабинет" icon={<UserOutlined/>}>
                         <Menu.Item key="client-profile">
-                            <Link to={clientLink}>Профиль</Link>
+                            <Link to={clientLink} state={{ anchorId: 'client-profile' }}>Профиль</Link>
                         </Menu.Item>
                         <Menu.Item key="setting:2">
                             <Link to={clientLink}>Доставка</Link>
                         </Menu.Item>
                         <Menu.Item key="order">
-                            <Link to={clientLink}>Заказы</Link>
+                            <Link to={clientLink} state={{ anchorId: 'order' }}>Заказы</Link>
                         </Menu.Item>
                     </Menu.SubMenu>
                     <Menu.Item key="about-company" icon={<InfoCircleOutlined/>}>
