@@ -7,9 +7,9 @@ import {CloseCircleOutlined} from "@ant-design/icons";
 
 const CardDishFromCart = ({dish}) => {
     const dispatch = useDispatch();
-    const handleUpdateAmount=(dishId,amount)=>{
+    const handleUpdateAmount = (dishId, amount) => {
         dispatch(updateAmount({dishId, amount}))
-            }
+    }
 
     const handleRemoveClick = (dishId) => {
         dispatch(rewoveFromCart(dishId))
@@ -21,9 +21,9 @@ const CardDishFromCart = ({dish}) => {
             <InputNumber
                 value={dish.amount}
                 min={1}
-                onChange={(amount) => handleUpdateAmount(dish.id,amount)}
+                onChange={(amount) => handleUpdateAmount(dish.id, amount)}
             />
-            <Button onClick={() => handleRemoveClick(dish.id)} type="text" icon={<CloseCircleOutlined />} />
+            <Button onClick={() => handleRemoveClick(dish.id)} type="text" icon={<CloseCircleOutlined/>}/>
 
         </div>
     );
