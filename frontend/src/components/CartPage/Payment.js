@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Checkbox, Input} from "antd";
+import {Button, Checkbox, Input} from "antd";
 import {Link} from "react-router-dom";
 import {addMinutes, format} from 'date-fns';
-import './style/Payment.css';
+import './styles/Payment.css';
 
 const Payment = ({amountInCart}) => {
     const [checkBoxOffer, setCheckBoxOffer] = useState(true);
@@ -35,6 +35,9 @@ const Payment = ({amountInCart}) => {
             )}
             <h4>Доставим до: {formattedTime}</h4>
             <h3>К оплате: {amountInCart} ₽</h3>
+            <Button type="primary" htmlType="submit">
+                Оформить заказ
+            </Button>
         </div>
     );
 };

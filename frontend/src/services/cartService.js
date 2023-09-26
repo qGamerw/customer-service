@@ -4,9 +4,9 @@ import {setCart} from "../slices/cartSlice";
 
 const API_URL = "/cart";
 
-const getCart = (clientId, dispatch) => {
+const getCart = (cartId, dispatch) => {
 
-    return axios.get(API_URL + `/${cartId}`,{headers: authHeader()}).then(
+    return axios.get(API_URL + `/${cartId}`).then(
         (response) => {
             console.log(response.data)
             dispatch(setCart(response.data))

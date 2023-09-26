@@ -7,7 +7,7 @@ import CartPage from '../../pages/CartPage';
 import ClientPage from '../../pages/ClientPage';
 import DishesPage from '../../pages/DishesPage';
 import {NotFoundPage} from '../../pages/NotFoundPage';
-import './style/NavMenu.css';
+import './styles/NavMenu.css';
 import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
 
@@ -24,16 +24,16 @@ const NavigationMenu = () => {
                 <Menu mode="horizontal">
                     <Menu.SubMenu key="restaurant-menu" title="Меню" icon={<MenuOutlined/>}>
                         <Menu.Item key="category:1">
-                            <Link to="/" state={{anchorId: 'category:1'}}>Категория 1</Link>
+                            <Link to="/" state={{anchorId: 'category:1'}}>Пицца</Link>
                         </Menu.Item>
                         <Menu.Item key="category:2">
-                            <Link to="/" state={{anchorId: 'category:2'}}>Категория 2</Link>
+                            <Link to="/" state={{anchorId: 'category:2'}}>Роллы</Link>
                         </Menu.Item>
                         <Menu.Item key="category:3">
-                            <Link to="/" state={{anchorId: 'category:3'}}>Категория 3</Link>
+                            <Link to="/" state={{anchorId: 'category:3'}}>Салаты</Link>
                         </Menu.Item>
                         <Menu.Item key="category:4">
-                            <Link to="/" state={{anchorId: 'category:4'}}>Категория 4</Link>
+                            <Link to="/" state={{anchorId: 'category:4'}}>Вторые блюда</Link>
                         </Menu.Item>
                     </Menu.SubMenu>
                     <Menu.Item key="cart" icon={<ShoppingCartOutlined/>}>

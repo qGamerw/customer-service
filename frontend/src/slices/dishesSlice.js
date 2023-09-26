@@ -4,7 +4,7 @@ export const dishesSlice = createSlice({
     name: 'dishes',
     initialState: {
         dishes: [
-            {
+            /*{
                 id: 1,
                 name: "Баварская ",
                 category: "Pizza",
@@ -39,13 +39,13 @@ export const dishesSlice = createSlice({
                 weight: 15.4,
                 description: "Томатный соус, сыр моцарелла, салями, ветчина, курица, шампиньоны, помидор, сладкий перец, сушёный базилик",
                 urlImage: "https://cdpiz1.pizzasoft.ru/rs/280x280/pizzafab/items/3/italyanskoe-assorti-bolshaya-main_image-3562-74986.jpg",
-            },
+            },*/
         ],
     },
     reducers: {
-        /*setDishes: (state, action) => {
+        setDishes: (state, action) => {
             state.dishes = action.payload;
-        }*/
+        }
     },
 })
 

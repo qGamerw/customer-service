@@ -3,6 +3,7 @@ import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {addProduct, rewoveFromCart, updateAmount} from "../../slices/cartSlice"
 import { HappyProvider } from '@ant-design/happy-work-theme';
+import "./styles/CardDish.css"
 
 const CardDish = ({dish}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +22,7 @@ const CardDish = ({dish}) => {
     }
 
     return (
-        <div>
+        <div className={"cardDish"}>
             <img
                 src={dish.urlImage}
                 alt={"Изображение блюда:" + dish.name}
@@ -37,7 +38,7 @@ const CardDish = ({dish}) => {
 
             <HappyProvider>
                 <Button
-                    type="primary"
+                    type="link"
                     shape="circle"
                     onClick={() => {
                         setIsModalOpen(true)

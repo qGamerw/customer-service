@@ -1,10 +1,11 @@
 import axios from "axios";
 import {setDishes} from "../slices/dishesSlice";
+import authHeader from "./auth-header";
 
 const API_URL = "/dishes";
 
 const getDishes = (dispatch) => {
-    return axios.get(API_URL).then(
+    return axios.get(API_URL+"/any", {headers: authHeader()}).then(
         (response) => {
             dispatch(setDishes(response.data));
         },

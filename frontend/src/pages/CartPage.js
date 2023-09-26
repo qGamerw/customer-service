@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import ListDishesFromCart from '../components/CartPage/ListDishesFromCart';
-import './style/CartPage.css';
+import './styles/CartPage.css';
 import DeliveryForm from '../components/CartPage/DeliveryForm';
 import Payment from '../components/CartPage/Payment';
 
 const CartPage = () => {
     const listDishesFromCart = useSelector((state) => state.cart.items);
-    const amountInCart = useSelector((state) =>
-        state.cart.items.reduce((accumulator, item) => accumulator + item.price * item.amount, 0)
-    );
-
+    const isCartEmpty = listDishesFromCart.length === 0;
+    const amountInCart = useSelector((state) => state.cart.items.reduce((accumulator, item) => accumulator + item.price * item.amount, 0));
     const [isTotalVisible, setIsTotalVisible] = useState(true);
 
     const handleScroll = () => {
@@ -32,7 +30,6 @@ const CartPage = () => {
         };
     }, []);
 
-    const isCartEmpty = listDishesFromCart.length === 0;
 
     return (
         <div className="cartPage">

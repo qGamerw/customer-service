@@ -1,17 +1,18 @@
 import React from 'react';
 import {Carousel} from 'antd';
+import "./styles/MyCarousel.css"
+
 
 const MyCarousel = () => {
     const contentStyle = {
         height: '360px',
-        // width: '100%',
         color: '#fff',
         lineHeight: '160px',
         textAlign: 'center',
         background: '#364d79',
     };
     return (
-        <Carousel autoplay>
+        <Carousel autoplay className={"myCarousel"}>
             <div>
                 <img style={contentStyle}
                      src={"https://cdpiz1.pizzasoft.ru/rs/280x280/pizzafab/items/3/italyanskoe-assorti-bolshaya-main_image-3562-74986.jpg"}

@@ -43,11 +43,6 @@ const DeliveryForm = () => {
                         <Radio value="pickup">Самовывоз</Radio>
                     </Radio.Group>
                 </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Оформить заказ
-                    </Button>
-                </Form.Item>
             </Form>
         </div>
     );
