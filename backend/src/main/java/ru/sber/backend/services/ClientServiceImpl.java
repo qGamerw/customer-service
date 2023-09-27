@@ -49,7 +49,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<User> findByLoginAndPassword(String login, String password) {
-        return clientRepository.findUserByLoginAndPassword(login, password);
+    public Optional<User> findByLoginAndPassword(String email, String password) {
+        return clientRepository.findUserByEmailAndPassword(email, password);
     }
 }

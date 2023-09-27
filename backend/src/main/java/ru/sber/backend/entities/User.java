@@ -1,5 +1,6 @@
 package ru.sber.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -33,15 +34,18 @@ public class User {
 
     @NotBlank
     @Size(max = 100)
-    private int number;
+    private String number;
 
     @NotBlank
     @Size(max = 100)
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private EGender gender;
 
     @NotBlank
     @Size(max = 100)
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
 
     @NotBlank
