@@ -3,7 +3,9 @@ package ru.sber.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.backend.entities.Cart;
+import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.entities.User;
+import ru.sber.backend.repositories.CartItemRepository;
 import ru.sber.backend.repositories.CartRepository;
 import ru.sber.backend.repositories.ClientRepository;
 
@@ -14,34 +16,48 @@ import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
-    CartRepository cartRepository;
-    ClientRepository clientRepository;
+    private final CartRepository cartRepository;
+    private final ClientRepository clientRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
-    public CartServiceImpl(CartRepository cartRepository, ClientRepository clientRepository) {
+    public CartServiceImpl(CartRepository cartRepository, ClientRepository clientRepository, CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
         this.clientRepository = clientRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
     public boolean addToCart(long dishId, long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_IdAndDishIdsContains(dishId, clientId);
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
             Optional<User> user = clientRepository.findById(clientId);
             if (user.isPresent()) {
                 Cart newCart = new Cart();
                 newCart.setClient(user.get());
-                newCart.setQuantity(0);
-                newCart.setDishIds(new ArrayList<>());
-                return newCart;
+                return cartRepository.save(newCart);
             }
 
             return null;
         });
 
         if (shoppingCart != null) {
-            shoppingCart.getDishIds().add(dishId);
+            Optional<CartItem> cartItem = shoppingCart.getCartItems().stream()
+                    .filter(item -> item.getDishId() == dishId)
+                    .findFirst();
+
+            if (cartItem.isPresent()) {
+                CartItem existingCartItem = cartItem.get();
+                existingCartItem.setQuantity(existingCartItem.getQuantity() + 1);
+            } else {
+                CartItem newCartItem = new CartItem();
+                newCartItem.setCart(shoppingCart);
+                newCartItem.setDishId(dishId);
+                newCartItem.setQuantity(1);
+                shoppingCart.getCartItems().add(newCartItem);
+            }
+
             cartRepository.save(shoppingCart);
             return true;
         }
@@ -51,13 +67,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean deleteDish(long dishId, long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_IdAndDishIdsContains(dishId, clientId);
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();
-            List<Long> dishIds = shoppingCart.getDishIds();
-            if (dishIds.remove(dishId)) {
-                cartRepository.save(shoppingCart);
-                return true;
+            List<CartItem> cartItems = shoppingCart.getCartItems();
+
+            for (CartItem cartItem : cartItems) {
+                if (cartItem.getDishId() == dishId) {
+                    cartItemRepository.delete(cartItem);
+                    cartItems.remove(cartItem);
+                    cartRepository.save(shoppingCart);
+                    return true;
+                }
             }
         }
 
@@ -66,19 +88,33 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean updateDishAmount(long clientId, long dishId, int amount) {
-        Optional<Cart> cart = cartRepository.findCartByClient_IdAndDishIdsContains(dishId, clientId);
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();
-            shoppingCart.setQuantity(amount);
-            cartRepository.save(shoppingCart);
-            return true;
+            List<CartItem> cartItems = shoppingCart.getCartItems();
+
+            for (CartItem cartItem : cartItems) {
+                if (cartItem.getDishId() == dishId) {
+                    cartItem.setQuantity(amount);
+                    cartRepository.save(shoppingCart);
+                    return true;
+                }
+            }
         }
+
         return false;
     }
 
     @Override
     public void clearCart(long clientId) {
-        cartRepository.deleteCartByClientId(clientId);
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+
+        if (cart.isPresent()) {
+            Cart shoppingCart = cart.get();
+            cartItemRepository.deleteAll(shoppingCart.getCartItems());
+            cartRepository.delete(shoppingCart);
+        }
     }
 
     @Override
@@ -87,16 +123,35 @@ public class CartServiceImpl implements CartService {
 
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();
+            List<CartItem> cartItems = shoppingCart.getCartItems();
+            List<Long> dishIds = new ArrayList<>();
 
-            return shoppingCart.getDishIds();
-        }
-        else {
+            for (CartItem cartItem : cartItems) {
+                dishIds.add(cartItem.getDishId());
+            }
+
+            return dishIds;
+        } else {
             return Collections.emptyList();
         }
     }
 
     @Override
     public int countDishesInCart(long clientId) {
-        return cartRepository.countCartsByClient_Id(clientId);
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+
+        if (cart.isPresent()) {
+            Cart shoppingCart = cart.get();
+            List<CartItem> cartItems = shoppingCart.getCartItems();
+            int totalQuantity = 0;
+
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+
+            return totalQuantity;
+        } else {
+            return 0;
+        }
     }
 }

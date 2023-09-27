@@ -22,16 +22,10 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
-    @NotBlank
-    @Size(max = 100)
-    private int quantity;
-
-    @ElementCollection
-    @CollectionTable(name = "cart_dishes", joinColumns = @JoinColumn(name = "cart_id"))
-    @Column(name = "dish_id")
-    private List<Long> dishIds;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems;
 }
