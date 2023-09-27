@@ -10,6 +10,7 @@ import ru.sber.backend.entities.User;
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,10 @@ public class UserDetailsImpl implements UserDetails {
 
     private String email;
 
+    private String number;
+
+    private Date dateOfBirth;
+
     @JsonIgnore
     private String password;
 
@@ -38,6 +43,8 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(user.getId(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getNumber(),
+                user.getDateOfBirth(),
                 user.getPassword(),
                 authorities);
     }
@@ -63,6 +70,14 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
     @Override

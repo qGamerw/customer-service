@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.sber.backend.entities.enums.EGender;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -36,14 +36,6 @@ public class User {
     @Size(max = 100)
     private String number;
 
-    @NotBlank
-    @Size(max = 100)
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EGender gender;
-
-    @NotBlank
-    @Size(max = 100)
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
@@ -65,8 +57,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String number, Date dateOfBirth, String password) {
         this.username = username;
+        this.number = number;
+        this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
     }
