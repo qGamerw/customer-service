@@ -28,11 +28,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addToCart(long dishId, long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+    public boolean addToCart(long cartId, long dishId) {
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(cartId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
-            Optional<User> user = clientRepository.findById(clientId);
+            Optional<User> user = clientRepository.findById(cartId);
             if (user.isPresent()) {
                 Cart newCart = new Cart();
                 newCart.setClient(user.get());
