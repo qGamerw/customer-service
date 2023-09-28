@@ -27,14 +27,14 @@ public class CartController {
      *
      * @param cartId id корзины
      * @param dishId id блюда
+     * @param quantity количество блюда в корзине
      * @return корзину с добавленными блюдами
      */
     @PostMapping("/{cartId}/dish/{dishId}")
-    public ResponseEntity<?> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId) {
-
+    public ResponseEntity<?> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId, @RequestParam int quantity) {
         log.info("Добавление в корзину блюда с id: {}", dishId);
 
-        boolean recordInserted = cartService.addToCart(dishId, cartId);
+        boolean recordInserted = cartService.addToCart(cartId, dishId, quantity);
 
         if (recordInserted) {
             return ResponseEntity.ok("Товар успешно добавлен в корзину");

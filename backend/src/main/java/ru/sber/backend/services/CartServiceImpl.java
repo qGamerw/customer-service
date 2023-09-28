@@ -28,7 +28,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addToCart(long cartId, long dishId) {
+    public boolean addToCart(long cartId, long dishId, int quantity) {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(cartId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
@@ -49,12 +49,12 @@ public class CartServiceImpl implements CartService {
 
             if (cartItem.isPresent()) {
                 CartItem existingCartItem = cartItem.get();
-                existingCartItem.setQuantity(existingCartItem.getQuantity() + 1);
+                existingCartItem.setQuantity(quantity);
             } else {
                 CartItem newCartItem = new CartItem();
                 newCartItem.setCart(shoppingCart);
                 newCartItem.setDishId(dishId);
-                newCartItem.setQuantity(1);
+                newCartItem.setQuantity(quantity);
                 shoppingCart.getCartItems().add(newCartItem);
             }
 
@@ -64,6 +64,7 @@ public class CartServiceImpl implements CartService {
 
         return false;
     }
+
 
     @Override
     public boolean deleteDish(long dishId, long clientId) {
