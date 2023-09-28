@@ -25,12 +25,12 @@ public interface CartService {
     /**
      * Изменение количества блюда в корзине
      *
-     * @param clientId Уникальный идентификатор пользователя
-     * @param dishId   Уникальный идентификатор блюда
-     * @param amount   Количество добавляемого блюда
+     * @param clientId   Уникальный идентификатор пользователя
+     * @param dishId     Уникальный идентификатор блюда
+     * @param quantity   Количество добавляемого блюда
      * @return Возвращает статус обновления количества блюда в корзине
      */
-    boolean updateDishAmount(long clientId, long dishId, int amount);
+    boolean updateDishAmount(long clientId, long dishId, int quantity);
 
     /**
      * Полностью очищает корзину пользователя

@@ -88,7 +88,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean updateDishAmount(long clientId, long dishId, int amount) {
+    public boolean updateDishAmount(long clientId, long dishId, int quantity) {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
 
         if (cart.isPresent()) {
@@ -97,7 +97,7 @@ public class CartServiceImpl implements CartService {
 
             for (CartItem cartItem : cartItems) {
                 if (cartItem.getDishId() == dishId) {
-                    cartItem.setQuantity(amount);
+                    cartItem.setQuantity(quantity);
                     cartRepository.save(shoppingCart);
                     return true;
                 }
