@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {addProduct, rewoveFromCart, updateAmount} from "../../slices/cartSlice"
+import "./styles/CardDish.css"
 
-const CardDish = ({dish}) => {
+const CardDish = ({dish, children, showUseButton}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
-
     const itemFromCartById = (useSelector((state) => state.cart.items.find(item => item.id === dish.id)))
     const handleAddClick = () => {
         dispatch(addProduct(dish))
@@ -20,29 +20,32 @@ const CardDish = ({dish}) => {
     }
 
     return (
-        <div>
+        <div className={"cardDish"}>
             <img
                 src={dish.urlImage}
                 alt={"Изображение блюда:" + dish.name}
-                style={{width: "200px", height: "150px", cursor: "pointer"}}
+                style={{width: "370px",  borderRadius: "10%", height: "270px", cursor: "pointer"}}
                 onClick={() => {
                     setIsModalOpen(true)
                 }}
             />
-            <div className={"cardDish__title"}>
-                <div>{dish.name}</div>
-                <div>{dish.price} руб.</div>
+                <div className={"cardDish__name"}>{dish.name}</div>
+            <div className={"card__container"}>
+                <div className={"cardDish__price"}>{dish.price} ₽</div>
+                {showUseButton && (
+                    <Button
+                        className={"cardDish__useButton"}
+                        type="link"
+                        onClick={() => {
+                            setIsModalOpen(true)
+                        }}
+                    >
+                        Выбрать
+                    </Button>
+                )}
             </div>
 
-            <Button
-                type="link"
-                shape="circle"
-                onClick={() => {
-                    setIsModalOpen(true)
-                }}
-            >
-                Выбрать
-            </Button>
+            {children}
 
             <Modal
                 title={dish.name}
@@ -77,7 +80,7 @@ const CardDish = ({dish}) => {
                             </Button>
                         </Tooltip>
                         <div>
-                            <p>{dish.price} руб.</p>
+                            <p>{dish.price} ₽</p>
                             {itemFromCartById ? (
                                 <InputNumber
                                     value={itemFromCartById.amount}
