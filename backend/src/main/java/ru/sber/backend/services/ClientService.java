@@ -33,9 +33,15 @@ public interface ClientService {
      * Удаляет пользователя по id
      *
      * @param clientId Уникальный идентификатор пользователя
-     * @return Возвращает true при удачном удалении и false, если пользователя не существует
+     * @return true при удачном удалении и false, если пользователя не существует
      */
     boolean deleteClientById(long clientId);
 
-    Optional<User> findByLoginAndPassword(String login, String password);
+    /**
+     * Получение клиента по его email
+     *
+     * @param email электронная почта клиента
+     * @return клиента по email
+     */
+    Optional<User> getClientByEmail(String email);
 }

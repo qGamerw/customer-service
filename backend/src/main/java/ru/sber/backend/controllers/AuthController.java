@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.entities.Cart;
 import ru.sber.backend.entities.Role;
 import ru.sber.backend.entities.User;
 import ru.sber.backend.entities.enums.ERole;
@@ -16,6 +17,7 @@ import ru.sber.backend.entities.request.LoginRequest;
 import ru.sber.backend.entities.request.SignupRequest;
 import ru.sber.backend.entities.response.JwtResponse;
 import ru.sber.backend.entities.response.MessageResponse;
+import ru.sber.backend.repositories.CartRepository;
 import ru.sber.backend.repositories.ClientRepository;
 import ru.sber.backend.repositories.RoleRepository;
 import ru.sber.backend.security.jwt.JwtUtils;
@@ -35,15 +37,17 @@ import java.util.stream.Collectors;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final ClientRepository userRepository;
+    private final CartRepository cartRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, ClientRepository userRepository,
-                          RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
+                          CartRepository cartRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.cartRepository = cartRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
@@ -59,7 +63,7 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+                = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
@@ -72,7 +76,7 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        JwtResponse body = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles);
+        JwtResponse body = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getNumber(), userDetails.getDateOfBirth(), userDetails.getEmail(), roles);
 
         return ResponseEntity
                 .ok(body);
@@ -86,15 +90,15 @@ public class AuthController {
      */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Пользователь уже существует"));
-        }
-
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Email уже используется"));
         }
 
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
+        User user = new User(
+                signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                signUpRequest.getNumber(),
+                signUpRequest.getDateOfBirth(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<Role> roles = new HashSet<>();
@@ -104,8 +108,14 @@ public class AuthController {
         roles.add(userRole);
 
         user.setRoles(roles);
-        userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("Пользователь успешно зарегистрирован"));
+        Cart cart = new Cart();
+        cart.setClient(user);
+
+        userRepository.save(user);
+        cartRepository.save(cart);
+
+        return ResponseEntity.ok(new MessageResponse("Клиент успешно зарегистрирован"));
     }
+
 }

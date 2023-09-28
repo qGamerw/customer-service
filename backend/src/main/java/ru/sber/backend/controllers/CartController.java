@@ -25,21 +25,21 @@ public class CartController {
     /**
      * Добавляет блюдо в корзину
      *
-     * @param clientId  id клиента
-     * @param dishId    id блюда
+     * @param cartId id корзины
+     * @param dishId id блюда
+     * @param quantity количество блюда в корзине
      * @return корзину с добавленными блюдами
      */
-    @PostMapping("/{clientId}/dish/{dishId}")
-    public ResponseEntity<Cart> addProductToCart(@PathVariable long clientId, @PathVariable Long dishId) {
-
+    @PostMapping("/{cartId}/dish/{dishId}")
+    public ResponseEntity<?> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId, @RequestParam int quantity) {
         log.info("Добавление в корзину блюда с id: {}", dishId);
 
-        boolean recordInserted = cartService.addToCart(clientId, dishId);
+        boolean recordInserted = cartService.addToCart(cartId, dishId, quantity);
 
         if (recordInserted) {
-            return ResponseEntity.created(URI.create("cart/" + clientId + "/dish/" + dishId)).build();
+            return ResponseEntity.ok("Товар успешно добавлен в корзину");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Не удалось добавить товар в корзину");
         }
     }
 
