@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Input} from "antd";
 import {Link} from "react-router-dom";
 import {addMinutes, format} from 'date-fns';
+import {HappyProvider} from '@ant-design/happy-work-theme';
 import './styles/Payment.css';
 
 const Payment = ({amountInCart}) => {
@@ -35,9 +36,11 @@ const Payment = ({amountInCart}) => {
             )}
             <h4>Доставим до: {formattedTime}</h4>
             <h3>К оплате: {amountInCart} ₽</h3>
-            <Button type="primary" htmlType="submit">
-                Оформить заказ
-            </Button>
+            <HappyProvider>
+                <Button type="primary" htmlType="submit">
+                    Оформить заказ
+                </Button>
+            </HappyProvider>
         </div>
     );
 };

@@ -15,12 +15,13 @@ const DishesPage = () => {
     const anchorId = location.state ? location.state.anchorId : null;
 
     useEffect(() => {
+        const getDishes = () => {
+            DishService.getDishes(dispatch);
+        };
         getDishes();
-    }, []);
+    }, [dispatch]);
 
-    const getDishes = () => {
-        DishService.getDishes(dispatch);
-    }
+
 
     useEffect(() => {
         if (anchorId) {
@@ -36,14 +37,16 @@ const DishesPage = () => {
         <div className="dishPage">
             <div className="dishPage__content">
                 <MyCarousel/>
-                <h3 id="category:1">Пицца</h3>
-                <ListDishes dishes={listDishes.filter(item => item.category.id === 1)}/>
-                <h3 id="category:2">Роллы</h3>
-                <ListDishes dishes={listDishes.filter(item => item.category.id === 2)}/>
-                <h3 id="category:3">Салаты</h3>
-                <ListDishes dishes={listDishes.filter(item => item.category.id === 3)}/>
-                <h3 id="category:4">Вторые блюда</h3>
-                <ListDishes dishes={listDishes.filter(item => item.category.id === 4)}/>
+                <h2 id="category:1">Салаты</h2>
+                <ListDishes dishes={listDishes.filter(item => item.category.category === "SALAD")}/>
+                <h2 id="category:2">Роллы</h2>
+                <ListDishes dishes={listDishes.filter(item => item.category.category === "ROLLS")}/>
+                <h2 id="category:3">Вторые блюда</h2>
+                <ListDishes dishes={listDishes.filter(item => item.category.category === "SECOND_COURSES")}/>
+                <h2 id="category:4">Пицца</h2>
+                <ListDishes dishes={listDishes.filter(item => item.category.category === "PIZZA")}/>
+                <h2 id="category:5">Напитки</h2>
+                <ListDishes dishes={listDishes.filter(item => item.category.category === "DRINKS")}/>
             </div>
         </div>
     );

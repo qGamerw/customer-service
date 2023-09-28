@@ -3,7 +3,7 @@ import {Pagination} from 'antd';
 import CardDishFromCart from './CardDishFromCart';
 
 const ListDishesFromCart = ({dishes}) => {
-    const itemsPerPage = 3;
+    const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -15,16 +15,15 @@ const ListDishesFromCart = ({dishes}) => {
 
     return (
         <div>
-            <div style={{display: 'flex', flexWrap: 'nowrap', overflowX: 'auto'}}>
+            <div style={{display: "flex", justifyContent: "space-between", gap: "30px",flexWrap: "wrap",  height: "400", margin: "10px"}}>
                 {itemsToDisplay.map((dish) => (
-                    <div key={dish.id} style={{marginRight: '10px'}}>
+                    <div key={dish.id}>
                         <CardDishFromCart dish={dish}/>
                     </div>
                 ))}
             </div>
             {dishes.length &&
                 <Pagination
-                    style={{marginTop: "20px"}}
                     current={currentPage}
                     total={dishes.length}
                     pageSize={itemsPerPage}

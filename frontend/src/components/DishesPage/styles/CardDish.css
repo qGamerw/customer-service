@@ -1,6 +1,32 @@
-.cardDish{
-    margin-right: 20px;
-    margin-bottom: 20px;
+.cardDish {
+    width: auto;
     box-shadow: 1px 2px 4px gray;
-
+    border-radius: 10%;
 }
+
+.cardDish__name {
+    text-align: center;
+    font-weight: 600;
+}
+
+.card__container{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    align-items: center;
+}
+
+.cardDish__price {
+    font-size: 17px;
+    font-weight: 700;
+    color: mediumvioletred;
+}
+
+.cardDish__useButton {
+    font-size: 17px;
+    color: black;
+    text-transform: uppercase;
+}
+
+.cardDish__useButton:hover {
+    }
