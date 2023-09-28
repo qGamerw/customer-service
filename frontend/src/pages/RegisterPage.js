@@ -95,15 +95,6 @@ const RegisterPage = () => {
                                 <Input prefix={<CalendarOutlined/>} type="date" placeholder="Дата рождения"/>
                             </Form.Item>
                             <Form.Item
-                                name="gender"
-                                rules={[{required: true, message: 'Пожалуйста, выберете пол!'}]}
-                            >
-                                <Select placeholder="Пол">
-                                    <Option value="male">Мужской</Option>
-                                    <Option value="female">Женский</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
                                 name="password"
                                 rules={[{required: true, message: 'Пожалуйста, введите пароль!'}]}
                             >

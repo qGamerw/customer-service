@@ -3,19 +3,22 @@ import axios from "axios";
 const API_URL = "/api/auth/";
 
 const register = (registration) => {
-    const {username, password} = registration;
+    const {username, number, dateOfBirth, email, password} = registration;
     return axios.post(API_URL + "signup", {
         username,
+        number,
+        dateOfBirth,
+        email,
         password,
     },);
 };
 
 const login = (login) => {
-    const {username, password} = login;
+    const {email, password} = login;
 
     return axios
         .post(API_URL + "signin", {
-            username,
+            email,
             password,
         })
         .then((response) => {
