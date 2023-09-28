@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Menu} from 'antd';
 import {ShoppingCartOutlined, UserOutlined, InfoCircleOutlined, MenuOutlined} from '@ant-design/icons';
 import {Link, Route, Routes} from 'react-router-dom';
@@ -12,11 +12,12 @@ import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
 
 const NavigationMenu = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
 
-    const isUserAuthenticated = user == null;
-
-    const clientLink = isUserAuthenticated ? '/client' : '/api/auth/signin';
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        setIsUserAuthenticated(user != null);
+    }, []);
 
     return (
         <div>
@@ -42,17 +43,23 @@ const NavigationMenu = () => {
                     <Menu.Item key="cart" icon={<ShoppingCartOutlined/>}>
                         <Link to="/cart">Корзина</Link>
                     </Menu.Item>
-                    <Menu.SubMenu key="personal-account" title="Личный кабинет" icon={<UserOutlined/>}>
-                        <Menu.Item key="client-profile">
-                            <Link to={clientLink} state={{ anchorId: 'client-profile' }}>Профиль</Link>
+                    {isUserAuthenticated ? (
+                        <Menu.SubMenu key="personal-account" title="Личный кабинет" icon={<UserOutlined/>}>
+                            <Menu.Item key="client-profile">
+                                <Link to="/client" state={{anchorId: 'client-profile'}}>Профиль</Link>
+                            </Menu.Item>
+                            <Menu.Item key="setting:2">
+                                <Link to="/client">Доставка</Link>
+                            </Menu.Item>
+                            <Menu.Item key="order">
+                                <Link to="/client" state={{anchorId: 'order'}}>Заказы</Link>
+                            </Menu.Item>
+                        </Menu.SubMenu>
+                    ) : (
+                        <Menu.Item key="login" icon={<UserOutlined/>}>
+                            <Link to="/api/auth/signin">Войти</Link>
                         </Menu.Item>
-                        <Menu.Item key="setting:2">
-                            <Link to={clientLink}>Доставка</Link>
-                        </Menu.Item>
-                        <Menu.Item key="order">
-                            <Link to={clientLink} state={{ anchorId: 'order' }}>Заказы</Link>
-                        </Menu.Item>
-                    </Menu.SubMenu>
+                    )}
                     <Menu.Item key="about-company" icon={<InfoCircleOutlined/>}>
                         <Link to="/about">О компании</Link>
                     </Menu.Item>
@@ -62,11 +69,18 @@ const NavigationMenu = () => {
             <Routes>
                 <Route path="/" element={<DishesPage/>}/>
                 <Route path="/cart" element={<CartPage/>}/>
-                <Route path="/client" element={<ClientPage/>}/>
-                <Route path="/about" element={<AboutPage/>}/>
+                {isUserAuthenticated ? (
+                    <>
+                        <Route path="/client" element={<ClientPage/>}/>
+                        <Route path="/about" element={<AboutPage/>}/>
+                    </>
+                ) : (
+                    <>
+                        <Route path="/api/auth/signup" element={<RegisterPage/>}/>
+                        <Route path="/api/auth/signin" element={<AuthPage/>}/>
+                    </>
+                )}
                 <Route path="*" element={<NotFoundPage/>}/>
-                <Route path="/api/auth/signup" element={<RegisterPage/>}/>
-                <Route path="/api/auth/signin" element={<AuthPage/>}/>
             </Routes>
         </div>
     );

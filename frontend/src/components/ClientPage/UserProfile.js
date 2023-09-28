@@ -1,17 +1,27 @@
-import React, { useState } from "react";
-import {Button, Card, Input, Form, Radio} from "antd";
+import React, {useEffect, useState} from "react";
+import {Button, Card, Input, Form, Radio, message} from "antd";
 import { EditOutlined, SaveOutlined } from "@ant-design/icons";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
+import {useDispatch, useSelector} from "react-redux";
+import clientService from "../../services/clientService";
+import AuthService from "../../services/authService";
 
 const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const [userData, setUserData] = useState({
-        name: "Иван",
-        birthDate: "23/02/2001",
-        gender: "муж",
-        phoneNumber: "",
-    });
+    const [userData, setUserData] = useState()
+    const dispatch = useDispatch();
+    const userId = useSelector((state) => state.user.user.id);
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    useEffect(() => {
+        clientService.getClients(userId, dispatch);
+    }, []);
+
+    const handleLogout = () => {
+        AuthService.logout();
+        message.success("Вы успешно вышли! До свидания!")
+    };
 
     const toggleEditing = () => {
         setIsEditing(!isEditing);
@@ -44,21 +54,15 @@ const UserProfile = () => {
                         onFinish={handleSave}
                         style={{ padding: "16px" }}
                     >
-                        <Form.Item label="Имя" name="name">
+                        <Form.Item label="Имя" name="username">
                             <Input />
                         </Form.Item>
-                        <Form.Item label="Дата рождения" name="birthDate">
+                        <Form.Item label="Дата рождения" name="dateOfBirth">
                             <Input />
-                        </Form.Item>
-                        <Form.Item label="Пол" name="gender">
-                            <Radio.Group>
-                                <Radio value="муж">Мужской</Radio>
-                                <Radio value="жен">Женский</Radio>
-                            </Radio.Group>
                         </Form.Item>
                         <Form.Item
                             label="Номер телефона"
-                            name="phoneNumber"
+                            name="number"
                             validateTrigger={['onBlur']}
                             rules={[
                                 {
@@ -89,16 +93,13 @@ const UserProfile = () => {
                         }}
                     >
                         <p>
-                            Имя: <span>{userData.name}</span>
+                            Имя: <span>{user.username}</span>
                         </p>
                         <p>
-                            Дата рождения: <span>{userData.birthDate}</span>
+                            Дата рождения: <span>{user.dateOfBirth}</span>
                         </p>
                         <p>
-                            Пол: <span>{userData.gender}</span>
-                        </p>
-                        <p>
-                            Номер телефона: <span>{userData.phoneNumber}</span>
+                            Номер телефона: <span>{user.number}</span>
                         </p>
                     </div>
                 )}

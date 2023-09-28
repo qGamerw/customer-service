@@ -4,8 +4,8 @@ import authHeader from "./auth-header";
 
 const API_URL = "/clients";
 
-const getClients = (dispatch) => {
-    return axios.get(API_URL).then(
+const getClients = (id, dispatch) => {
+    return axios.get(API_URL + `/${id}`, {headers: authHeader()}).then(
         (response) => {
             dispatch(setClients(response.data));
         },
@@ -18,26 +18,10 @@ const getClients = (dispatch) => {
 
             dispatch(setClients([]));
         });
-
 };
 
-const createClient = (client, dispatch) => {
-
-    return axios.post(API_URL, client, {headers: authHeader()}).then(
-        (response) => {
-            getClients(dispatch)
-        },
-        (error) => {
-            const _content = (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-
-            console.error(_content)
-        });
-};
-
-const updateClient = (client, dispatch) => {
-    return axios.put(API_URL, client, {headers: authHeader()}).then(
+const updateClient = (user, dispatch) => {
+    return axios.put(API_URL, user, {headers: authHeader()}).then(
         (response) => {
             getClients(dispatch)
         },
@@ -66,7 +50,6 @@ const deleteClient = (id, dispatch) => {
 
 const clientService = {
     getClients,
-    createClient,
     updateClient,
     deleteClient,
 };
