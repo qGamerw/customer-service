@@ -6,7 +6,7 @@ const API_URL = "/cart";
 
 const getCart = (cartId, dispatch) => {
 
-    return axios.get(API_URL + `/${cartId}`).then(
+    return axios.get(API_URL + `/${cartId}`,{headers: authHeader()}).then(
         (response) => {
             console.log(response.data)
             dispatch(setCart(response.data))
@@ -23,11 +23,25 @@ const getCart = (cartId, dispatch) => {
         });
 }
 
-const addToCart = (clientId, dishId, dispatch) => {
+const addToCart = (cartId, dishId, dispatch) => {
 
-    console.log(`${API_URL}/${clientId}/dish/${dishId}`, {amount: 1}, {headers: authHeader()})
+    console.log(`${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
 
-    return axios.post(`${API_URL}/${clientId}/dish/${dishId}`, {amount: 1}, {headers: authHeader()}).then(
+    return axios.post(`${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()}).then(
+        () => {
+            getCart(cartId, dispatch)
+        },
+        (error) => {
+            const _content = (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+
+            console.error(_content)
+        });
+};
+
+const updateQuantity = (clientId, dishId, quantity, dispatch) => {
+    return axios.put(`${API_URL}/${clientId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
         () => {
             getCart(clientId, dispatch)
         },
@@ -40,25 +54,11 @@ const addToCart = (clientId, dishId, dispatch) => {
         });
 };
 
-const updateAmount = (clientId, dishId, amount, dispatch) => {
-    return axios.put(`${API_URL}/${clientId}/dish/${dishId}`, amount, {headers: authHeader()}).then(
+const deleteFromCart = (cartId, dishId, dispatch) => {
+
+    return axios.delete(`${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()}).then(
         () => {
-            getCart(clientId, dispatch)
-        },
-        (error) => {
-            const _content = (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-
-            console.error(_content)
-        });
-};
-
-const deleteFromCart = (clientId, dishId, dispatch) => {
-
-    return axios.delete(`${API_URL}/${clientId}/dish/${dishId}`, {headers: authHeader()}).then(
-        () => {
-            getCart(clientId, dispatch)
+            getCart(cartId, dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -73,7 +73,6 @@ const cartService = {
     getCart,
     addToCart,
     deleteFromCart,
-    updateAmount
 };
 
 export default cartService

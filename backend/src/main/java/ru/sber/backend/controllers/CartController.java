@@ -35,7 +35,6 @@ public class CartController {
         log.info("Добавление в корзину блюда с id: {}", dishId);
 
         boolean recordInserted = cartService.addToCart(cartId, dishId, quantity);
-
         if (recordInserted) {
             return ResponseEntity.ok("Товар успешно добавлен в корзину");
         } else {

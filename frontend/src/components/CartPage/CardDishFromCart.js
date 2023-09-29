@@ -2,18 +2,16 @@ import React from 'react';
 import CardDish from "../DishesPage/CardDish";
 import {Button, InputNumber} from "antd";
 import {useDispatch} from "react-redux";
-import {rewoveFromCart, updateAmount} from "../../slices/cartSlice";
 import {CloseCircleOutlined} from "@ant-design/icons";
 import "./styles/CardDishFromCart.css";
 
 const CardDishFromCart = ({dish}) => {
     const dispatch = useDispatch();
     const handleUpdateAmount = (dishId, amount) => {
-        dispatch(updateAmount({dishId, amount}))
     }
 
     const handleRemoveClick = (dishId) => {
-        dispatch(rewoveFromCart(dishId))
+
     }
 
     return (

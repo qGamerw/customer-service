@@ -8,7 +8,6 @@ const DeliveryForm = () => {
     const [deliveryMethod, setDeliveryMethod] = useState('courier'); // Устанавливаем начальное значение по умолчанию
 
     const onFinish = (values) => {
-        // Обработка данных формы
         console.log('Received values:', values);
     };
 

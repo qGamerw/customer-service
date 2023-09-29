@@ -3,20 +3,21 @@ import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {addProduct, rewoveFromCart, updateAmount} from "../../slices/cartSlice"
 import "./styles/CardDish.css"
+import CartService from "../../services/cartService";
 
 const CardDish = ({dish, children, showUseButton}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
     const itemFromCartById = (useSelector((state) => state.cart.items.find(item => item.id === dish.id)))
     const handleAddClick = () => {
-        dispatch(addProduct(dish))
+        CartService.addToCart(1,dish.id,dispatch)
     }
 
     const handleUpdateAmount = (dishId, amount) => {
-        dispatch(updateAmount({dishId, amount}))
+       /* dispatch(updateAmount({dishId, amount}))
         if (amount === 0) {
             dispatch(rewoveFromCart(dishId))
-        }
+        }*/
     }
 
     return (
