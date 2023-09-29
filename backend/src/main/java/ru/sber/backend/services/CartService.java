@@ -1,5 +1,7 @@
 package ru.sber.backend.services;
 
+import ru.sber.backend.entities.CartItem;
+
 import java.util.List;
 
 public interface CartService {
@@ -54,4 +56,12 @@ public interface CartService {
      * @return Возвращает количество товаров
      */
     int countDishesInCart(long clientId);
+
+    /**
+     * Получает список элементов корзины клиента
+     *
+     * @param cartId id корзины
+     * @return список элементов корзины
+     */
+    List<CartItem> getCartItemsByCartId(long cartId);
 }

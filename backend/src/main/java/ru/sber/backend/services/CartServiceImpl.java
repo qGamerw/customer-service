@@ -1,5 +1,6 @@
 package ru.sber.backend.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.backend.entities.Cart;
@@ -135,6 +136,11 @@ public class CartServiceImpl implements CartService {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<CartItem> getCartItemsByCartId(long cartId) {
+        return cartItemRepository.findByCartId(cartId);
     }
 
     @Override

@@ -4,10 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sber.backend.entities.Cart;
+import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.services.CartService;
 
-import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -25,8 +24,8 @@ public class CartController {
     /**
      * Добавляет блюдо в корзину
      *
-     * @param cartId id корзины
-     * @param dishId id блюда
+     * @param cartId   id корзины
+     * @param dishId   id блюда
      * @param quantity количество блюда в корзине
      * @return корзину с добавленными блюдами
      */
@@ -49,13 +48,10 @@ public class CartController {
      * @return получение списка блюд
      */
     @GetMapping("/{cartId}")
-    public ResponseEntity<?> getDishes(@PathVariable long cartId) {
+    public ResponseEntity<List<CartItem>> getDishes(@PathVariable long cartId) {
+        List<CartItem> cartItems = cartService.getCartItemsByCartId(cartId);
 
-        log.info("Получение корзины пользователя с id {}", cartId);
-
-        List<Long> dishIdsInCart = cartService.getListOfDishIdsInCart(cartId);
-
-        return ResponseEntity.ok().body(dishIdsInCart);
+        return ResponseEntity.ok().body(cartItems);
     }
 
     /**
