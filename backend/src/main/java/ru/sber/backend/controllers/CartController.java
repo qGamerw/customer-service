@@ -26,14 +26,13 @@ public class CartController {
      *
      * @param cartId   id корзины
      * @param dishId   id блюда
-     * @param quantity количество блюда в корзине
      * @return корзину с добавленными блюдами
      */
     @PostMapping("/{cartId}/dish/{dishId}")
-    public ResponseEntity<?> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId, @RequestParam int quantity) {
+    public ResponseEntity<?> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId) {
         log.info("Добавление в корзину блюда с id: {}", dishId);
 
-        boolean recordInserted = cartService.addToCart(cartId, dishId, quantity);
+        boolean recordInserted = cartService.addToCart(cartId, dishId);
         if (recordInserted) {
             return ResponseEntity.ok("Товар успешно добавлен в корзину");
         } else {
@@ -42,7 +41,7 @@ public class CartController {
     }
 
     /**
-     * Получение списка блюд по id корзины
+     * Получает список блюд по id корзины
      *
      * @param cartId id корзины
      * @return получение списка блюд
@@ -52,6 +51,28 @@ public class CartController {
         List<CartItem> cartItems = cartService.getCartItemsByCartId(cartId);
 
         return ResponseEntity.ok().body(cartItems);
+    }
+
+    /**
+     * Обновляет количество блюда в корзине
+     *
+     * @param cartId id корзины
+     * @param dishId id блюда
+     * @param dish   блюда, у которого изменяется количество
+     * @return корзину с измененным количеством блюда
+     */
+    @PutMapping("/{cartId}/product/{dishId}")
+    public ResponseEntity<?> updateCartItemQuantity(@PathVariable long cartId, @PathVariable long dishId, @RequestBody CartItem dish) {
+
+        log.info("Изменяется количество товара в корзине");
+
+        boolean recordUpdated = cartService.updateDishAmount(cartId, dishId, dish.getQuantity());
+
+        if (recordUpdated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

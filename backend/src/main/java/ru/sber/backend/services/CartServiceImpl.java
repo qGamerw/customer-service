@@ -1,6 +1,5 @@
 package ru.sber.backend.services;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sber.backend.entities.Cart;
@@ -29,7 +28,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addToCart(long cartId, long dishId, int quantity) {
+    public boolean addToCart(long cartId, long dishId) {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(cartId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
@@ -50,12 +49,12 @@ public class CartServiceImpl implements CartService {
 
             if (cartItem.isPresent()) {
                 CartItem existingCartItem = cartItem.get();
-                existingCartItem.setQuantity(quantity);
+                existingCartItem.setQuantity(1);
             } else {
                 CartItem newCartItem = new CartItem();
                 newCartItem.setCart(shoppingCart);
                 newCartItem.setDishId(dishId);
-                newCartItem.setQuantity(quantity);
+                newCartItem.setQuantity(1);
                 shoppingCart.getCartItems().add(newCartItem);
             }
 

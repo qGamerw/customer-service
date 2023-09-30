@@ -10,10 +10,9 @@ public interface CartService {
      *
      * @param clientId Уникальный идентификатор пользователя
      * @param dishId   Уникальный идентификатор блюда
-     * @param quantity Количество блюда в корзине
      * @return Возвращает статус добавления блюда в корзину
      */
-    boolean addToCart(long clientId, long dishId, int quantity);
+    boolean addToCart(long clientId, long dishId);
 
     /**
      * Удаление блюда из корзины
