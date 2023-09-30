@@ -1,42 +1,50 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import UserProfile from "../components/ClientPage/UserProfile";
 import OrderHistory from "../components/ClientPage/OrderHistory";
-import {useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import DeliveryCard from "../components/ClientPage/DeliveryCard";
-import {Space} from "antd";
+import { Tabs } from "antd";
+
+const { TabPane } = Tabs;
 
 const ClientPage = () => {
-    const listOrder = useSelector((state) => state.orders.orders)
+    const listOrder = useSelector((state) => state.orders.orders);
     const location = useLocation();
+    const navigate = useNavigate();
     const anchorId = location.state ? location.state.anchorId : null;
-    console.log(anchorId)
+
+    const searchParams = new URLSearchParams(location.search);
+    const activeTabParam = searchParams.get("tab") || 'profile';
 
     useEffect(() => {
         const element = document.getElementById(anchorId);
-        console.log(element)
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [anchorId]);
 
+    const handleTabChange = (activeKey) => {
+        navigate(`/client?tab=${activeKey}`);
+    };
+
     return (
         <div>
-            <h3 id={"client-profile"}></h3>
-            <div style={{ display: 'flex' }}>
-            <div style={{ flex: 1, paddingRight: '20px' }}>
-                <h3 id={"client-profile"}>Профиль</h3>
-                <UserProfile />
-            </div>
-            <div style={{ flex: 1, paddingLeft: '20px' }}>
-                <h3>Доставка</h3>
-                <DeliveryCard />
-            </div>
-            </div>
-            <h3 id={"order"}>Заказы</h3>
-            <OrderHistory orders={listOrder}/>
+            <Tabs tabPosition="left" activeKey={activeTabParam} onChange={handleTabChange}>
+                <TabPane tab="Профиль" key="profile">
+                    <h3>Профиль</h3>
+                    <UserProfile />
+                </TabPane>
+                <TabPane tab="Доставка" key="delivery">
+                    <h3>Доставка</h3>
+                    <DeliveryCard />
+                </TabPane>
+                <TabPane tab="Заказы" key="order">
+                    <h3>Заказы</h3>
+                    <OrderHistory orders={listOrder} />
+                </TabPane>
+            </Tabs>
         </div>
     );
 };
-
 export default ClientPage;

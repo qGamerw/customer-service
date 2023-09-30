@@ -19,6 +19,7 @@ const NavigationMenu = () => {
         setIsUserAuthenticated(user != null);
     }, []);
 
+
     return (
         <div>
             <div className="navigationMenu">
@@ -46,13 +47,13 @@ const NavigationMenu = () => {
                     {isUserAuthenticated ? (
                         <Menu.SubMenu key="personal-account" title="Личный кабинет" icon={<UserOutlined/>}>
                             <Menu.Item key="client-profile">
-                                <Link to="/client" state={{anchorId: 'client-profile'}}>Профиль</Link>
+                                <Link to="/client?tab=profile">Профиль</Link>
                             </Menu.Item>
-                            <Menu.Item key="setting:2">
-                                <Link to="/client">Доставка</Link>
+                            <Menu.Item key="delivery">
+                                <Link to="/client?tab=delivery">Доставка</Link>
                             </Menu.Item>
                             <Menu.Item key="order">
-                                <Link to="/client" state={{anchorId: 'order'}}>Заказы</Link>
+                                <Link to="/client?tab=order">Заказы</Link>
                             </Menu.Item>
                         </Menu.SubMenu>
                     ) : (
