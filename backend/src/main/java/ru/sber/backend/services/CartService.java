@@ -17,11 +17,11 @@ public interface CartService {
     /**
      * Удаление блюда из корзины
      *
-     * @param clientId Уникальный идентификатор пользователя
+     * @param cartId   Уникальный идентификатор корзины
      * @param dishId   Уникальный идентификатор блюда
      * @return Возвращает статус удаления блюда из корзины
      */
-    boolean deleteDish(long clientId, long dishId);
+    boolean deleteDish(long cartId, long dishId);
 
     /**
      * Изменение количества блюда в корзине

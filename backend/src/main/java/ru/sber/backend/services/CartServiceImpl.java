@@ -2,6 +2,7 @@ package ru.sber.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sber.backend.entities.Cart;
 import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.entities.User;
@@ -65,26 +66,11 @@ public class CartServiceImpl implements CartService {
         return false;
     }
 
-
     @Override
-    public boolean deleteDish(long dishId, long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
-
-        if (cart.isPresent()) {
-            Cart shoppingCart = cart.get();
-            List<CartItem> cartItems = shoppingCart.getCartItems();
-
-            for (CartItem cartItem : cartItems) {
-                if (cartItem.getDishId() == dishId) {
-                    cartItemRepository.delete(cartItem);
-                    cartItems.remove(cartItem);
-                    cartRepository.save(shoppingCart);
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    @Transactional
+    public boolean deleteDish(long cartId, long dishId) {
+        cartItemRepository.deleteCartItemByCartIdAndDishId(cartId, dishId);
+        return true;
     }
 
     @Override
