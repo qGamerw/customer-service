@@ -85,7 +85,7 @@ public class CartController {
     @DeleteMapping("/{cartId}/dish/{dishId}")
     public ResponseEntity<?> deleteDish(@PathVariable long cartId, @PathVariable long dishId) {
 
-        log.info("Удаление из корзины блюда с id: {}", dishId);
+        log.info("Удаление из {} корзины блюда с id: {}", cartId,dishId);
 
         boolean isDeleted = cartService.deleteDish(cartId, dishId);
 

@@ -1,23 +1,23 @@
 import React, {useState} from 'react';
 import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {addProduct, rewoveFromCart, updateAmount} from "../../slices/cartSlice"
 import "./styles/CardDish.css"
 import CartService from "../../services/cartService";
 
 const CardDish = ({dish, children, showUseButton}) => {
+    const user = JSON.parse(localStorage.getItem("user"));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
-    const itemFromCartById = (useSelector((state) => state.cart.items.find(item => item.id === dish.id)))
+    const itemFromCartById = useSelector((state) => state.cart.items.find(item => item.id === dish.id))
     const handleAddClick = () => {
-        CartService.addToCart(1,dish.id,dispatch)
+        CartService.addToCart(user.id,dish.id,dispatch)
     }
 
-    const handleUpdateAmount = (dishId, amount) => {
-       /* dispatch(updateAmount({dishId, amount}))
-        if (amount === 0) {
-            dispatch(rewoveFromCart(dishId))
-        }*/
+    const handleUpdateAmount = (dishId, quantity) => {
+        CartService.updateQuantity(user.id, dishId, quantity, dispatch)
+        if (quantity === 0) {
+            CartService.deleteFromCart(user.id, dishId, dispatch)
+        }
     }
 
     return (
@@ -84,9 +84,9 @@ const CardDish = ({dish, children, showUseButton}) => {
                             <p>{dish.price} ₽</p>
                             {itemFromCartById ? (
                                 <InputNumber
-                                    value={itemFromCartById.amount}
+                                    value={itemFromCartById.quantity}
                                     min={0}
-                                    onChange={(amount) => handleUpdateAmount(dish.id, amount)}
+                                    onChange={(quantity) => handleUpdateAmount(dish.id, quantity)}
                                 />
                             ) : (
                                 <Button

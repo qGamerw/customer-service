@@ -49,7 +49,6 @@ const deleteClient = (id, dispatch) => {
 };
 
 const clientService = {
-    getClients,
     updateClient,
     deleteClient,
 };

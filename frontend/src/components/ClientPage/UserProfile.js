@@ -1,22 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {Button, Card, Input, Form, Radio, message} from "antd";
+import React, { useState} from "react";
+import {Button, Card, Input, Form, message} from "antd";
 import { EditOutlined, SaveOutlined } from "@ant-design/icons";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
-import {useDispatch, useSelector} from "react-redux";
-import clientService from "../../services/clientService";
 import AuthService from "../../services/authService";
 
 const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [userData, setUserData] = useState()
-    const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user.user.id);
     const user = JSON.parse(localStorage.getItem("user"));
-
-    useEffect(() => {
-        clientService.getClients(userId, dispatch);
-    }, []);
 
     const handleLogout = () => {
         AuthService.logout();

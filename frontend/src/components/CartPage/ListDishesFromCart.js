@@ -8,7 +8,6 @@ const ListDishesFromCart = ({dishes}) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const itemsToDisplay = dishes.slice(startIndex, endIndex);
-
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };

@@ -40,10 +40,10 @@ const addToCart = (cartId, dishId, dispatch) => {
         });
 };
 
-const updateQuantity = (clientId, dishId, quantity, dispatch) => {
-    return axios.put(`${API_URL}/${clientId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
+const updateQuantity = (cartId, dishId, quantity, dispatch) => {
+    return axios.put(`${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
         () => {
-            getCart(clientId, dispatch)
+            getCart(cartId, dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -72,6 +72,7 @@ const deleteFromCart = (cartId, dishId, dispatch) => {
 const cartService = {
     getCart,
     addToCart,
+    updateQuantity,
     deleteFromCart,
 };
 
