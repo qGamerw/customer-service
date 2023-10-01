@@ -61,7 +61,7 @@ public class CartController {
      * @param dish   блюда, у которого изменяется количество
      * @return корзину с измененным количеством блюда
      */
-    @PutMapping("/{cartId}/product/{dishId}")
+    @PutMapping("/{cartId}/dish/{dishId}")
     public ResponseEntity<?> updateCartItemQuantity(@PathVariable long cartId, @PathVariable long dishId, @RequestBody CartItem dish) {
 
         log.info("Изменяется количество товара в корзине");
