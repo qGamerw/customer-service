@@ -17,6 +17,11 @@ const AuthPage = () => {
             dispatch(login(user))
             message.success("Вы успешно вошли в систему! Здравствуйте!")
             navigate("/")
+            const reloadTime = 500;
+            setTimeout(() => {
+                window.location.reload();
+            }, reloadTime);
+
         }, (error) => {
             const _content = (error.response && error.response.data) || error.message || error.toString();
             console.log(_content);

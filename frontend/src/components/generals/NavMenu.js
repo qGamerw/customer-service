@@ -42,7 +42,11 @@ const NavigationMenu = () => {
                         </Menu.Item>
                     </Menu.SubMenu>
                     <Menu.Item key="cart" icon={<ShoppingCartOutlined/>}>
-                        <Link to="/cart">Корзина</Link>
+                        {isUserAuthenticated ? (
+                            <Link to="/cart">Корзина</Link>
+                        ) : (
+                            <Link to="/api/auth/signin">Корзина</Link>
+                        )}
                     </Menu.Item>
                     {isUserAuthenticated ? (
                         <Menu.SubMenu key="personal-account" title="Личный кабинет" icon={<UserOutlined/>}>
@@ -70,10 +74,10 @@ const NavigationMenu = () => {
             <Routes>
                 <Route path="/" element={<DishesPage/>}/>
                 <Route path="/cart" element={<CartPage/>}/>
+                <Route path="/about" element={<AboutPage/>}/>
                 {isUserAuthenticated ? (
                     <>
-                        <Route path="/client" element={<ClientPage/>}/>
-                        <Route path="/about" element={<AboutPage/>}/>
+                        <Route path="/client" element={<ClientPage/>}/>\
                     </>
                 ) : (
                     <>

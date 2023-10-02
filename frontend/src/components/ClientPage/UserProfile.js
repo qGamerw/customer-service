@@ -14,6 +14,10 @@ const UserProfile = () => {
     const handleLogout = () => {
         AuthService.logout();
         message.success("Вы успешно вышли! До свидания!")
+        const reloadTime = 1000;
+        setTimeout(() => {
+            window.location.reload();
+        }, reloadTime);
     };
 
     const toggleEditing = () => {
