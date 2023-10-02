@@ -6,6 +6,7 @@ import {scroller} from 'react-scroll';
 import MyCarousel from "../components/generals/Carousel";
 import "./styles/DishesPage.css";
 import DishService from "../services/dishService";
+import Footer from "../components/generals/Footer";
 
 
 const DishesPage = () => {
@@ -48,6 +49,7 @@ const DishesPage = () => {
                 <h2 id="category:5">Напитки</h2>
                 <ListDishes dishes={listDishes.filter(item => item.category.category === "DRINKS")}/>
             </div>
+            <Footer/>
         </div>
     );
 };

@@ -1,9 +1,10 @@
-import React, { useState} from "react";
+import React, {useState} from "react";
 import {Button, Card, Input, Form, message} from "antd";
-import { EditOutlined, SaveOutlined } from "@ant-design/icons";
+import {EditOutlined, LogoutOutlined, SaveOutlined} from "@ant-design/icons";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
+import {Link} from "react-router-dom";
 
 const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -44,13 +45,13 @@ const UserProfile = () => {
                     <Form
                         initialValues={userData}
                         onFinish={handleSave}
-                        style={{ padding: "16px" }}
+                        style={{padding: "16px"}}
                     >
                         <Form.Item label="Имя" name="username">
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item label="Дата рождения" name="dateOfBirth">
-                            <Input />
+                            <Input/>
                         </Form.Item>
                         <Form.Item
                             label="Номер телефона"
@@ -71,7 +72,7 @@ const UserProfile = () => {
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
-                                <SaveOutlined />
+                                <SaveOutlined/>
                                 Сохранить
                             </Button>
                         </Form.Item>
@@ -97,16 +98,28 @@ const UserProfile = () => {
                 )}
 
                 <Button
-                    type="primary"
                     style={{
                         background: "black",
                         fontWeight: "bold",
                         margin: "10px 0",
+                        color: 'white'
                     }}
                     onClick={toggleEditing}
                 >
-                    {isEditing ? <span>Отменить</span> : <EditOutlined />}
+                    {isEditing ? <span>Отменить</span> : <EditOutlined/>}
                 </Button>
+                <Link to="/">
+                    <Button
+                        icon={<LogoutOutlined />}
+                        onClick={handleLogout}
+                        style={{
+                            width: '45.6px',
+                            background: 'black',
+                            color: 'white',
+                            marginLeft: '20px' }}
+                    />
+                </Link>
+
             </Card>
         </div>
     );
