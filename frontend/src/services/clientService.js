@@ -20,8 +20,8 @@ const getClients = (id, dispatch) => {
         });
 };
 
-const updateClient = (user, dispatch) => {
-    return axios.put(API_URL, user, {headers: authHeader()}).then(
+const updateClient = (id, user, dispatch) => {
+    return axios.put(`${API_URL}/${id}`, user, {headers: authHeader()}).then(
         (response) => {
             getClients(dispatch)
         },

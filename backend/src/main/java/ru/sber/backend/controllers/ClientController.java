@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.entities.CartItem;
+import ru.sber.backend.entities.User;
 import ru.sber.backend.services.ClientService;
 
 
 @Slf4j
 @RestController
-@RequestMapping("client")
+@RequestMapping("clients")
 public class ClientController {
     private final ClientService clientService;
 
@@ -19,10 +21,31 @@ public class ClientController {
     }
 
     /**
+     * Обновляет информацию о клиенте
+     *
+     * @param clientId id клиента
+     * @param client объект клиента
+     * @return статус выполнения
+     */
+    @PutMapping("/{clientId}")
+    public ResponseEntity<?> updateClientInfo(@PathVariable long clientId, @RequestBody User client) {
+
+        log.info("Изменяется информацию о клиенте");
+
+        boolean recordUpdated = clientService.updateClientInfo(clientId, client.getUsername(), client.getDateOfBirth(), client.getNumber());
+
+        if (recordUpdated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
      * Удаляет пользователя по идентификатору
      *
      * @param clientId Уникальный идентификатор клиента
-     * @return Возвращает статус выполнения
+     * @return статус выполнения
      */
     @DeleteMapping("/{clientId}")
     public ResponseEntity<?> deleteClient(@PathVariable long clientId) {
