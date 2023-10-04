@@ -1,16 +1,11 @@
 import React from 'react';
+import "./styles/Footer.css"
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer style={{
-            backgroundColor: '#696666',
-            width: '100%',
-            padding: '15px 0',
-            textAlign: 'center',
-            color: 'white'
-        }}>
+        <footer className={"footer"}>
             <p>
                 &copy; {currentYear} Грузинский ресторан
             </p>

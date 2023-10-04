@@ -3,6 +3,7 @@ import Preloader from "./components/generals/Preloader"
 import './App.css';
 import NavigationMenu from "./components/generals/NavMenu";
 import {FloatButton} from "antd";
+import Header from "./components/generals/Header";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Preloader />
         ) : (
             <div>
+              <Header/>
               <NavigationMenu/>
               <FloatButton.BackTop style={{width: "2.5%", height:"5%"}} visibilityHeight={100} />
             </div>

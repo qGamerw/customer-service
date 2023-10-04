@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Form, Input, Radio} from 'antd';
 import TextArea from "antd/es/input/TextArea";
+import PhoneInput from "react-phone-input-2";
 
 const DeliveryForm = () => {
     const [name, setName] = useState('');
@@ -69,9 +70,10 @@ const DeliveryForm = () => {
                     name="number"
                     rules={[{required: true, message: 'Пожалуйста, введите ваш номер телефона!'}]}
                 >
-                    <Input
-                        value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="Номер телефона в формате +8ХХХХХХХХХХ"
+                    <PhoneInput
+                        country="ru"
+                        onlyCountries={["ru"]}
+                        placeholder="+7-xxx-xxx-xx-xx"
                     />
                 </Form.Item>
                 <Form.Item
