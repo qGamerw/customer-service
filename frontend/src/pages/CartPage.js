@@ -57,13 +57,19 @@ const CartPage = () => {
                 <div className="cartPage-content">
                     <h2>Корзина</h2>
                     {isCartEmpty ? (
-                        <div>
+                        <div className={"cartEmpty"}>
                             <h2>Ваша корзина пуста :(</h2>
-                            <img
+                            <div className={"cartEmpty__images__container"}><img
                                 className="cartPage-img-empty"
                                 src="https://ne-kurim.ru/forum/attachments/orig-gif.1566829/"
                                 alt="Гифка танцующего грузина"
                             />
+                                <img
+                                    className="cartPage-img-empty"
+                                    src="https://ne-kurim.ru/forum/attachments/orig-gif.1566829/"
+                                    alt="Гифка танцующего грузина"
+                                    style={{transform: 'scaleX(-1)'}}
+                                /></div>
                         </div>
                     ) : (
                         <div>

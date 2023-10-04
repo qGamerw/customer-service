@@ -5,7 +5,7 @@ import authHeader from "./auth-header";
 const API_URL = "/dishes";
 
 const getDishes = (dispatch) => {
-    return axios.get(API_URL+"/any",{headers: authHeader()}).then(
+    return axios.get(API_URL+"/any").then(
         (response) => {
             dispatch(setDishes(response.data));
         },

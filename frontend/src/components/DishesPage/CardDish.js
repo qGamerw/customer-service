@@ -3,18 +3,26 @@ import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import "./styles/CardDish.css"
 import CartService from "../../services/cartService";
+import {Link} from "react-router-dom";
 
 const CardDish = ({dish, children, showUseButton}) => {
     const user = JSON.parse(localStorage.getItem("user"));
+    const [isLogged] = useState(user !== null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
-    const itemFromCartById = useSelector((state) => state.cart.items.find(item => item.id === dish.id))
+    const itemFromCartById = useSelector((state) => state.cart.items.find(item => item.dishId === dish.id))
+    console.log(itemFromCartById)
     const handleAddClick = () => {
-        CartService.addToCart(user.id,dish.id,dispatch)
+        isLogged && (
+            CartService.addToCart(user.id, dish.id, dispatch)
+        )
     }
 
     const handleUpdateAmount = (dishId, quantity) => {
-        CartService.updateQuantity(user.id, dishId, quantity, dispatch)
+        const newQuantity = {
+            quantity: quantity,
+        };
+        CartService.updateQuantity(user.id, dishId, newQuantity, dispatch)
         if (quantity === 0) {
             CartService.deleteFromCart(user.id, dishId, dispatch)
         }
@@ -25,12 +33,12 @@ const CardDish = ({dish, children, showUseButton}) => {
             <img
                 src={dish.urlImage}
                 alt={"Изображение блюда:" + dish.name}
-                style={{width: "370px",  borderRadius: "10%", height: "270px", cursor: "pointer"}}
+                style={{width: "370px", borderRadius: "10%", height: "270px", cursor: "pointer"}}
                 onClick={() => {
                     setIsModalOpen(true)
                 }}
             />
-                <div className={"cardDish__name"}>{dish.name}</div>
+            <div className={"cardDish__name"}>{dish.name}</div>
             <div className={"card__container"}>
                 <div className={"cardDish__price"}>{dish.price} ₽</div>
                 {showUseButton && (
@@ -91,12 +99,16 @@ const CardDish = ({dish, children, showUseButton}) => {
                             ) : (
                                 <Button
                                     onClick={handleAddClick}
-                                    type={"primary"}
+                                    type="primary"
                                     danger
-                                    shape={"round"}
-                                    size={"large"}
+                                    shape="round"
+                                    size="large"
                                 >
-                                    Добавить в корзину
+                                    {isLogged ? (
+                                        <div>Добавить в корзину</div>
+                                    ) : (
+                                        <Link to="/api/auth/signin">Войти</Link>
+                                    )}
                                 </Button>
                             )}
                         </div>
