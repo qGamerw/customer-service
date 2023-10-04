@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Modal, Input, Row, Col} from 'antd';
-import {EnvironmentOutlined, PhoneOutlined, ClockCircleOutlined} from '@ant-design/icons'; // Импорт иконок
+import {EnvironmentOutlined, PhoneOutlined, ClockCircleOutlined} from '@ant-design/icons';
 import './styles/Header.css';
 
 const Header = () => {
@@ -14,7 +14,7 @@ const Header = () => {
     }, []);
 
     const getUserGeolocationDetails = () => {
-        fetch('https://geolocation-db.com/json/fd18cb60-5f5a-11ee-87d3-bd3f0d7c4f89')
+        fetch('https://ipinfo.io/5.144.76.96?token=a704a8e6e2bc35')
             .then((response) => response.json())
             .then((data) => setDetails(data));
     };
