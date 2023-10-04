@@ -4,7 +4,7 @@ import additivesReducer from "./slices/additivesSlice";
 import ordersReducer from "./slices/ordersSlice";
 import cartReducer from "./slices/cartSlice";
 import authReducer from "./slices/authSlice";
-import clientReducer from "./slices/сlientSlice"
+import clientReducer from "./slices/clientSlice"
 
 export default configureStore({
     reducer: {

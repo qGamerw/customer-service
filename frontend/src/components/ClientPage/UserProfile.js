@@ -5,11 +5,15 @@ import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
 import {Link} from "react-router-dom";
+import clientService from "../../services/clientService";
+import { useDispatch } from 'react-redux';
+
 
 const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const [userData, setUserData] = useState()
     const user = JSON.parse(localStorage.getItem("user"));
+    const [userData, setUserData] = useState(user);
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
         AuthService.logout();
@@ -24,10 +28,18 @@ const UserProfile = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleSave = (values) => {
-        setUserData(values);
-        setIsEditing(false);
+
+    const handleSave = async (values) => {
+        try {
+            await clientService.updateClient(user.id, values, dispatch);
+            setIsEditing(false);
+            message.success("Данные успешно сохранены!");
+            setUserData({ ...userData, ...values });
+        } catch (error) {
+            message.error("Произошла ошибка при сохранении данных.");
+        }
     };
+
 
     return (
         <div
