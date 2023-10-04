@@ -10,7 +10,10 @@ const CardDishFromCart = ({dish}) => {
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem("user"));
     const handleUpdateAmount = (dishId, quantity) => {
-        CartService.updateQuantity(user.id, dishId, quantity, dispatch)
+        const newQuantity = {
+            quantity: quantity,
+        };
+        CartService.updateQuantity(user.id, dishId, newQuantity, dispatch)
     }
 
     const handleRemoveClick = (dishId) => {

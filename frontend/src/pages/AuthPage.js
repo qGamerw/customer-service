@@ -17,7 +17,7 @@ const AuthPage = () => {
             dispatch(login(user))
             message.success("Вы успешно вошли в систему! Здравствуйте!")
             navigate("/")
-            const reloadTime = 500;
+            const reloadTime = 1;
             setTimeout(() => {
                 window.location.reload();
             }, reloadTime);

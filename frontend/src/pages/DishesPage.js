@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import ListDishes from '../components/DishesPage/ListDishes';
 import {scroller} from 'react-scroll';
 import MyCarousel from "../components/generals/Carousel";
-import "./styles/DishesPage.css";
 import DishService from "../services/dishService";
 import Footer from "../components/generals/Footer";
+import "./styles/DishesPage.css";
 
 
 const DishesPage = () => {

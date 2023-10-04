@@ -14,7 +14,7 @@ const UserProfile = () => {
     const handleLogout = () => {
         AuthService.logout();
         message.success("Вы успешно вышли! До свидания!")
-        const reloadTime = 1000;
+        const reloadTime = 1;
         setTimeout(() => {
             window.location.reload();
         }, reloadTime);

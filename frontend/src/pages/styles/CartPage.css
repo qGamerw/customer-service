@@ -16,6 +16,12 @@
     border-radius: 8px;
 }
 
+.cartEmpty__images__container{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
 .cartPage-content-delivery {
     margin-top: 20px;
     padding: 20px;
