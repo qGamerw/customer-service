@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import UserProfile from "../components/ClientPage/UserProfile";
 import OrderHistory from "../components/ClientPage/OrderHistory";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import DeliveryCard from "../components/ClientPage/DeliveryCard";
 import { Tabs } from "antd";
 
@@ -33,7 +33,7 @@ const ClientPage = () => {
             <Tabs tabPosition="left" activeKey={activeTabParam} onChange={handleTabChange}>
                 <TabPane tab="Профиль" key="profile">
                     <h3>Профиль</h3>
-                    <UserProfile />
+                    <UserProfile/>
                 </TabPane>
                 <TabPane tab="Доставка" key="delivery">
                     <h3>Доставка</h3>

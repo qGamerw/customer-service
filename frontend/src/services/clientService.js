@@ -1,5 +1,5 @@
 import axios from "axios";
-import {setClients} from "../slices/сlientSlice";
+import {setClients} from "../slices/clientSlice";
 import authHeader from "./auth-header";
 
 const API_URL = "/clients";
@@ -23,7 +23,7 @@ const getClients = (id, dispatch) => {
 const updateClient = (id, user, dispatch) => {
     return axios.put(`${API_URL}/${id}`, user, {headers: authHeader()}).then(
         (response) => {
-            getClients(dispatch)
+            getClients(id, dispatch);
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
