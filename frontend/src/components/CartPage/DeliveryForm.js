@@ -1,11 +1,16 @@
 import React, {useState} from 'react';
-import {Form, Input, Radio, Button} from 'antd';
+import {Form, Input, Radio} from 'antd';
+import TextArea from "antd/es/input/TextArea";
 
 const DeliveryForm = () => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [flat, setFlat] = useState('');
+    const [floor, setFloor] = useState('');
+    const [frontDoor, setFrontDoor] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [deliveryMethod, setDeliveryMethod] = useState('courier'); // Устанавливаем начальное значение по умолчанию
+    const [description, setDescription] = useState('');
+    const [deliveryMethod, setDeliveryMethod] = useState('courier');
 
     const onFinish = (values) => {
         console.log('Received values:', values);
@@ -27,14 +32,56 @@ const DeliveryForm = () => {
                     name="address"
                     rules={[{required: true, message: 'Пожалуйста, введите ваш адрес!'}]}
                 >
-                    <Input value={address} onChange={(e) => setAddress(e.target.value)}/>
+                    <Input
+                        value={address} onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Введите улицу и номер дома"
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Номер квартиры:"
+                    name="flat"
+                    rules={[{required: true, message: 'Пожалуйста, введите номер квартиры'}]}
+                >
+                    <Input
+                        value={flat} onChange={(e) => setFlat(e.target.value)}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Этаж:"
+                    name="floor"
+                    rules={[{required: true, message: 'Пожалуйста, введите этаж'}]}
+                >
+                    <Input
+                        value={floor} onChange={(e) => setFloor(e.target.value)}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Номер подъезда:"
+                    name="frontDoor"
+                    rules={[{required: true, message: 'Пожалуйста, введите номер подъезда'}]}
+                >
+                    <Input
+                        value={frontDoor} onChange={(e) => setFrontDoor(e.target.value)}
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Телефон:"
                     name="number"
                     rules={[{required: true, message: 'Пожалуйста, введите ваш номер телефона!'}]}
                 >
-                    <Input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}/>
+                    <Input
+                        value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="Номер телефона в формате +8ХХХХХХХХХХ"
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Дополнительная информация:"
+                    name="description"
+                >
+                    <TextArea
+                        value={description} onChange={(e) => setDescription(e.target.value)}
+                        placeholder="Ваше пожелание"
+                    />
                 </Form.Item>
                 <Form.Item label="Способ доставки:" name="deliveryMethod">
                     <Radio.Group onChange={(e) => setDeliveryMethod(e.target.value)} value={deliveryMethod}>
