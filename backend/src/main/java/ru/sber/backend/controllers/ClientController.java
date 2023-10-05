@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.entities.User;
+import ru.sber.backend.entities.UserResponse;
 import ru.sber.backend.services.ClientService;
+
+import java.util.Optional;
 
 
 @Slf4j
@@ -18,6 +21,27 @@ public class ClientController {
     @Autowired
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    /**
+     * Находит пользователя по идентификатору
+     *
+     * @param clientId id пользователя
+     * @return пользователь с ограниченным количеством полей
+     */
+    @GetMapping("/{clientId}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable long clientId) {
+
+        log.info("Выводим данные о пользователе с id: {}", clientId);
+
+        Optional<User> user = clientService.getClientById(clientId);
+
+        if (user.isPresent()) {
+            UserResponse userResponse = new UserResponse(user.get());
+            return ResponseEntity.ok().body(userResponse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

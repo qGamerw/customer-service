@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, Card, Input, Form, message} from "antd";
-import {EditOutlined, LogoutOutlined, SaveOutlined} from "@ant-design/icons";
+import {CalendarOutlined, EditOutlined, LogoutOutlined, MailOutlined, SaveOutlined} from "@ant-design/icons";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
@@ -34,12 +34,24 @@ const UserProfile = () => {
             await clientService.updateClient(user.id, values, dispatch);
             setIsEditing(false);
             message.success("Данные успешно сохранены!");
-            setUserData({ ...userData, ...values });
+            const updatedUser = { ...user, ...values };
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+            setUserData(updatedUser);
         } catch (error) {
             message.error("Произошла ошибка при сохранении данных.");
         }
     };
 
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) return '';
+        const countryCode = phoneNumber.slice(0, 1);
+        const firstPart = phoneNumber.slice(1, 4);
+        const secondPart = phoneNumber.slice(4, 7);
+        const thirdPart = phoneNumber.slice(7, 9);
+        const fourthPart = phoneNumber.slice(9, 12);
+
+        return `+${countryCode} (${firstPart}) ${secondPart}-${thirdPart}-${fourthPart}`;
+    };
 
     return (
         <div
@@ -63,11 +75,23 @@ const UserProfile = () => {
                         onFinish={handleSave}
                         style={{padding: "16px"}}
                     >
-                        <Form.Item label="Имя" name="username">
+                        <Form.Item label="Имя" name="username"
+                            rules={[{required: true, message: 'Пожалуйста, введите имя пользователя!'}]}>
                             <Input/>
                         </Form.Item>
-                        <Form.Item label="Дата рождения" name="dateOfBirth">
-                            <Input/>
+                        <Form.Item label="E-mail"
+                            name="email"
+                        >
+                            <Input
+                                prefix={<MailOutlined />}
+                                disabled={isEditing}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Дата рождения"
+                            name="dateOfBirth"
+                            rules={[{required: true, message: 'Пожалуйста, введите дату рождения!'}]}
+                        >
+                            <Input prefix={<CalendarOutlined/>} type="date" placeholder="Дата рождения"/>
                         </Form.Item>
                         <Form.Item
                             label="Номер телефона"
@@ -105,10 +129,13 @@ const UserProfile = () => {
                             Имя: <span>{user.username}</span>
                         </p>
                         <p>
+                            E-mail: <span>{user.email}</span>
+                        </p>
+                        <p>
                             Дата рождения: <span>{user.dateOfBirth}</span>
                         </p>
                         <p>
-                            Номер телефона: <span>{user.number}</span>
+                            Номер телефона:   <span> {formatPhoneNumber(user.number)}</span>
                         </p>
                     </div>
                 )}
