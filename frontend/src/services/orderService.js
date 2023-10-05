@@ -36,7 +36,7 @@ const createOrder = (order, dispatch) => {
         });
 };
 
-const updateOrder = (order, dispatch) => {
+const cancelOrder = (order, dispatch) => {
     return axios.put(API_URL, order, {headers: authHeader()}).then(
         (response) => {
             getOrders(dispatch)
@@ -53,7 +53,7 @@ const updateOrder = (order, dispatch) => {
 const orderService = {
     getOrders,
     createOrder,
-    updateOrder,
+    cancelOrder,
 };
 
 export default orderService

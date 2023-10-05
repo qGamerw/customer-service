@@ -3,10 +3,10 @@ import {useLocation} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import ListDishes from '../components/DishesPage/ListDishes';
 import {scroller} from 'react-scroll';
-import MyCarousel from "../components/generals/Carousel";
 import DishService from "../services/dishService";
 import Footer from "../components/generals/Footer";
 import "./styles/DishesPage.css";
+import Slider from "../components/DishesPage/Carousel";
 
 
 const DishesPage = () => {
@@ -22,8 +22,6 @@ const DishesPage = () => {
         getDishes();
     }, [dispatch]);
 
-
-
     useEffect(() => {
         if (anchorId) {
             scroller.scrollTo(anchorId, {
@@ -37,7 +35,7 @@ const DishesPage = () => {
     return (
         <div className="dishPage">
             <div className="dishPage__content">
-                <MyCarousel/>
+                <Slider id="carousel"/>
                 <h2 id="category:1">Салаты</h2>
                 <ListDishes dishes={listDishes.filter(item => item.category.category === "SALAD")}/>
                 <h2 id="category:2">Роллы</h2>

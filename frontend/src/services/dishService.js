@@ -1,6 +1,5 @@
 import axios from "axios";
 import {setDishes} from "../slices/dishesSlice";
-import authHeader from "./auth-header";
 
 const API_URL = "/dishes";
 
