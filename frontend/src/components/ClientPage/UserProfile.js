@@ -34,11 +34,14 @@ const UserProfile = () => {
             await clientService.updateClient(user.id, values, dispatch);
             setIsEditing(false);
             message.success("Данные успешно сохранены!");
-            setUserData({ ...userData, ...values });
+            const updatedUser = { ...user, ...values };
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+            setUserData(updatedUser);
         } catch (error) {
             message.error("Произошла ошибка при сохранении данных.");
         }
     };
+
 
 
     return (
