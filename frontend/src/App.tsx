@@ -6,7 +6,7 @@ import {FloatButton} from "antd";
 import Header from "./components/generals/Header";
 
 
-function App() {
+const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

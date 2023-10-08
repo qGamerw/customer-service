@@ -7,12 +7,12 @@ import AuthService from "../../services/authService";
 import {Link} from "react-router-dom";
 import clientService from "../../services/clientService";
 import { useDispatch } from 'react-redux';
+import {user} from "../../constants/constants";
 
 
 const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
-    const user = JSON.parse(localStorage.getItem("user"));
-    const [userData, setUserData] = useState(user);
+       const [userData, setUserData] = useState(user);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
@@ -31,7 +31,7 @@ const UserProfile = () => {
 
     const handleSave = async (values) => {
         try {
-            await clientService.updateClient(user.id, values, dispatch);
+            await clientService.updateClient(user?.id, values, dispatch);
             setIsEditing(false);
             message.success("Данные успешно сохранены!");
             const updatedUser = { ...user, ...values };

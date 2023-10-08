@@ -1,6 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 import CardDish from './CardDish';
-const ListDishes = ({dishes}) => {
+import {IDish} from "../../types/types";
+
+interface ListDishes {
+    dishes: IDish[];
+}
+const ListDishes: FC<ListDishes>= ({dishes}) => {
 
     return (
         <div style={{display: "flex", justifyContent: "space-between", gap: "30px",flexWrap: "wrap",  height: "400"}}>

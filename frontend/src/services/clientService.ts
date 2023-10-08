@@ -1,5 +1,5 @@
 import axios from "axios";
-import {setClients} from "../slices/clientSlice";
+import {setUser} from "../slices/userSlice";
 import authHeader from "./auth-header";
 
 const API_URL = "/clients";
@@ -7,7 +7,7 @@ const API_URL = "/clients";
 const getClients = (id, dispatch) => {
     return axios.get(API_URL + `/${id}`, {headers: authHeader()}).then(
         (response) => {
-            dispatch(setClients(response.data));
+            dispatch(setUser(response.data));
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -16,7 +16,7 @@ const getClients = (id, dispatch) => {
 
             console.error(_content)
 
-            dispatch(setClients([]));
+            dispatch(setUser([]));
         });
 };
 

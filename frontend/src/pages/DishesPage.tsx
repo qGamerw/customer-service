@@ -7,10 +7,12 @@ import DishService from "../services/dishService";
 import Footer from "../components/generals/Footera";
 import "./styles/DishesPage.css";
 import Slider from "../components/DishesPage/Carousel";
+import {RootState} from "../store";
+import {IDish} from "../types/types";
 
 
 const DishesPage = () => {
-    const listDishes = useSelector((state) => state.dishes.dishes);
+    const listDishes: IDish[] = useSelector((state: RootState) => state.dishes.dishes);
     const dispatch = useDispatch()
     const location = useLocation();
     const anchorId = location.state ? location.state.anchorId : null;
@@ -35,7 +37,7 @@ const DishesPage = () => {
     return (
         <div className="dishPage">
             <div className="dishPage__content">
-                <Slider id="carousel"/>
+                <Slider/>
                 <h2 id="category:1">Салаты</h2>
                 <ListDishes dishes={listDishes.filter(item => item.category.category === "SALAD")}/>
                 <h2 id="category:2">Роллы</h2>

@@ -6,12 +6,13 @@ import Payment from '../components/CartPage/Payment';
 import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import DishService from "../services/dishService";
+import {user} from "../constants/constants";
+import {RootState} from "../store";
 
 const CartPage = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const listItemFromCart = useSelector((state) => state.cart.items)
+        const listItemFromCart = useSelector((state: RootState) => state.cart.cartItems)
         const isCartEmpty = listItemFromCart.length === 0;
-        const listDishes = useSelector((state) => state.dishes.dishes);
+        const listDishes = useSelector((state: RootState) => state.dishes.dishes);
         const dispatch = useDispatch();
         const listDishesFromCart = listDishes
             .filter((dish) => {
@@ -27,10 +28,10 @@ const CartPage = () => {
         useEffect(() => {
             const getCart = () => {
                 DishService.getDishes(dispatch);
-                CartService.getCart(user.id, dispatch)
+                CartService.getCart(user?.id, dispatch)
             };
             getCart();
-        }, [dispatch,user.id]);
+        }, [dispatch, user?.id]);
 
         const handleScroll = () => {
             const windowHeight = window.innerHeight;

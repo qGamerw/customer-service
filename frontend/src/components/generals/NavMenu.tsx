@@ -10,13 +10,13 @@ import {NotFoundPage} from '../../pages/NotFoundPage';
 import './styles/NavMenu.css';
 import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
+import {user} from "../../constants/constants";
 
 const NavigationMenu = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        setIsUserAuthenticated(user != null);
+                setIsUserAuthenticated(user != null);
     }, []);
 
 
