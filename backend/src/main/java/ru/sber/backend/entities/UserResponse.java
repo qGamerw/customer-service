@@ -9,14 +9,14 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserResponse {
     private long id;
-    private String name;
+    private String username;
     private String number;
     private Date dateOfBirth;
 
     public UserResponse(User user) {
         this.id = user.getId();
-        this.name = user.getUsername();
-        this.number = user.getNumber();
+        this.username = user.getUsername();
         this.dateOfBirth = user.getDateOfBirth();
+        this.number = user.getNumber();
     }
 }

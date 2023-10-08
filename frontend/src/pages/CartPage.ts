@@ -30,8 +30,7 @@ const CartPage = () => {
                 CartService.getCart(user.id, dispatch)
             };
             getCart();
-        }, [dispatch]);
-
+        }, [dispatch,user.id]);
 
         const handleScroll = () => {
             const windowHeight = window.innerHeight;

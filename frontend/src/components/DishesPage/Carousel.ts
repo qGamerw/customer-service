@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './styles/Slider.css';
 
@@ -19,15 +19,16 @@ const Slider = () => {
         setCurrentIndex((prevIndex) =>
             prevIndex === 0 ? slides.length - 1 : prevIndex - 1
         );
-        setUserActive(true); // Установить флаг активности пользователя
+        setUserActive(true);
     };
 
-    const goToNextSlide = () => {
+    // Используем useCallback для оптимизации функции goToNextSlide
+    const goToNextSlide = useCallback(() => {
         setCurrentIndex((prevIndex) =>
             prevIndex === slides.length - 1 ? 0 : prevIndex + 1
         );
-        setUserActive(true); // Установить флаг активности пользователя
-    };
+        setUserActive(true);
+    }, [slides.length]);
 
     // Добавляем автоматическое переключение каждые 5 секунд (5000 миллисекунд)
     useEffect(() => {
@@ -39,7 +40,8 @@ const Slider = () => {
 
         // Очищаем интервал при размонтировании компонента
         return () => clearInterval(interval);
-    }, [userActive]);
+    }, [userActive, goToNextSlide]);
+
 
     // Сброс флага активности пользователя после перемещения слайда
     useEffect(() => {

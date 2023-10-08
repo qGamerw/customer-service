@@ -16,9 +16,7 @@ const ListDishesFromCart = ({dishes}) => {
         <div>
             <div style={{display: "flex", justifyContent: "space-between", gap: "30px",flexWrap: "wrap",  height: "400", margin: "10px"}}>
                 {itemsToDisplay.map((dish) => (
-                    <div key={dish.id}>
-                        <CardDishFromCart dish={dish}/>
-                    </div>
+                        <CardDishFromCart dish={dish} key={dish.id}/>
                 ))}
             </div>
             {dishes.length &&

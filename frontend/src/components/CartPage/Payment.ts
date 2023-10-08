@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Input} from "antd";
+import {Button, Checkbox} from "antd";
 import {Link} from "react-router-dom";
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';
@@ -55,9 +55,9 @@ const Payment = ({amountInCart}) => {
             <StripeCheckout
                 token={onToken}
                 name="Оплата заказа"
-                currency="Rub"
+                currency="RUB"
                 amount={amountInCart * 100}
-                locale="ru"
+                locale="auto"
                 stripeKey={stripePublishableKey}
             >
                 <Button type="primary" htmlType="submit">
