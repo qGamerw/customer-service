@@ -25,5 +25,5 @@ public class Payment {
 
     @NotBlank
     @Size(max = 100)
-    private long cardNumber;
+    private String cardNumber;
 }

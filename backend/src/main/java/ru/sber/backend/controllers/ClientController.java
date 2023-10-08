@@ -3,20 +3,18 @@ package ru.sber.backend.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.entities.User;
+import ru.sber.backend.entities.UserResponse;
 import ru.sber.backend.services.ClientService;
 
 import java.util.Optional;
 
+
 @Slf4j
 @RestController
-@RequestMapping("client")
+@RequestMapping("clients")
 public class ClientController {
     private final ClientService clientService;
 
@@ -25,33 +23,65 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getClientInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String email = authentication.getName();
-            Optional<User> client = clientService.getClientByEmail(email);
-            if (client.isPresent()) {
-                return ResponseEntity.ok(client.get());
-            }
+    /**
+     * Находит пользователя по идентификатору
+     *
+     * @param clientId id пользователя
+     * @return пользователь с ограниченным количеством полей
+     */
+    @GetMapping("/{clientId}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable long clientId) {
+
+        log.info("Выводим данные о пользователе с id: {}", clientId);
+
+        Optional<User> user = clientService.getClientById(clientId);
+
+        if (user.isPresent()) {
+            UserResponse userResponse = new UserResponse(user.get());
+            return ResponseEntity.ok().body(userResponse);
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.badRequest().body("Ошибка при получении информации о клиенте");
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteClient() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String email = authentication.getName();
-            Optional<User> client = clientService.getClientByEmail(email);
-            if (client.isPresent()) {
-                long clientId = client.get().getId();
-                boolean deleted = clientService.deleteClientById(clientId);
-                if (deleted) {
-                    return ResponseEntity.ok("Клиент успешно удален");
-                }
-            }
+    /**
+     * Обновляет информацию о клиенте
+     *
+     * @param clientId id клиента
+     * @param client объект клиента
+     * @return статус выполнения
+     */
+    @PutMapping("/{clientId}")
+    public ResponseEntity<?> updateClientInfo(@PathVariable long clientId, @RequestBody User client) {
+
+        log.info("Изменяется информацию о клиенте");
+
+        boolean recordUpdated = clientService.updateClientInfo(clientId, client.getUsername(), client.getDateOfBirth(), client.getNumber());
+
+        if (recordUpdated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.badRequest().body("Ошибка при удалении клиента");
+    }
+
+    /**
+     * Удаляет пользователя по идентификатору
+     *
+     * @param clientId Уникальный идентификатор клиента
+     * @return статус выполнения
+     */
+    @DeleteMapping("/{clientId}")
+    public ResponseEntity<?> deleteClient(@PathVariable long clientId) {
+
+        log.info("Удаляем клиента с id: {}", clientId);
+
+        boolean isDeleted = clientService.deleteClientById(clientId);
+
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

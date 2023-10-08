@@ -2,6 +2,7 @@ package ru.sber.backend.services;
 
 import ru.sber.backend.entities.User;
 
+import java.util.Date;
 import java.util.Optional;
 
 public interface ClientService {
@@ -38,10 +39,21 @@ public interface ClientService {
     boolean deleteClientById(long clientId);
 
     /**
-     * Получение клиента по его email
+     * Получает клиента по его email
      *
      * @param email электронная почта клиента
      * @return клиента по email
      */
     Optional<User> getClientByEmail(String email);
+
+    /**
+     * Обновялет информацию о клиенте
+     *
+     * @param clientId id клиента
+     * @param name имя клиента
+     * @param dateOfBirth дата рождения клиента
+     * @param number номер телефона клиента
+     * @return true, если информация о клиенте успешно обновлена
+     */
+    boolean updateClientInfo(long clientId, String name, Date dateOfBirth, String number);
 }

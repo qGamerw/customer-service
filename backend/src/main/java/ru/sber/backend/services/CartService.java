@@ -1,5 +1,7 @@
 package ru.sber.backend.services;
 
+import ru.sber.backend.entities.CartItem;
+
 import java.util.List;
 
 public interface CartService {
@@ -8,29 +10,28 @@ public interface CartService {
      *
      * @param clientId Уникальный идентификатор пользователя
      * @param dishId   Уникальный идентификатор блюда
-     * @param quantity Количество блюда в корзине
      * @return Возвращает статус добавления блюда в корзину
      */
-    boolean addToCart(long clientId, long dishId, int quantity);
+    boolean addToCart(long clientId, long dishId);
 
     /**
      * Удаление блюда из корзины
      *
-     * @param clientId Уникальный идентификатор пользователя
+     * @param cartId   Уникальный идентификатор корзины
      * @param dishId   Уникальный идентификатор блюда
      * @return Возвращает статус удаления блюда из корзины
      */
-    boolean deleteDish(long clientId, long dishId);
+    boolean deleteDish(long cartId, long dishId);
 
     /**
      * Изменение количества блюда в корзине
      *
-     * @param clientId Уникальный идентификатор пользователя
-     * @param dishId   Уникальный идентификатор блюда
-     * @param amount   Количество добавляемого блюда
+     * @param clientId   Уникальный идентификатор пользователя
+     * @param dishId     Уникальный идентификатор блюда
+     * @param quantity   Количество добавляемого блюда
      * @return Возвращает статус обновления количества блюда в корзине
      */
-    boolean updateDishAmount(long clientId, long dishId, int amount);
+    boolean updateDishAmount(long clientId, long dishId, int quantity);
 
     /**
      * Полностью очищает корзину пользователя
@@ -54,4 +55,12 @@ public interface CartService {
      * @return Возвращает количество товаров
      */
     int countDishesInCart(long clientId);
+
+    /**
+     * Получает список элементов корзины клиента
+     *
+     * @param cartId id корзины
+     * @return список элементов корзины
+     */
+    List<CartItem> getCartItemsByCartId(long cartId);
 }

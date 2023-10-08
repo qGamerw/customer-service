@@ -2,6 +2,7 @@ package ru.sber.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sber.backend.entities.Cart;
 import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.entities.User;
@@ -28,7 +29,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addToCart(long cartId, long dishId, int quantity) {
+    public boolean addToCart(long cartId, long dishId) {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(cartId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
@@ -49,12 +50,12 @@ public class CartServiceImpl implements CartService {
 
             if (cartItem.isPresent()) {
                 CartItem existingCartItem = cartItem.get();
-                existingCartItem.setQuantity(quantity);
+                existingCartItem.setQuantity(1);
             } else {
                 CartItem newCartItem = new CartItem();
                 newCartItem.setCart(shoppingCart);
                 newCartItem.setDishId(dishId);
-                newCartItem.setQuantity(quantity);
+                newCartItem.setQuantity(1);
                 shoppingCart.getCartItems().add(newCartItem);
             }
 
@@ -67,28 +68,14 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public boolean deleteDish(long dishId, long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
-
-        if (cart.isPresent()) {
-            Cart shoppingCart = cart.get();
-            List<CartItem> cartItems = shoppingCart.getCartItems();
-
-            for (CartItem cartItem : cartItems) {
-                if (cartItem.getDishId() == dishId) {
-                    cartItemRepository.delete(cartItem);
-                    cartItems.remove(cartItem);
-                    cartRepository.save(shoppingCart);
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    @Transactional
+    public boolean deleteDish(long cartId, long dishId) {
+        cartItemRepository.deleteCartItemByCartIdAndDishId(cartId, dishId);
+        return true;
     }
 
     @Override
-    public boolean updateDishAmount(long clientId, long dishId, int amount) {
+    public boolean updateDishAmount(long clientId, long dishId, int quantity) {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
 
         if (cart.isPresent()) {
@@ -97,7 +84,7 @@ public class CartServiceImpl implements CartService {
 
             for (CartItem cartItem : cartItems) {
                 if (cartItem.getDishId() == dishId) {
-                    cartItem.setQuantity(amount);
+                    cartItem.setQuantity(quantity);
                     cartRepository.save(shoppingCart);
                     return true;
                 }
@@ -135,6 +122,11 @@ public class CartServiceImpl implements CartService {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<CartItem> getCartItemsByCartId(long cartId) {
+        return cartItemRepository.findByCartId(cartId);
     }
 
     @Override

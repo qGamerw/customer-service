@@ -20,3 +20,19 @@ Content-Type: application/json
   "email": "smirnovpa4@yandex.ru",
   "password": "password"
 }
+
+###Обновление информации о клиенте
+PUT localhost:8080/clients/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbWlybm92cGE0QHlhbmRleC5ydSIsImlhdCI6MTY5NjM2Mzc5MCwiZXhwIjoxNjk2NDUwMTkwfQ.GEAF2LQEDVWYCeFxkZfZiaHgV0KC5TyUNyKLUFcV070
+
+{
+  "username": "Шашлык",
+  "dateOfBirth": "2000-01-01",
+  "number": "+79847382918"
+}
+
+###Получение клиента по id
+GET localhost:8080/clients/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbWlybm92cGE0QHlhbmRleC5ydSIsImlhdCI6MTY5Njc1MTYyMSwiZXhwIjoxNjk2ODM4MDIxfQ.GhKR4ucqEGYYJ7irOuLnznAEDikaDk6Kn5iX9VbsquM
