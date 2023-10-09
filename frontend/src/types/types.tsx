@@ -27,10 +27,13 @@ export interface IUser{
 }
 
 export interface IUserResponse {
+    accessToken: string;
     id: number;
     username: string;
     number: string;
     dateOfBirth: Date;
+    email: string;
+    roles: string;
 }
 
 export interface IOrder {
