@@ -1,7 +1,15 @@
-import {Button, Card, Layout} from "antd";
-import React from "react";
+import {Card} from 'antd';
+import React from 'react';
+import {IOrder} from '../../types/types'
 
-const OrderBlock = ({order}) => {
+interface OrderBlockProps {
+    order: IOrder;
+}
+
+const OrderBlock: React.FC<OrderBlockProps> =
+    ({
+         order
+    }) => {
     return (
         <div
             style={{
