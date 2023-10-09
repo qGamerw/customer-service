@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Button, Checkbox} from "antd";
 import {Link} from "react-router-dom";
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';
 import StripeCheckout from "react-stripe-checkout";
 
-const Payment = ({amountInCart}) => {
+interface Payment {
+    amountInCart: number
+}
+const Payment: FC<Payment> = ({amountInCart}) => {
     const [checkBoxOffer, setCheckBoxOffer] = useState(true);
     const currentTime = new Date();
     const deliveryTime = addMinutes(currentTime, 60);

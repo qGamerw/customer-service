@@ -18,6 +18,10 @@ export interface ICartItem {
     cartId: number;
 }
 
+export interface IDishFromCart extends IDish {
+    quantity: number;
+}
+
 export interface IUser{
     id: number;
     username: string;

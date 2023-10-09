@@ -8,21 +8,26 @@ import './styles/CartPage.css';
 import DishService from "../services/dishService";
 import {user} from "../constants/constants";
 import {RootState} from "../store";
+import {ICartItem, IDish, IDishFromCart} from "../types/types";
 
 const CartPage = () => {
-        const listItemFromCart = useSelector((state: RootState) => state.cart.cartItems)
-        const isCartEmpty = listItemFromCart.length === 0;
-        const listDishes = useSelector((state: RootState) => state.dishes.dishes);
+        const listItemFromCart: ICartItem[] = useSelector((state: RootState) => state.cart.cartItems)
+        const isCartEmpty: boolean = listItemFromCart.length === 0;
+        const listDishes: IDish[] = useSelector((state: RootState) => state.dishes.dishes);
         const dispatch = useDispatch();
-        const listDishesFromCart = listDishes
+        const listDishesFromCart: IDishFromCart[] = listDishes
             .filter((dish) => {
-                return listItemFromCart.some((selectedDish) => selectedDish.dishId === dish.id);
+                return listItemFromCart.some((selectedDish: ICartItem): boolean => selectedDish.dishId === dish.id);
             })
-            .map((dish) => {
-                const selectedDish = listItemFromCart.find((item) => item.dishId === dish.id);
-                return {...dish, quantity: selectedDish.quantity};
+            .map((dish: IDish) => {
+                const selectedDish: ICartItem | undefined = listItemFromCart.find((cartItem: ICartItem) => cartItem.dishId === dish.id);
+                return {...dish, quantity: selectedDish?.quantity ?? 0};
             });
-        const amountInCart = listDishesFromCart.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
+        const amountInCart: number = listDishesFromCart.reduce(
+            (accumulator: number, item: IDishFromCart | undefined) =>
+                accumulator + (item?.price || 0) * (item?.quantity || 0), 0
+        );
+
         const [isTotalVisible, setIsTotalVisible] = useState(true);
 
         useEffect(() => {

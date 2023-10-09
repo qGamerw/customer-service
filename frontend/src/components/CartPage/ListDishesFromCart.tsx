@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Pagination} from 'antd';
 import CardDishFromCart from './CardDishFromCart';
+import { IDishFromCart} from "../../types/types";
 
-const ListDishesFromCart = ({dishes}) => {
+interface ListDishesFromCart {
+    dishes: IDishFromCart[];
+}
+const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const itemsToDisplay = dishes.slice(startIndex, endIndex);
-    const handlePageChange = (page) => {
+    const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
 
@@ -24,7 +28,7 @@ const ListDishesFromCart = ({dishes}) => {
                     current={currentPage}
                     total={dishes.length}
                     pageSize={itemsPerPage}
-                    onChange={(page) => handlePageChange(page)}
+                    onChange={(page: number) => handlePageChange(page)}
                 />
             }
         </div>

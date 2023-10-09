@@ -1,23 +1,27 @@
-import React from 'react';
+import React, {FC} from 'react';
 import CardDish from "../DishesPage/CardDish";
 import {Button, InputNumber} from "antd";
 import {useDispatch} from "react-redux";
 import {CloseCircleOutlined} from "@ant-design/icons";
 import "./styles/CardDishFromCart.css";
 import CartService from "../../services/cartService";
+import {IDishFromCart} from "../../types/types";
+import {user} from "../../constants/constants";
 
-const CardDishFromCart = ({dish}) => {
+interface CardDishFromCart {
+    dish: IDishFromCart
+}
+const CardDishFromCart: FC<CardDishFromCart> = ({dish}) => {
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem("user"));
-    const handleUpdateAmount = (dishId, quantity) => {
+    const handleUpdateAmount = (dishId: number, quantity: number) => {
         const newQuantity = {
             quantity: quantity,
         };
-        CartService.updateQuantity(user.id, dishId, newQuantity, dispatch)
+        CartService.updateQuantity(user?.id, dishId, newQuantity, dispatch)
     }
 
-    const handleRemoveClick = (dishId) => {
-        CartService.deleteFromCart(user.id, dishId, dispatch)
+    const handleRemoveClick = (dishId: number) => {
+        CartService.deleteFromCart(user?.id, dishId, dispatch)
     }
 
     return (
@@ -27,7 +31,7 @@ const CardDishFromCart = ({dish}) => {
                     <InputNumber
                         value={dish.quantity}
                         min={1}
-                        onChange={(quantity) => handleUpdateAmount(dish.id, quantity)}
+                        onChange={(quantity: number | null) => handleUpdateAmount(dish.id, quantity ?? 0)}
                     />
                     <Button onClick={() => handleRemoveClick(dish.id)} type="text" size={"large"}
                             icon={<CloseCircleOutlined/>}/>
