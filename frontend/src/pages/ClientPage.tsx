@@ -5,7 +5,6 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import DeliveryCard from '../components/ClientPage/DeliveryCard';
 import {Tabs} from 'antd';
-
 const {TabPane} = Tabs;
 
 const ClientPage: FC = () => {
