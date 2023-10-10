@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {FC, useState} from "react";
 import {Button, Card, Input, Form, message} from "antd";
 import {
     CalendarOutlined,
@@ -15,7 +15,7 @@ import clientService from "../../services/clientService";
 import {useDispatch} from "react-redux";
 import {IUserResponse} from "../../types/types";
 
-const UserProfile: React.FC = () => {
+const UserProfile: FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem("user") || "null");

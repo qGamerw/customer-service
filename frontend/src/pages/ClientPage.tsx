@@ -5,8 +5,6 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import DeliveryCard from '../components/ClientPage/DeliveryCard';
 import {Tabs} from 'antd';
-import {RootState} from "../store";
-import {useAppSelector} from "../hooks";
 
 const {TabPane} = Tabs;
 
@@ -15,7 +13,6 @@ const ClientPage: FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const anchorId = location.state ? location.state.anchorId : null;
-    const user = useAppSelector((state) => state.user.users);
     const searchParams = new URLSearchParams(location.search);
     const activeTabParam = searchParams.get('tab') || 'profile';
 

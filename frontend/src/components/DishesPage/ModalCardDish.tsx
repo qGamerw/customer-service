@@ -3,9 +3,7 @@ import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {Link} from "react-router-dom";
 import CartService from "../../services/cartService";
 import {user} from "../../constants/constants";
-import {useDispatch, useSelector} from "react-redux";
 import {ICartItem, IDish} from "../../types/types";
-import { RootState } from '../../store';
 import {useAppDispatch, useAppSelector} from "../../hooks";
 
 interface ModalCardDishProps {
