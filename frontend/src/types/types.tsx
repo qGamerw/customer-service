@@ -45,3 +45,25 @@ export interface IOrder {
     address: string;
 }
 
+export interface IRegistration {
+    username: string;
+    number: string;
+    dateOfBirth: Date;
+    email: string;
+    password: string;
+}
+
+export interface ILogin {
+    email: string;
+    password: string;
+}
+
+export interface IDeliveryInfo {
+    username: string;
+    address: string;
+    flat: number;
+    floor: number;
+    frontDoor: number;
+    phoneNumber: string;
+    description: string;
+}

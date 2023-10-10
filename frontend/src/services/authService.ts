@@ -1,20 +1,21 @@
 import axios from "axios";
+import {ILogin, IRegistration} from "../types/types";
 
 const API_URL = "/api/auth/";
 
-const register = (registration) => {
-    const {username, number, dateOfBirth, email, password} = registration;
+const register = (registration: IRegistration) => {
+    const { username, number, dateOfBirth, email, password } = registration;
     return axios.post(API_URL + "signup", {
         username,
         number,
         dateOfBirth,
         email,
         password,
-    },);
+    });
 };
 
-const login = (login) => {
-    const {email, password} = login;
+const login = (loginData: ILogin) => {
+    const { email, password } = loginData;
 
     return axios
         .post(API_URL + "signin", {
@@ -22,7 +23,7 @@ const login = (login) => {
             password,
         })
         .then((response) => {
-            console.log(response)
+            console.log(response);
 
             if (response.data.accessToken) {
                 localStorage.setItem("user", JSON.stringify(response.data));
@@ -32,10 +33,8 @@ const login = (login) => {
 };
 
 const logout = () => {
-
-    console.log("logout")
+    console.log("logout");
     localStorage.removeItem("user");
-
 };
 
 const authService = {

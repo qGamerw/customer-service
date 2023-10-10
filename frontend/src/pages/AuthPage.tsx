@@ -5,13 +5,14 @@ import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {login} from "../slices/authSlice";
 import authService from "../services/authService";
 import {useDispatch} from "react-redux";
+import {ILogin} from "../types/types";
 
-const AuthPage = () => {
+const AuthPage: React.FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const onFinish = (values) => {
+    const onFinish = (values: ILogin) => {
         authService.login(values).then((user) => {
             console.log(user)
             dispatch(login(user))

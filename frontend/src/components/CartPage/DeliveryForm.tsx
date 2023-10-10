@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Form, Input, Radio} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
+import {IDeliveryInfo} from "../../types/types";
 
-const DeliveryForm = () => {
+const DeliveryForm: React.FC = () => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [flat, setFlat] = useState('');
@@ -11,9 +12,8 @@ const DeliveryForm = () => {
     const [frontDoor, setFrontDoor] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [description, setDescription] = useState('');
-    const [deliveryMethod, setDeliveryMethod] = useState('courier');
 
-    const onFinish = (values) => {
+    const onFinish = (values: IDeliveryInfo) => {
         console.log('Received values:', values);
     };
 
@@ -84,12 +84,6 @@ const DeliveryForm = () => {
                         value={description} onChange={(e) => setDescription(e.target.value)}
                         placeholder="Ваше пожелание"
                     />
-                </Form.Item>
-                <Form.Item label="Способ доставки:" name="deliveryMethod">
-                    <Radio.Group onChange={(e) => setDeliveryMethod(e.target.value)} value={deliveryMethod}>
-                        <Radio value="courier">Курьер</Radio>
-                        <Radio value="pickup">Самовывоз</Radio>
-                    </Radio.Group>
                 </Form.Item>
             </Form>
         </div>
