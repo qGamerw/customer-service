@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './styles/Slider.css';
 
-const Slider = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [userActive, setUserActive] = useState(false);
-    const slides = [
+const Slider: React.FC = () => {
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [userActive, setUserActive] = useState<boolean>(false);
+    const slides: string[] = [
         'https://s1.1zoom.ru/b5050/269/415245-svetik_3840x2400.jpg',
         'https://s1.1zoom.ru/big3/666/420713-svetik.jpg',
         'https://s1.1zoom.ru/big3/800/418026-svetik.jpg',
@@ -32,7 +32,7 @@ const Slider = () => {
 
     // Добавляем автоматическое переключение каждые 5 секунд (5000 миллисекунд)
     useEffect(() => {
-        let interval;
+        let interval: NodeJS.Timeout;
 
         if (!userActive) {
             interval = setInterval(goToNextSlide, 5000);
@@ -41,7 +41,6 @@ const Slider = () => {
         // Очищаем интервал при размонтировании компонента
         return () => clearInterval(interval);
     }, [userActive, goToNextSlide]);
-
 
     // Сброс флага активности пользователя после перемещения слайда
     useEffect(() => {
@@ -65,7 +64,11 @@ const Slider = () => {
                     unmountOnExit
                 >
                     <div className="slider-slide">
-                        <img className="slider-img" src={slides[currentIndex]} alt={`Slide ${currentIndex + 1}`} />
+                        <img
+                            className="slider-img"
+                            src={slides[currentIndex]}
+                            alt={`Slide ${currentIndex + 1}`}
+                        />
                     </div>
                 </CSSTransition>
             </TransitionGroup>

@@ -1,11 +1,12 @@
 import React, {FC, useState} from 'react';
 import {Pagination} from 'antd';
 import CardDishFromCart from './CardDishFromCart';
-import { IDishFromCart} from "../../types/types";
+import {IDishFromCart} from "../../types/types";
 
 interface ListDishesFromCart {
     dishes: IDishFromCart[];
 }
+
 const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,9 +19,16 @@ const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
 
     return (
         <div>
-            <div style={{display: "flex", justifyContent: "space-between", gap: "30px",flexWrap: "wrap",  height: "400", margin: "10px"}}>
+            <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "30px",
+                flexWrap: "wrap",
+                height: "400",
+                margin: "10px"
+            }}>
                 {itemsToDisplay.map((dish) => (
-                        <CardDishFromCart dish={dish} key={dish.id}/>
+                    <CardDishFromCart dish={dish} key={dish.id}/>
                 ))}
             </div>
             {dishes.length &&

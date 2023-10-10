@@ -11,6 +11,7 @@ import {user} from "../../constants/constants";
 interface CardDishFromCart {
     dish: IDishFromCart
 }
+
 const CardDishFromCart: FC<CardDishFromCart> = ({dish}) => {
     const dispatch = useDispatch();
     const handleUpdateAmount = (dishId: number, quantity: number) => {
