@@ -13,21 +13,25 @@ const CartPage = () => {
         const listItemFromCart: ICartItem[] = useAppSelector((state) => state.cart.cartItems)
         const isCartEmpty: boolean = listItemFromCart.length === 0;
         const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
-        const dispatch  = useAppDispatch();
+        const dispatch = useAppDispatch();
         const listDishesFromCart: IDishFromCart[] = listDishes
             .filter((dish) => {
                 return listItemFromCart.some((selectedDish: ICartItem): boolean => selectedDish.dishId === dish.id);
             })
             .map((dish: IDish) => {
                 const selectedDish: ICartItem | undefined = listItemFromCart.find((cartItem: ICartItem) => cartItem.dishId === dish.id);
-                return {...dish, quantity: selectedDish?.quantity ?? 0};
-            });
+                return {...dish, quantity: selectedDish?.quantity ?? 0, idInCart: selectedDish?.id ?? 0};
+            })
+            .sort((n1: IDishFromCart, n2: IDishFromCart) => n1.idInCart - n2.idInCart);
+
+        console.log(listDishesFromCart)
+
         const amountInCart: number = listDishesFromCart.reduce(
             (accumulator: number, item: IDishFromCart | undefined) =>
                 accumulator + (item?.price || 0) * (item?.quantity || 0), 0
         );
 
-        const [isTotalVisible, setIsTotalVisible] = useState(true);
+        const [isTotalVisible, setIsTotalVisible] = useState<boolean>(true);
 
         useEffect(() => {
             const getCart = () => {
@@ -35,7 +39,7 @@ const CartPage = () => {
                 CartService.getCart(user?.id, dispatch)
             };
             getCart();
-        }, [dispatch, user?.id]);
+        }, []);
 
         const handleScroll = () => {
             const windowHeight = window.innerHeight;
@@ -95,6 +99,7 @@ const CartPage = () => {
             </div>
         );
     }
+
 ;
 
 export default CartPage;

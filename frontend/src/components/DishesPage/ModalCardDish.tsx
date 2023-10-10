@@ -14,7 +14,7 @@ interface ModalCardDishProps {
 
 const ModalCardDish: FC<ModalCardDishProps> = ({dish, isModalOpen, onClose}) => {
 
-    const [isLogged] = useState(user !== null);
+    const [isLogged] = useState<boolean>(user !== null);
     const dispatch = useAppDispatch();
     const itemFromCartById: ICartItem | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.dishId === dish.id))
 

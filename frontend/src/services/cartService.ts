@@ -7,7 +7,7 @@ const API_URL = "/cart";
 
 const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
 
-    return axios.get(API_URL + `/${cartId}`,{headers: authHeader()}).then(
+    return axios.get(API_URL + `/${cartId}`, {headers: authHeader()}).then(
         (response) => {
             console.log(response.data)
             dispatch(setCart(response.data))
@@ -44,6 +44,9 @@ const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDisp
 const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
     quantity: number
 }, dispatch: AppDispatch) => {
+
+    console.log(`Обновление кол-ва ${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()})
+
     return axios.put(`${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
         () => {
             getCart(cartId, dispatch)
@@ -58,7 +61,7 @@ const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
 };
 
 const deleteFromCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
-
+    console.log(`Удаление ${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()})
     return axios.delete(`${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()}).then(
         () => {
             getCart(cartId, dispatch)

@@ -34,7 +34,7 @@ const Slider: FC = () => {
         let interval: NodeJS.Timeout;
 
         if (!userActive) {
-            interval = setInterval(goToNextSlide, 5000);
+            interval = setInterval(goToNextSlide, 100000000);
         }
 
         // Очищаем интервал при размонтировании компонента
@@ -79,3 +79,4 @@ const Slider: FC = () => {
 };
 
 export default Slider;
+

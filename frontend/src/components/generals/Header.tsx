@@ -65,7 +65,7 @@ const Header: React.FC = () => {
 
             <Modal
                 title="Выберите город"
-                visible={isModalOpen}
+                open={isModalOpen}
                 onCancel={closeModal}
                 footer={null}
             >

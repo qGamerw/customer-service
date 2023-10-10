@@ -1,19 +1,18 @@
 import React, {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
 import ListDishes from '../components/DishesPage/ListDishes';
 import {scroller} from 'react-scroll';
 import DishService from "../services/dishService";
 import Footer from "../components/generals/Footer";
 import "./styles/DishesPage.css";
 import Slider from "../components/DishesPage/Carousel";
-import {RootState} from "../store";
 import {IDish} from "../types/types";
+import {useAppDispatch, useAppSelector} from "../hooks";
 
 
 const DishesPage = () => {
-    const listDishes: IDish[] = useSelector((state: RootState) => state.dishes.dishes);
-    const dispatch = useDispatch()
+    const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
+    const dispatch = useAppDispatch()
     const location = useLocation();
     const anchorId = location.state ? location.state.anchorId : null;
 
@@ -22,7 +21,7 @@ const DishesPage = () => {
             DishService.getDishes(dispatch);
         };
         getDishes();
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         if (anchorId) {

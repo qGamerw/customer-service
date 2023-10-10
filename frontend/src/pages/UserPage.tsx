@@ -1,13 +1,13 @@
 import React, {FC, useEffect} from 'react';
-import UserProfile from '../components/ClientPage/UserProfile';
-import OrderHistory from '../components/ClientPage/OrderHistory';
+import UserProfile from '../components/UserPage/UserProfile';
+import OrderHistory from '../components/UserPage/OrderHistory';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import DeliveryCard from '../components/ClientPage/DeliveryCard';
+import DeliveryCard from '../components/UserPage/DeliveryCard';
 import {Tabs} from 'antd';
 const {TabPane} = Tabs;
 
-const ClientPage: FC = () => {
+const UserPage: FC = () => {
     const listOrder = useSelector((state: any) => state.orders.orders);
     const location = useLocation();
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const ClientPage: FC = () => {
     }, [anchorId]);
 
     const handleTabChange = (activeKey: string) => {
-        navigate(`/client?tab=${activeKey}`);
+        navigate(`/user?tab=${activeKey}`);
     };
 
     return (
@@ -46,4 +46,4 @@ const ClientPage: FC = () => {
     );
 };
 
-export default ClientPage;
+export default UserPage;

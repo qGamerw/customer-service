@@ -20,6 +20,7 @@ export interface ICartItem {
 
 export interface IDishFromCart extends IDish {
     quantity: number;
+    idInCart: number;
 }
 
 export interface IUser{

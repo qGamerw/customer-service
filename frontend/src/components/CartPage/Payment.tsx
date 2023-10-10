@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Checkbox} from 'antd';
+import { Checkbox} from 'antd';
 import {Link} from 'react-router-dom';
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';

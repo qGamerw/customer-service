@@ -4,7 +4,7 @@ import {ShoppingCartOutlined, UserOutlined, InfoCircleOutlined, MenuOutlined} fr
 import {Link, Route, Routes} from 'react-router-dom';
 import AboutPage from '../../pages/AboutPage';
 import CartPage from '../../pages/CartPage';
-import ClientPage from '../../pages/ClientPage';
+import UserPage from '../../pages/UserPage';
 import DishesPage from '../../pages/DishesPage';
 import {NotFoundPage} from '../../pages/NotFoundPage';
 import './styles/NavMenu.css';
@@ -13,7 +13,7 @@ import AuthPage from "../../pages/AuthPage";
 import {user} from "../../constants/constants";
 
 const NavigationMenu = () => {
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+    const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
                 setIsUserAuthenticated(user != null);
@@ -50,14 +50,14 @@ const NavigationMenu = () => {
                     </Menu.Item>
                     {isUserAuthenticated ? (
                         <Menu.SubMenu key="personal-account" title="Личный кабинет" icon={<UserOutlined/>}>
-                            <Menu.Item key="client-profile">
-                                <Link to="/client?tab=profile">Профиль</Link>
+                            <Menu.Item key="user-profile">
+                                <Link to="/user?tab=profile">Профиль</Link>
                             </Menu.Item>
                             <Menu.Item key="delivery">
-                                <Link to="/client?tab=delivery">Доставка</Link>
+                                <Link to="/user?tab=delivery">Доставка</Link>
                             </Menu.Item>
                             <Menu.Item key="order">
-                                <Link to="/client?tab=order">Заказы</Link>
+                                <Link to="/user?tab=order">Заказы</Link>
                             </Menu.Item>
                         </Menu.SubMenu>
                     ) : (
@@ -77,7 +77,7 @@ const NavigationMenu = () => {
                 <Route path="/about" element={<AboutPage/>}/>
                 {isUserAuthenticated ? (
                     <>
-                        <Route path="/client" element={<ClientPage/>}/>\
+                        <Route path="/user" element={<UserPage/>}/>
                     </>
                 ) : (
                     <>

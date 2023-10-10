@@ -6,9 +6,10 @@ import {IUserResponse} from "../types/types";
 
 const API_URL = "/clients";
 
-const getClients = (id: number, dispatch: AppDispatch) => {
-    return axios.get(API_URL + `/${id}`, {headers: authHeader()}).then(
+const getUser = (userId: number, dispatch: AppDispatch) => {
+    return axios.get(API_URL + `/${userId}`, {headers: authHeader()}).then(
         (response) => {
+            console.log(response.data)
             dispatch(setUser(response.data));
         },
         (error) => {
@@ -22,10 +23,13 @@ const getClients = (id: number, dispatch: AppDispatch) => {
         });
 };
 
-const updateClient = (id: number, user: IUserResponse, dispatch: AppDispatch) => {
-    return axios.put(`${API_URL}/${id}`, user, {headers: authHeader()}).then(
-        (response) => {
-            getClients(id, dispatch);
+const updateUser = (idUser: number, user: IUserResponse, dispatch: AppDispatch) => {
+
+    console.log(`Обновление данных пользователя ${API_URL}/${idUser}`, user, {headers: authHeader()})
+
+    return axios.put(`${API_URL}/${idUser}`, user, {headers: authHeader()}).then(
+        () => {
+            getUser(idUser, dispatch);
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -35,10 +39,10 @@ const updateClient = (id: number, user: IUserResponse, dispatch: AppDispatch) =>
             console.error(_content)
         });
 };
-const deleteClient = (id: number, dispatch: AppDispatch) => {
+const deleteUser = (id: number, dispatch: AppDispatch) => {
     return axios.delete(API_URL + `/${id}`, {headers: authHeader()}).then(
-        (response) => {
-            getClients(id, dispatch)
+        () => {
+            getUser(id, dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -49,9 +53,10 @@ const deleteClient = (id: number, dispatch: AppDispatch) => {
         });
 };
 
-const clientService = {
-    updateClient,
-    deleteClient,
+const userService = {
+    getUser,
+    updateUser,
+    deleteUser,
 };
 
-export default clientService
+export default userService

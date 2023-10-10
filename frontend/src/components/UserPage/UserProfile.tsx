@@ -11,15 +11,15 @@ import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
 import {Link} from "react-router-dom";
-import clientService from "../../services/clientService";
-import {useDispatch} from "react-redux";
+import userService from "../../services/userService";
 import {IUserResponse} from "../../types/types";
+import {useAppDispatch} from "../../hooks";
 
 const UserProfile: FC = () => {
-    const [isEditing, setIsEditing] = useState(false);
-    const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-    const [userData, setUserData] = useState(user);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const user: IUserResponse = JSON.parse(localStorage.getItem("user") || "null");
+    const [userData, setUserData] = useState<IUserResponse>(user);
 
     const handleLogout = () => {
         AuthService.logout();
@@ -36,7 +36,7 @@ const UserProfile: FC = () => {
 
     const handleSave = async (values: IUserResponse) => {
         try {
-            await clientService.updateClient(user?.id, values, dispatch);
+            await userService.updateUser(user?.id, values, dispatch);
             setIsEditing(false);
             message.success("Данные успешно сохранены!");
             const updatedUser = {...user, ...values};
