@@ -6,7 +6,7 @@ const API_URL: string = "/dishes";
 
 const getDishes = (dispatch: AppDispatch) => {
     return axios.get(API_URL+"/any").then(
-        (response: IDish) => {
+        (response) => {
             dispatch(setDishes(response.data));
         },
         (error) => {

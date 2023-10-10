@@ -1,10 +1,12 @@
+/*
 import axios from "axios";
 import {setOrders} from "../slices/ordersSlice";
 import authHeader from "./auth-header";
+import {AppDispatch} from "../store";
 
 const API_URL = "/orders";
 
-const getOrders = (dispatch) => {
+const getOrders = (dispatch: AppDispatch) => {
     return axios.get(API_URL).then(
         (response) => {
             dispatch(setOrders(response.data));
@@ -21,7 +23,7 @@ const getOrders = (dispatch) => {
 
 };
 
-const createOrder = (order, dispatch) => {
+const createOrder = (order, dispatch: AppDispatch) => {
 
     return axios.post(API_URL, order, {headers: authHeader()}).then(
         (response) => {
@@ -36,7 +38,7 @@ const createOrder = (order, dispatch) => {
         });
 };
 
-const cancelOrder = (order, dispatch) => {
+const cancelOrder = (order, dispatch: AppDispatch) => {
     return axios.put(API_URL, order, {headers: authHeader()}).then(
         (response) => {
             getOrders(dispatch)
@@ -56,4 +58,4 @@ const orderService = {
     cancelOrder,
 };
 
-export default orderService
+export default orderService*/

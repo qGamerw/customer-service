@@ -1,10 +1,12 @@
 import axios from "axios";
 import {setUser} from "../slices/userSlice";
 import authHeader from "./auth-header";
+import {AppDispatch} from "../store";
+import {IUserResponse} from "../types/types";
 
 const API_URL = "/clients";
 
-const getClients = (id, dispatch) => {
+const getClients = (id: number, dispatch: AppDispatch) => {
     return axios.get(API_URL + `/${id}`, {headers: authHeader()}).then(
         (response) => {
             dispatch(setUser(response.data));
@@ -20,7 +22,7 @@ const getClients = (id, dispatch) => {
         });
 };
 
-const updateClient = (id, user, dispatch) => {
+const updateClient = (id: number, user: IUserResponse, dispatch: AppDispatch) => {
     return axios.put(`${API_URL}/${id}`, user, {headers: authHeader()}).then(
         (response) => {
             getClients(id, dispatch);
@@ -33,11 +35,10 @@ const updateClient = (id, user, dispatch) => {
             console.error(_content)
         });
 };
-
-const deleteClient = (id, dispatch) => {
+const deleteClient = (id: number, dispatch: AppDispatch) => {
     return axios.delete(API_URL + `/${id}`, {headers: authHeader()}).then(
         (response) => {
-            getClients(dispatch)
+            getClients(id, dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||

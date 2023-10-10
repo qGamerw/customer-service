@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import UserProfile from '../components/ClientPage/UserProfile';
 import OrderHistory from '../components/ClientPage/OrderHistory';
 import {useLocation, useNavigate} from 'react-router-dom';
@@ -6,15 +6,16 @@ import {useSelector} from 'react-redux';
 import DeliveryCard from '../components/ClientPage/DeliveryCard';
 import {Tabs} from 'antd';
 import {RootState} from "../store";
+import {useAppSelector} from "../hooks";
 
 const {TabPane} = Tabs;
 
-const ClientPage: React.FC = () => {
+const ClientPage: FC = () => {
     const listOrder = useSelector((state: any) => state.orders.orders);
     const location = useLocation();
     const navigate = useNavigate();
     const anchorId = location.state ? location.state.anchorId : null;
-    const user = useSelector((state: RootState) => state.user.users);
+    const user = useAppSelector((state) => state.user.users);
     const searchParams = new URLSearchParams(location.search);
     const activeTabParam = searchParams.get('tab') || 'profile';
 
@@ -34,7 +35,7 @@ const ClientPage: React.FC = () => {
             <Tabs tabPosition="left" activeKey={activeTabParam} onChange={handleTabChange}>
                 <TabPane tab="Профиль" key="profile">
                     <h3>Профиль</h3>
-                    <UserProfile user={user[0]}/>
+                    <UserProfile/>
                 </TabPane>
                 <TabPane tab="Доставка" key="delivery">
                     <h3>Доставка</h3>

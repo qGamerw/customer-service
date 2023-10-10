@@ -1,3 +1,4 @@
+/*
 import axios from "axios";
 import {setAdditives} from "../slices/additivesSlice";
 
@@ -25,4 +26,4 @@ const additiveService = {
     getAdditives,
 };
 
-export default additiveService
+export default additiveService*/

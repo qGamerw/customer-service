@@ -30,7 +30,6 @@ const Slider: React.FC = () => {
         setUserActive(true);
     }, [slides.length]);
 
-    // Добавляем автоматическое переключение каждые 5 секунд (5000 миллисекунд)
     useEffect(() => {
         let interval: NodeJS.Timeout;
 

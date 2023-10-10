@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import ListDishesFromCart from '../components/CartPage/ListDishesFromCart';
 import DeliveryForm from '../components/CartPage/DeliveryForm';
 import Payment from '../components/CartPage/Payment';
@@ -7,14 +6,14 @@ import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import DishService from "../services/dishService";
 import {user} from "../constants/constants";
-import {RootState} from "../store";
 import {ICartItem, IDish, IDishFromCart} from "../types/types";
+import {useAppDispatch, useAppSelector} from "../hooks";
 
 const CartPage = () => {
-        const listItemFromCart: ICartItem[] = useSelector((state: RootState) => state.cart.cartItems)
+        const listItemFromCart: ICartItem[] = useAppSelector((state) => state.cart.cartItems)
         const isCartEmpty: boolean = listItemFromCart.length === 0;
-        const listDishes: IDish[] = useSelector((state: RootState) => state.dishes.dishes);
-        const dispatch = useDispatch();
+        const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
+        const dispatch  = useAppDispatch();
         const listDishesFromCart: IDishFromCart[] = listDishes
             .filter((dish) => {
                 return listItemFromCart.some((selectedDish: ICartItem): boolean => selectedDish.dishId === dish.id);

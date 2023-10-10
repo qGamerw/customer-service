@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Form, Input, Radio} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
 import {IDeliveryInfo} from "../../types/types";
 
-const DeliveryForm: React.FC = () => {
+const DeliveryForm: FC = () => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [flat, setFlat] = useState('');

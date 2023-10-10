@@ -1,10 +1,11 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 import {setCart} from "../slices/cartSlice";
+import {AppDispatch} from "../store";
 
 const API_URL = "/cart";
 
-const getCart = (cartId, dispatch) => {
+const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
 
     return axios.get(API_URL + `/${cartId}`,{headers: authHeader()}).then(
         (response) => {
@@ -23,7 +24,7 @@ const getCart = (cartId, dispatch) => {
         });
 }
 
-const addToCart = (cartId, dishId, dispatch) => {
+const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
 
     console.log(`${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
 
@@ -40,7 +41,9 @@ const addToCart = (cartId, dishId, dispatch) => {
         });
 };
 
-const updateQuantity = (cartId, dishId, quantity, dispatch) => {
+const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
+    quantity: number
+}, dispatch: AppDispatch) => {
     return axios.put(`${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
         () => {
             getCart(cartId, dispatch)
@@ -54,7 +57,7 @@ const updateQuantity = (cartId, dishId, quantity, dispatch) => {
         });
 };
 
-const deleteFromCart = (cartId, dishId, dispatch) => {
+const deleteFromCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
 
     return axios.delete(`${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()}).then(
         () => {

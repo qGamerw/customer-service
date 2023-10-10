@@ -1,19 +1,19 @@
 import React, {FC} from 'react';
 import CardDish from "../DishesPage/CardDish";
 import {Button, InputNumber} from "antd";
-import {useDispatch} from "react-redux";
 import {CloseCircleOutlined} from "@ant-design/icons";
 import "./styles/CardDishFromCart.css";
 import CartService from "../../services/cartService";
 import {IDishFromCart} from "../../types/types";
 import {user} from "../../constants/constants";
+import {useAppDispatch} from "../../hooks";
 
 interface CardDishFromCart {
     dish: IDishFromCart
 }
 
 const CardDishFromCart: FC<CardDishFromCart> = ({dish}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const handleUpdateAmount = (dishId: number, quantity: number) => {
         const newQuantity = {
             quantity: quantity,

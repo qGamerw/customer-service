@@ -148,7 +148,7 @@ const UserProfile: React.FC = () => {
                             E-mail: <span>{user.email}</span>
                         </p>
                         <p>
-                            Дата рождения: <span>{user.dateOfBirth.toLocaleDateString()}</span>
+                            Дата рождения: <span>{user.dateOfBirth.toString()}</span>
                         </p>
                         <p>
                             Номер телефона: <span> {formatPhoneNumber(user.number)}</span>

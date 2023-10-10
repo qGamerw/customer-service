@@ -6,6 +6,7 @@ import {user} from "../../constants/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {ICartItem, IDish} from "../../types/types";
 import { RootState } from '../../store';
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 interface ModalCardDishProps {
     dish: IDish;
@@ -16,8 +17,8 @@ interface ModalCardDishProps {
 const ModalCardDish: FC<ModalCardDishProps> = ({dish, isModalOpen, onClose}) => {
 
     const [isLogged] = useState(user !== null);
-    const dispatch = useDispatch();
-    const itemFromCartById: ICartItem | undefined = useSelector((state: RootState) => state.cart.cartItems.find(item => item.dishId === dish.id))
+    const dispatch = useAppDispatch();
+    const itemFromCartById: ICartItem | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.dishId === dish.id))
 
     const handleAddClick = () => {
         isLogged && (
