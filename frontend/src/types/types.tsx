@@ -20,7 +20,24 @@ export interface ICartItem {
 
 export interface IDishFromCart extends IDish {
     quantity: number;
-    idInCart: number;
+    cartItemId: number;
+}
+
+export interface IDeliveryInfo {
+    username: string;
+    phoneNumber: string;
+    description: string;
+    address: string;
+    flat: number;
+    floor: number;
+    frontDoor: number;
+}
+
+export interface IOrder extends IDeliveryInfo{
+    clientId: number;
+    totalPrice: number;
+    weight: number;
+    listDishes: IDishFromCart[];
 }
 
 export interface IUser{
@@ -41,11 +58,6 @@ export interface IUserResponse {
     roles: string;
 }
 
-export interface IOrder {
-    id: number;
-    address: string;
-}
-
 export interface IRegistration {
     username: string;
     number: string;
@@ -59,12 +71,5 @@ export interface ILogin {
     password: string;
 }
 
-export interface IDeliveryInfo {
-    username: string;
-    address: string;
-    flat: number;
-    floor: number;
-    frontDoor: number;
-    phoneNumber: string;
-    description: string;
-}
+
+

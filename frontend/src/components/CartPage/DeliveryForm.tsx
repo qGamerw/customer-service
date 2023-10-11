@@ -2,7 +2,8 @@ import React, {FC, useState} from 'react';
 import {Form, Input, Radio} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
-import {IDeliveryInfo} from "../../types/types";
+import {IDeliveryInfo, IOrder, IUserResponse} from "../../types/types";
+import {user} from "../../constants/constants";
 
 const DeliveryForm: FC = () => {
     const [name, setName] = useState<string>('');
@@ -13,8 +14,17 @@ const DeliveryForm: FC = () => {
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [description, setDescription] = useState<string>('');
 
+    const client: IUserResponse | null = user;
+
     const onFinish = (values: IDeliveryInfo) => {
-        console.log('Received values:', values);
+        let order: IOrder = {
+            ...values,
+            clientId: client?.id ?? 0,
+            totalPrice: 0,
+            weight: 0,
+            listDishes: []
+        };
+
     };
 
     return (
@@ -23,7 +33,7 @@ const DeliveryForm: FC = () => {
             <Form name="deliveryForm" onFinish={onFinish}>
                 <Form.Item
                     label="Имя:"
-                    name="username"
+                    name="clientName"
                     rules={[{required: true, message: 'Пожалуйста, введите ваше имя!'}]}
                 >
                     <Input value={name} onChange={(e) => setName(e.target.value)}/>
@@ -67,7 +77,7 @@ const DeliveryForm: FC = () => {
                 </Form.Item>
                 <Form.Item
                     label="Телефон:"
-                    name="number"
+                    name="clientPhoneNumber"
                     rules={[{required: true, message: 'Пожалуйста, введите ваш номер телефона!'}]}
                 >
                     <PhoneInput

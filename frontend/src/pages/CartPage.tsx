@@ -20,11 +20,9 @@ const CartPage: FC = () => {
             })
             .map((dish: IDish) => {
                 const selectedDish: ICartItem | undefined = listItemFromCart.find((cartItem: ICartItem) => cartItem.dishId === dish.id);
-                return {...dish, quantity: selectedDish?.quantity ?? 0, idInCart: selectedDish?.id ?? 0};
+                return {...dish, quantity: selectedDish?.quantity ?? 0, cartItemId: selectedDish?.id ?? 0};
             })
-            .sort((n1: IDishFromCart, n2: IDishFromCart) => n1.idInCart - n2.idInCart);
-
-        console.log(listDishesFromCart)
+            .sort((n1: IDishFromCart, n2: IDishFromCart) => n1.cartItemId - n2.cartItemId);
 
         const amountInCart: number = listDishesFromCart.reduce(
             (accumulator: number, item: IDishFromCart | undefined) =>
