@@ -4,14 +4,14 @@
     align-items: center;
 }
 
-.card {
+.orderBlock__card {
     width: 500px;
     margin: 50px auto;
     overflow: auto;
     word-wrap: break-word;
 }
 
-.fields {
+.orderBlock__card-fields {
     display: flex;
     flex-direction: column;
     align-items: start;

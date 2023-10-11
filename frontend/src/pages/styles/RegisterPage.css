@@ -1,16 +1,16 @@
-.row {
+.registerPage {
     justify-content: center;
     padding-top: 20px;
 }
 
-.card {
+.registerPage__card {
     width: 1000px;
     height: 600px;
     background: linear-gradient(to right, #007bff 50%, white 50%);
     border-width: 3px;
 }
 
-.divCard {
+.registerPage__card-content {
     flex: 1;
     color: white;
     padding: 50px;
@@ -21,24 +21,24 @@
     padding-bottom: 190px;
 }
 
-.h1_card {
+.registerPage__card-h1 {
     font-size: 36px;
     text-align: center;
     margin-bottom: 20px;
 }
 
-.h2_card {
+.registerPage__card-h2 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
 }
 
-.p_card {
+.registerPage__card-p {
     font-size: 18px;
     text-align: center;
 }
 
-.buttonAuth {
+.registerPage__button {
     background-color: #0e4acb;
     color: #FFFFFF;
 }

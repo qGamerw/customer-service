@@ -50,11 +50,11 @@ const UserProfile: FC = () => {
 
     const formatPhoneNumber = (phoneNumber: string | undefined) => {
         if (!phoneNumber) return "";
-        const countryCode = phoneNumber.slice(0, 1);
-        const firstPart = phoneNumber.slice(1, 4);
-        const secondPart = phoneNumber.slice(4, 7);
-        const thirdPart = phoneNumber.slice(7, 9);
-        const fourthPart = phoneNumber.slice(9, 12);
+        const countryCode: string = phoneNumber.slice(0, 1);
+        const firstPart: string = phoneNumber.slice(1, 4);
+        const secondPart: string = phoneNumber.slice(4, 7);
+        const thirdPart: string = phoneNumber.slice(7, 9);
+        const fourthPart: string = phoneNumber.slice(9, 12);
 
         return `+${countryCode} (${firstPart}) ${secondPart}-${thirdPart}-${fourthPart}`;
     };
@@ -63,13 +63,13 @@ const UserProfile: FC = () => {
         <div className={"userProfile"}>
             <Card
                 hoverable
-                className={"card"}
+                className={"userProfile__card"}
             >
                 {isEditing ? (
                     <Form
                         initialValues={userData}
                         onFinish={handleSave}
-                        className={"formFields"}
+                        className={"userProfile__form-fields"}
                     >
                         <Form.Item
                             label="Имя"
@@ -126,7 +126,7 @@ const UserProfile: FC = () => {
                         </Form.Item>
                     </Form>
                 ) : (
-                    <div className={"fields"}>
+                    <div className={"userProfile__fields"}>
                         <p>
                             Имя: <span>{user.username}</span>
                         </p>
@@ -143,7 +143,7 @@ const UserProfile: FC = () => {
                 )}
 
                 <Button
-                    className={"buttonEditing"}
+                    className={"userProfile__button_editing"}
                     onClick={toggleEditing}
                 >
                     {isEditing ? <span>Отменить</span> : <EditOutlined/>}
@@ -152,7 +152,7 @@ const UserProfile: FC = () => {
                     <Button
                         icon={<LogoutOutlined/>}
                         onClick={handleLogout}
-                        className={"buttonLogout"}
+                        className={"userProfile__button_logout"}
                     />
                 </Link>
             </Card>
@@ -160,4 +160,4 @@ const UserProfile: FC = () => {
     );
 };
 
-export default UserProfile;
+export {UserProfile};

@@ -1,12 +1,12 @@
 import {Card} from 'antd';
-import React from 'react';
+import React, {FC} from 'react';
 import {IOrder} from '../../types/types';
 
 interface OrderBlockProps {
     order: IOrder;
 }
 
-const OrderBlock: React.FC<OrderBlockProps> =
+const OrderBlock: FC<OrderBlockProps> =
     ({
          order
      }) => {
@@ -14,9 +14,9 @@ const OrderBlock: React.FC<OrderBlockProps> =
             <div className={"orderBlock"}>
                 <Card
                     hoverable
-                    className={"card"}
+                    className={"orderBlock__card"}
                 >
-                    <div className={"fields"}>
+                    <div className={"orderBlock__card-"}>
                         <p>Номер заказа: {order.id}</p>
                         <p>Адрес: {order.address}</p>
                         <p>Дата: </p>

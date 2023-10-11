@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import {Menu} from 'antd';
 import {ShoppingCartOutlined, UserOutlined, InfoCircleOutlined, MenuOutlined} from '@ant-design/icons';
 import {Link, Route, Routes} from 'react-router-dom';
@@ -12,7 +12,7 @@ import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
 import {user} from "../../constants/constants";
 
-const NavigationMenu = () => {
+const NavigationMenu: FC = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Row, Card, Form, Input, Button, message} from 'antd';
 import {LockOutlined, MailOutlined} from '@ant-design/icons';
@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 import {ILogin} from "../types/types";
 import './styles/AuthPage.css';
 
-const AuthPage: React.FC = () => {
+const AuthPage: FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -32,14 +32,14 @@ const AuthPage: React.FC = () => {
     };
 
     return (
-        <Row className={"row"}>
-            <Card className={"card"}>
+        <Row className={"authPage"}>
+            <Card className={"authPage__card"}>
                 <div style={{display: 'flex'}}>
-                    <div className={"divCard"}>
-                        <h1 className={"h1_card"}>
+                    <div className={"authPage__card-content"}>
+                        <h1 className={"authPage__card-h1"}>
                             Здравствуйте!
                         </h1>
-                        <p className={"p_card"}>
+                        <p className={"authPage__card-p"}>
                             Если вы впервые у нас в гостях, и у вас нет аккаунта, то вы можете зарегистрироваться на
                             нашем сайте.
                         </p>
@@ -47,13 +47,13 @@ const AuthPage: React.FC = () => {
                             <Button
                                 type="primary"
                                 shape="round" size="large"
-                                className={"buttonRegistration"}>
+                                className={"authPage__button"}>
                                 Зарегистрироваться
                             </Button>
                         </Link>
                     </div>
                     <div style={{flex: 1, padding: '50px'}}>
-                        <h2 className={"h2_card"}>
+                        <h2 className={"authPage__card-h2"}>
                             Авторизация
                         </h2>
                         <Form

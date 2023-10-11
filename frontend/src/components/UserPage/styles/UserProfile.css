@@ -4,31 +4,31 @@
     align-items: center;
 }
 
-.card {
+.userProfile__card {
     width: 500px;
     margin: 50px auto;
 }
 
-.formFields {
+.userProfile__form-fields {
     padding: 16px;
 }
 
-.fields {
+.userProfile__fields {
     display: flex;
     flex-direction: column;
     align-items: start;
 }
 
-.buttonEditing {
+.userProfile__button_editing {
     background: black;
     font-weight: bold;
     margin: 10px 0;
     color: white;
 }
 
-.buttonLogout {
+.userProfile__button_logout {
     width: 45.6px;
     background: black;
     color: white;
-    margin-left: 20px;
+    margin-left: 50px;
 }

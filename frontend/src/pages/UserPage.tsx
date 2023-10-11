@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import UserProfile from '../components/UserPage/UserProfile';
+import {UserProfile} from '../components/UserPage/UserProfile';
 import OrderHistory from '../components/UserPage/OrderHistory';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';

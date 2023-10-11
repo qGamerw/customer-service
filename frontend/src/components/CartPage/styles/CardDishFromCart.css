@@ -1,7 +1,7 @@
 .cardDishFromCart{
 }
 
-.inputNumber {
+.cardDishFromCart__inputNumber {
     display: flex;
     justify-content: space-around;
     align-items: start;

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import ListDishes from '../components/DishesPage/ListDishes';
 import {scroller} from 'react-scroll';
@@ -10,7 +10,7 @@ import {IDish} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
 
-const DishesPage = () => {
+const DishesPage: FC = () => {
     const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
     const dispatch = useAppDispatch()
     const location = useLocation();

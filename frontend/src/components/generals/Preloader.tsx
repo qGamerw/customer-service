@@ -1,9 +1,9 @@
 import {Space, Spin} from 'antd';
-import React from "react";
+import React, {FC} from "react";
 import './styles/Preloader.css';
 
-const Preloader = () => (
-    <Space size="middle" className={"space"}>
+const Preloader: FC = () => (
+    <Space size="middle" className={"preloader"}>
         <Spin size="large"/>
         <Spin/>
         <Spin size="large"/>

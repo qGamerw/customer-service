@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import ListDishesFromCart from '../components/CartPage/ListDishesFromCart';
 import DeliveryForm from '../components/CartPage/DeliveryForm';
 import Payment from '../components/CartPage/Payment';
@@ -9,7 +9,7 @@ import {user} from "../constants/constants";
 import {ICartItem, IDish, IDishFromCart} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
-const CartPage = () => {
+const CartPage: FC = () => {
         const listItemFromCart: ICartItem[] = useAppSelector((state) => state.cart.cartItems)
         const isCartEmpty: boolean = listItemFromCart.length === 0;
         const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);

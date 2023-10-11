@@ -28,7 +28,7 @@ const CardDishFromCart: FC<CardDishFromCart> = ({dish}) => {
     return (
         <div className={"cardDishFromCart"}>
             <CardDish dish={dish} showUseButton={false}>
-                <div className={"inputNumber"}>
+                <div className={"cardDishFromCart__inputNumber"}>
                     <InputNumber
                         value={dish.quantity}
                         min={1}

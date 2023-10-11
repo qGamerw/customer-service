@@ -1,5 +1,5 @@
 import {Space} from 'antd';
-import React from 'react';
+import React, {FC} from 'react';
 import {IOrder} from '../../types/types';
 import OrderBlock from './OrderBlock';
 import './styles/OrderHistory.css';
@@ -8,7 +8,7 @@ interface OrderHistoryProps {
     orders: IOrder[];
 }
 
-const OrderHistory: React.FC<OrderHistoryProps> =
+const OrderHistory: FC<OrderHistoryProps> =
     ({
          orders
      }) => {

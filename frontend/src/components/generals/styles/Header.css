@@ -7,19 +7,19 @@
     padding: 10px;
 }
 
-.city-link {
+.header__cityLink {
     cursor: pointer;
     font-weight: bold;
 }
 
-.phone-number {
+.header__phoneNumber {
     margin-left: 150px;
     position: fixed;
     top: 0;
     font-weight: bold;
 }
 
-.work-time {
+.header__workTime {
     margin-left: 500px;
     position: fixed;
     top: 0;

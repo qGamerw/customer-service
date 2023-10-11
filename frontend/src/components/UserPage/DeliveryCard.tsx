@@ -1,15 +1,15 @@
 import {Card} from "antd";
-import React from "react";
+import React, {FC} from "react";
 import './styles/DeliveryCard.css';
 
-const DeliveryCard = () => {
+const DeliveryCard: FC = () => {
     return (
         <div className={"deliveryCard"}>
             <Card
                 hoverable
-                className={"card"}
+                className={"deliveryCard__card"}
             >
-                <div className={"fields"}>
+                <div className={"deliveryCard__card-fields"}>
                     <p>Номер заказа: </p>
                     <p>Адрес: </p>
                     <p>Заказ:</p>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, FC} from 'react';
 import { Modal, Input, Row, Col } from 'antd';
 import { EnvironmentOutlined, PhoneOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import './styles/Header.css';
 
-const Header: React.FC = () => {
+const Header: FC = () => {
     const [details, setDetails] = useState<any | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedCity, setSelectedCity] = useState<string | null>(null);
@@ -44,19 +44,19 @@ const Header: React.FC = () => {
         <div className="header">
             <Row gutter={16} align="middle">
                 <Col flex="auto">
-                    <p className="city-link" onClick={openModal}>
+                    <p className="header__cityLink" onClick={openModal}>
                         <EnvironmentOutlined style={{ fontSize: '16px', paddingRight: '5px' }} />
                         <span>{selectedCity || (details ? details.city : 'Не определен')}</span>
                     </p>
                 </Col>
                 <Col>
-                    <p className="phone-number">
+                    <p className="header__phoneNumber">
                         <PhoneOutlined style={{ fontSize: '16px', paddingRight: '5px' }} />
                         Телефон горячей линии: +89218493821
                     </p>
                 </Col>
                 <Col>
-                    <p className="work-time">
+                    <p className="header__workTime">
                         <ClockCircleOutlined style={{ fontSize: '16px', paddingRight: '5px' }} />
                         Сегодня с 9:00 до 00:00
                     </p>

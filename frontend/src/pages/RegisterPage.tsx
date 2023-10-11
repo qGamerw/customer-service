@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Row, Card, Form, Input, Button, Select, message} from 'antd';
 import {UserOutlined, MailOutlined, CalendarOutlined, LockOutlined, PhoneOutlined} from '@ant-design/icons';
 import authService from '../services/authService';
 import {IRegistration} from "../types/types";
 import './styles/RegisterPage.css';
+import PhoneInput from "react-phone-input-2";
 
 const {Option} = Select;
 
-const RegisterPage: React.FC = () => {
+const RegisterPage: FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
@@ -32,14 +33,14 @@ const RegisterPage: React.FC = () => {
     };
 
     return (
-        <Row className={"row"}>
-            <Card className={"card"}>
+        <Row className={"registerPage"}>
+            <Card className={"registerPage__card"}>
                 <div style={{display: 'flex'}}>
-                    <div className={"divCard"}>
-                        <h1 className={"h1_card"}>
+                    <div className={"registerPage__card-content"}>
+                        <h1 className={"registerPage__card-h1"}>
                             Добро пожаловать!
                         </h1>
-                        <p className={"p_card"}>
+                        <p className={"registerPage__card-p"}>
                             Если вы уже зарегистрированы на нашем сайте, то эта форма не для вас.
                         </p>
                         <Link to="/api/auth/signin" style={{marginTop: '20px'}}>
@@ -47,13 +48,13 @@ const RegisterPage: React.FC = () => {
                                 type="primary"
                                 shape="round"
                                 size="large"
-                                className={"buttonAuth"}>
+                                className={"registerPage__button"}>
                                 Авторизироваться
                             </Button>
                         </Link>
                     </div>
                     <div style={{flex: 1, padding: '50px'}}>
-                        <h2 className={"h2_card"}>
+                        <h2 className={"registerPage__card-h2"}>
                             Регистрация
                         </h2>
                         <Form form={form} layout="vertical" name="register" onFinish={onFinish}>
@@ -71,9 +72,19 @@ const RegisterPage: React.FC = () => {
                             </Form.Item>
                             <Form.Item
                                 name="number"
-                                rules={[{required: true, message: 'Пожалуйста, введите номер телефона!'}]}
+                                validateTrigger={["onBlur"]}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Пожалуйста, введите номер телефона",
+                                    },
+                                ]}
                             >
-                                <Input prefix={<PhoneOutlined/>} placeholder="Номер телефона"/>
+                                <PhoneInput
+                                    country="ru"
+                                    onlyCountries={["ru"]}
+                                    placeholder="+7-xxx-xxx-xx-xx"
+                                />
                             </Form.Item>
                             <Form.Item
                                 name="dateOfBirth"
