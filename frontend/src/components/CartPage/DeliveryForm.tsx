@@ -5,13 +5,13 @@ import PhoneInput from "react-phone-input-2";
 import {IDeliveryInfo} from "../../types/types";
 
 const DeliveryForm: FC = () => {
-    const [name, setName] = useState('');
-    const [address, setAddress] = useState('');
-    const [flat, setFlat] = useState('');
-    const [floor, setFloor] = useState('');
-    const [frontDoor, setFrontDoor] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [description, setDescription] = useState('');
+    const [name, setName] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+    const [flat, setFlat] = useState<string>('');
+    const [floor, setFloor] = useState<string>('');
+    const [frontDoor, setFrontDoor] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
 
     const onFinish = (values: IDeliveryInfo) => {
         console.log('Received values:', values);

@@ -16,15 +16,14 @@ const Slider: FC = () => {
     ];
 
     const goToPrevSlide = () => {
-        setCurrentIndex((prevIndex) =>
+        setCurrentIndex((prevIndex: number): number =>
             prevIndex === 0 ? slides.length - 1 : prevIndex - 1
         );
         setUserActive(true);
     };
 
-    // Используем useCallback для оптимизации функции goToNextSlide
     const goToNextSlide = useCallback(() => {
-        setCurrentIndex((prevIndex) =>
+        setCurrentIndex((prevIndex: number): number =>
             prevIndex === slides.length - 1 ? 0 : prevIndex + 1
         );
         setUserActive(true);
@@ -37,11 +36,9 @@ const Slider: FC = () => {
             interval = setInterval(goToNextSlide, 100000000);
         }
 
-        // Очищаем интервал при размонтировании компонента
         return () => clearInterval(interval);
     }, [userActive, goToNextSlide]);
 
-    // Сброс флага активности пользователя после перемещения слайда
     useEffect(() => {
         const timeout = setTimeout(() => {
             setUserActive(false);

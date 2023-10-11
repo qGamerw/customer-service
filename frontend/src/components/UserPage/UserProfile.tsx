@@ -14,6 +14,7 @@ import {Link} from "react-router-dom";
 import userService from "../../services/userService";
 import {IUserResponse} from "../../types/types";
 import {useAppDispatch} from "../../hooks";
+import './styles/UserProfile.css';
 
 const UserProfile: FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -59,25 +60,16 @@ const UserProfile: FC = () => {
     };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <div className={"userProfile"}>
             <Card
                 hoverable
-                style={{
-                    width: 500,
-                    margin: "50px auto",
-                }}
+                className={"card"}
             >
                 {isEditing ? (
                     <Form
                         initialValues={userData}
                         onFinish={handleSave}
-                        style={{padding: "16px"}}
+                        className={"formFields"}
                     >
                         <Form.Item
                             label="Имя"
@@ -134,13 +126,7 @@ const UserProfile: FC = () => {
                         </Form.Item>
                     </Form>
                 ) : (
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "left",
-                        }}
-                    >
+                    <div className={"fields"}>
                         <p>
                             Имя: <span>{user.username}</span>
                         </p>
@@ -157,12 +143,7 @@ const UserProfile: FC = () => {
                 )}
 
                 <Button
-                    style={{
-                        background: "black",
-                        fontWeight: "bold",
-                        margin: "10px 0",
-                        color: "white",
-                    }}
+                    className={"buttonEditing"}
                     onClick={toggleEditing}
                 >
                     {isEditing ? <span>Отменить</span> : <EditOutlined/>}
@@ -171,12 +152,7 @@ const UserProfile: FC = () => {
                     <Button
                         icon={<LogoutOutlined/>}
                         onClick={handleLogout}
-                        style={{
-                            width: "45.6px",
-                            background: "black",
-                            color: "white",
-                            marginLeft: "20px",
-                        }}
+                        className={"buttonLogout"}
                     />
                 </Link>
             </Card>

@@ -1,0 +1,4 @@
+.orderHistory {
+    display: flex;
+    flex-wrap: wrap;
+}

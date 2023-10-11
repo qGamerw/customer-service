@@ -12,89 +12,92 @@ interface ModalCardDishProps {
     onClose: () => void;
 }
 
-const ModalCardDish: FC<ModalCardDishProps> = ({dish, isModalOpen, onClose}) => {
+const ModalCardDish: FC<ModalCardDishProps> =
+    ({
+         dish, isModalOpen, onClose
+     }) => {
 
-    const [isLogged] = useState<boolean>(user !== null);
-    const dispatch = useAppDispatch();
-    const itemFromCartById: ICartItem | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.dishId === dish.id))
+        const [isLogged] = useState<boolean>(user !== null);
+        const dispatch = useAppDispatch();
+        const itemFromCartById: ICartItem | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.dishId === dish.id))
 
-    const handleAddClick = () => {
-        isLogged && (
-            CartService.addToCart(user?.id, dish.id, dispatch)
-        )
-    }
-
-    const handleUpdateAmount = (dishId: number, quantity: number) => {
-        const newQuantity = {
-            quantity: quantity,
-        };
-        CartService.updateQuantity(user?.id, dishId, newQuantity, dispatch)
-        if (quantity === 0) {
-            CartService.deleteFromCart(user?.id, dishId, dispatch)
+        const handleAddClick = () => {
+            isLogged && (
+                CartService.addToCart(user?.id, dish.id, dispatch)
+            )
         }
-    }
-    return (
-        <Modal
-            title={dish.name}
-            open={isModalOpen}
-            onCancel={onClose}
-            width={1000}
-            footer={null}
-        >
-            <div style={{display: "flex"}}>
-                <div style={{flex: 1}}>
-                    <img
-                        src={dish.urlImage}
-                        alt={'Фото ' + dish.name}
-                        style={{
-                            width: "100%",
-                            height: "auto",
-                            maxWidth: "500px",
-                        }}
-                    />
-                </div>
-                <div style={{flex: 1, marginLeft: "20px"}}>
-                    <p>{dish.weight} гр.</p>
-                    <Tooltip
-                        placement={"bottom"}
-                        title={dish.description}
-                    >
-                        <Button type={"link"}>
+
+        const handleUpdateAmount = (dishId: number, quantity: number) => {
+            const newQuantity = {
+                quantity: quantity,
+            };
+            CartService.updateQuantity(user?.id, dishId, newQuantity, dispatch)
+            if (quantity === 0) {
+                CartService.deleteFromCart(user?.id, dishId, dispatch)
+            }
+        }
+        return (
+            <Modal
+                title={dish.name}
+                open={isModalOpen}
+                onCancel={onClose}
+                width={1000}
+                footer={null}
+            >
+                <div style={{display: "flex"}}>
+                    <div style={{flex: 1}}>
+                        <img
+                            src={dish.urlImage}
+                            alt={'Фото ' + dish.name}
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                maxWidth: "500px",
+                            }}
+                        />
+                    </div>
+                    <div style={{flex: 1, marginLeft: "20px"}}>
+                        <p>{dish.weight} гр.</p>
+                        <Tooltip
+                            placement={"bottom"}
+                            title={dish.description}
+                        >
+                            <Button type={"link"}>
                                 <span style={{color: "black", textDecoration: "underline", textUnderlineOffset: "3px"}}>
                                     Состав
                                 </span>
-                        </Button>
-                    </Tooltip>
-                    <div>
-                        <p>{dish.price} ₽</p>
-                        {itemFromCartById ? (
-                            <InputNumber
-                                value={itemFromCartById?.quantity ?? 0}
-                                min={0}
-                                onChange={(quantity: number | null) => handleUpdateAmount(dish.id, quantity ?? 0)}
-                            />
-
-                        ) : (
-                            <Button
-                                onClick={handleAddClick}
-                                type="primary"
-                                danger
-                                shape="round"
-                                size="large"
-                            >
-                                {isLogged ? (
-                                    <div>Добавить в корзину</div>
-                                ) : (
-                                    <Link to="/api/auth/signin">Войти</Link>
-                                )}
                             </Button>
-                        )}
-                    </div>
+                        </Tooltip>
+                        <div>
+                            <p>{dish.price} ₽</p>
+                            {itemFromCartById ? (
+                                <InputNumber
+                                    value={itemFromCartById?.quantity ?? 0}
+                                    min={0}
+                                    onChange={(quantity: number | null) => handleUpdateAmount(dish.id, quantity ?? 0)}
+                                />
 
+                            ) : (
+                                <Button
+                                    onClick={handleAddClick}
+                                    type="primary"
+                                    danger
+                                    shape="round"
+                                    size="large"
+                                >
+                                    {isLogged ? (
+                                        <div>Добавить в корзину</div>
+                                    ) : (
+                                        <Link to="/api/auth/signin">Войти</Link>
+                                    )}
+                                </Button>
+                            )}
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-        </Modal>
-    );
-};
+            </Modal>
+        );
+    };
 
 export default ModalCardDish;

@@ -1,0 +1,34 @@
+.userProfile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 500px;
+    margin: 50px auto;
+}
+
+.formFields {
+    padding: 16px;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.buttonEditing {
+    background: black;
+    font-weight: bold;
+    margin: 10px 0;
+    color: white;
+}
+
+.buttonLogout {
+    width: 45.6px;
+    background: black;
+    color: white;
+    margin-left: 20px;
+}

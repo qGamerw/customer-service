@@ -1,35 +1,19 @@
-import {Button, Card, Layout} from "antd";
+import {Card} from "antd";
 import React from "react";
+import './styles/DeliveryCard.css';
 
 const DeliveryCard = () => {
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <div className={"deliveryCard"}>
             <Card
                 hoverable
-                style={{
-                    width: 500,
-                    margin: "50px auto",
-                    overflow: 'auto',
-                }}
+                className={"card"}
             >
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'left',
-                    }}
-                >
+                <div className={"fields"}>
                     <p>Номер заказа: </p>
                     <p>Адрес: </p>
                     <p>Заказ:</p>
                     <p>Статус заказа:</p>
-
                 </div>
             </Card>
         </div>

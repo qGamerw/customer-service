@@ -6,6 +6,7 @@ import {login} from "../slices/authSlice";
 import authService from "../services/authService";
 import {useDispatch} from "react-redux";
 import {ILogin} from "../types/types";
+import './styles/AuthPage.css';
 
 const AuthPage: React.FC = () => {
     const [form] = Form.useForm();
@@ -31,40 +32,30 @@ const AuthPage: React.FC = () => {
     };
 
     return (
-        <Row style={{justifyContent: 'center', paddingTop: '20px'}}>
-            <Card style={{
-                width: '1000px',
-                height: '600px',
-                background: 'linear-gradient(to right, #007bff 50%, white 50%)',
-                borderWidth: "3px"
-            }}>
+        <Row className={"row"}>
+            <Card className={"card"}>
                 <div style={{display: 'flex'}}>
-                    <div style={{
-                        flex: 1,
-                        color: 'white',
-                        padding: '50px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingBottom: '30px'
-                    }}>
-                        <h1 style={{fontSize: '36px', textAlign: 'center', marginBottom: '20px'}}>
+                    <div className={"divCard"}>
+                        <h1 className={"h1_card"}>
                             Здравствуйте!
                         </h1>
-                        <p style={{fontSize: '18px', textAlign: 'center'}}>
+                        <p className={"p_card"}>
                             Если вы впервые у нас в гостях, и у вас нет аккаунта, то вы можете зарегистрироваться на
                             нашем сайте.
                         </p>
                         <Link to="/api/auth/signup" style={{marginTop: '20px'}}>
-                            <Button type="primary" shape="round" size="large"
-                                    style={{backgroundColor: '#0e4acb', color: '#FFFFFF'}}>
+                            <Button
+                                type="primary"
+                                shape="round" size="large"
+                                className={"buttonRegistration"}>
                                 Зарегистрироваться
                             </Button>
                         </Link>
                     </div>
                     <div style={{flex: 1, padding: '50px'}}>
-                        <h2 style={{fontSize: '24px', marginBottom: '20px', textAlign: 'center'}}>Авторизация</h2>
+                        <h2 className={"h2_card"}>
+                            Авторизация
+                        </h2>
                         <Form
                             name="normal_login"
                             form={form}

@@ -13,10 +13,10 @@ const Payment: FC<PaymentProps> =
     ({
          amountInCart
      }) => {
-        const [checkBoxOffer, setCheckBoxOffer] = useState(true);
-        const currentTime = new Date();
-        const deliveryTime = addMinutes(currentTime, 60);
-        const formattedTime = format(deliveryTime, 'HH:mm');
+        const [checkBoxOffer, setCheckBoxOffer] = useState<boolean>(true);
+        const currentTime: Date = new Date();
+        const deliveryTime: Date = addMinutes(currentTime, 60);
+        const formattedTime: string = format(deliveryTime, 'HH:mm');
         const stripePublishableKey =
             'pk_test_51Nw1DlI64lV8opEVvQQ0MOs33EPOddlFi6wpBWpjMdEvGMp5wBH89SOsZvAxkkq7mOtlvyCBrEZDv01rzkF52d1w00on7r85QY';
 
@@ -28,7 +28,7 @@ const Payment: FC<PaymentProps> =
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(res),
-            }).then((res) => {
+            }).then((res: Response) => {
                 res.json().then((data) => {
                     console.log(`Payment token generated, ${data.name}`);
                 });
@@ -36,7 +36,7 @@ const Payment: FC<PaymentProps> =
         };
 
         useEffect(() => {
-            const cartTotal = document.querySelector('.cartPage__total');
+            const cartTotal: Element | null = document.querySelector('.cartPage__total');
             if (cartTotal) {
                 if (!checkBoxOffer) {
                     cartTotal.classList.add('cartPage-total-hidden');

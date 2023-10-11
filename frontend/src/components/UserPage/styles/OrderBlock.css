@@ -1,0 +1,18 @@
+.orderBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 500px;
+    margin: 50px auto;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}

@@ -17,7 +17,7 @@ const CardDish: FC<DishItemProps> =
          children
      }) => {
 
-        const [isModalOpen, setIsModalOpen] = useState(false);
+        const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
         return (
             <div className={"cardDish"}>
