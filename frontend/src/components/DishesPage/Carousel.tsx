@@ -6,13 +6,10 @@ const Slider: FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userActive, setUserActive] = useState<boolean>(false);
     const slides: string[] = [
-        'https://s1.1zoom.ru/b5050/269/415245-svetik_3840x2400.jpg',
-        'https://s1.1zoom.ru/big3/666/420713-svetik.jpg',
-        'https://s1.1zoom.ru/big3/800/418026-svetik.jpg',
-        'https://s1.1zoom.ru/big3/524/418516-svetik.jpg',
-        'https://s1.1zoom.ru/big3/926/420986-svetik.jpg',
-        'https://s1.1zoom.ru/big3/23/421764-svetik.jpg',
-        'https://s1.1zoom.ru/big3/700/422236-svetik.jpg',
+        'https://tvil.ru/blog/sites/blog/files/image/ckeditor/kulinarnie_turi_v_gr.jpg',
+        'https://static.tildacdn.com/tild6264-3132-4630-b937-663332313063/photo.jpg',
+        'http://папамихо.рф/wp-content/uploads/2020/04/244_402_20210922160529_2850-1536x1024.jpg',
+        'https://huarache-shop.ru/800/600/https/images.broniboy.ru/3XtN7y6kjM3t-uFRQrYxgyj4c3s=/1200x0/smart/filters:smart_sharpen():allow_webp(false)/own/6a7edf56-3eec-455f-b138-8f96c591ef7b/d91fe586f82b2db63a988859c6b02470.jpg',
     ];
 
     const goToPrevSlide = () => {

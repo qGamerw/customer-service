@@ -24,7 +24,7 @@ const CardDish: FC<DishItemProps> =
                 <img
                     src={dish.urlImage}
                     alt={"Изображение блюда:" + dish.name}
-                    style={{width: "370px", borderRadius: "10%", height: "270px", cursor: "pointer"}}
+                    className={"cardDish__image"}
                     onClick={() => {
                         setIsModalOpen(true)
                     }}

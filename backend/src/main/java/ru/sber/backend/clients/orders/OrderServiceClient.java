@@ -8,7 +8,7 @@ import ru.sber.backend.entities.OrderResponse;
 
 import java.util.List;
 
-@FeignClient(value = "feignDishes", url = "http://localhost:8081/orders")
+@FeignClient(value = "feignOrders", url = "http://localhost:8081/orders")
 public interface OrderServiceClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/any", produces = "application/json")
