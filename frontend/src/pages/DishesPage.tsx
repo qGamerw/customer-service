@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import ListDishes from '../components/DishesPage/ListDishes';
 import {scroller} from 'react-scroll';
@@ -8,13 +8,14 @@ import "./styles/DishesPage.css";
 import Slider from "../components/DishesPage/Carousel";
 import {IDish} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
-
+import SearchDishes from "../components/DishesPage/SearchDishes";
 
 const DishesPage: FC = () => {
     const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
     const dispatch = useAppDispatch()
     const location = useLocation();
     const anchorId = location.state ? location.state.anchorId : null;
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         const getDishes = () => {
@@ -33,20 +34,63 @@ const DishesPage: FC = () => {
         }
     }, [anchorId]);
 
+    const handleSearch = (value: string) => {
+        setSearchText(value);
+    };
+
+    const filteredDishes = listDishes.filter(item =>
+        item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    const shouldShowCategory = (category: string) => {
+        return filteredDishes.some(item => item.category.category === category);
+    };
+
     return (
         <div className="dishPage">
             <div className="dishPage__content">
                 <Slider/>
-                <h2 id="category:1">Салаты</h2>
-                <ListDishes dishes={listDishes.filter(item => item.category.category === "SALAD")}/>
-                <h2 id="category:2">Роллы</h2>
-                <ListDishes dishes={listDishes.filter(item => item.category.category === "ROLLS")}/>
-                <h2 id="category:3">Вторые блюда</h2>
-                <ListDishes dishes={listDishes.filter(item => item.category.category === "SECOND_COURSES")}/>
-                <h2 id="category:4">Пицца</h2>
-                <ListDishes dishes={listDishes.filter(item => item.category.category === "PIZZA")}/>
-                <h2 id="category:5">Напитки</h2>
-                <ListDishes dishes={listDishes.filter(item => item.category.category === "DRINKS")}/>
+                <SearchDishes onSearch={handleSearch}/>
+                <div className="category-section">
+                    {filteredDishes.length === 0 && <p className="dishPage__content_p">
+                        Блюда не найдены
+                    </p>}
+                    {shouldShowCategory("SALAD") && (
+                        <div>
+                            <h2 id="category:1">Салаты</h2>
+                            <ListDishes dishes={filteredDishes.filter(item => item.category.category === "SALAD")}/>
+                        </div>
+                    )}
+
+                    {shouldShowCategory("ROLLS") && (
+                        <div>
+                            <h2 id="category:2">Роллы</h2>
+                            <ListDishes dishes={filteredDishes.filter(item => item.category.category === "ROLLS")}/>
+                        </div>
+                    )}
+
+                    {shouldShowCategory("SECOND_COURSES") && (
+                        <div>
+                            <h2 id="category:3">Вторые блюда</h2>
+                            <ListDishes
+                                dishes={filteredDishes.filter(item => item.category.category === "SECOND_COURSES")}/>
+                        </div>
+                    )}
+
+                    {shouldShowCategory("PIZZA") && (
+                        <div>
+                            <h2 id="category:4">Пицца</h2>
+                            <ListDishes dishes={filteredDishes.filter(item => item.category.category === "PIZZA")}/>
+                        </div>
+                    )}
+
+                    {shouldShowCategory("DRINKS") && (
+                        <div>
+                            <h2 id="category:5">Напитки</h2>
+                            <ListDishes dishes={filteredDishes.filter(item => item.category.category === "DRINKS")}/>
+                        </div>
+                    )}
+                </div>
             </div>
             <Footer/>
         </div>

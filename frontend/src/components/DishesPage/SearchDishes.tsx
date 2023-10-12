@@ -1,11 +1,36 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
+import {Input} from 'antd';
+import './styles/SearchDishes.css';
 
-const SearchDishes: FC = () => {
-    return (
-        <div>
+const {Search} = Input;
 
-        </div>
-    );
-};
+interface SearchDishesProps {
+    onSearch: (value: string) => void;
+}
+
+const SearchDishes: FC<SearchDishesProps> =
+    ({
+         onSearch
+     }) => {
+        const [searchText, setSearchText] = useState('');
+
+        const handleSearch = () => {
+            onSearch(searchText);
+        };
+
+        return (
+            <div className="searchDishes">
+                <Search
+                    className="searchDishes__search"
+                    placeholder="Поиск блюд..."
+                    value={searchText}
+                    allowClear
+                    enterButton
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onSearch={handleSearch}
+                />
+            </div>
+        );
+    };
 
 export default SearchDishes;
