@@ -27,6 +27,7 @@ public class DishController {
      */
     @GetMapping("/any")
     public ResponseEntity<List<?>> getDishes() {
+        log.info("Получаем меню ресторана");
         List<?> listDishes = restaurantServiceClient.getListAllDish();
 
         return ResponseEntity.ok().body(listDishes);

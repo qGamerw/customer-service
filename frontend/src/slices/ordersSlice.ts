@@ -1,29 +1,20 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IOrder} from "../types/types";
+import {IOrderFromHistory} from "../types/types";
 
 
 interface OrderState {
-    orders: IOrder[];
+    orders: IOrderFromHistory[];
 }
 
 const initialState: OrderState = {
-    orders: [
-        {
-            id: 1,
-            address: "ул.Разина д.12 кв.35"
-        },
-        {
-            id: 2,
-            address: "ул.Мира д.12 кв.35"
-        }
-    ],
+    orders: [],
 };
 
 export const ordersSlice = createSlice({
     name: 'orders',
     initialState: initialState,
     reducers: {
-        setOrders: (state, action: PayloadAction<IOrder[]>) => {
+        setOrders: (state, action: PayloadAction<IOrderFromHistory[]>) => {
             state.orders = action.payload;
         }
     },

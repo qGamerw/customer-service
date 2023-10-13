@@ -2,16 +2,17 @@ import React, {FC, useEffect} from 'react';
 import {UserProfile} from '../components/UserPage/UserProfile';
 import OrderHistory from '../components/UserPage/OrderHistory';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useSelector} from 'react-redux';
 import DeliveryCard from '../components/UserPage/DeliveryCard';
 import {Tabs} from 'antd';
+import {IOrderFromHistory, IOrderResponse} from "../types/types";
+import {useAppSelector} from "../hooks";
 const {TabPane} = Tabs;
 
 const UserPage: FC = () => {
-    const listOrder = useSelector((state: any) => state.orders.orders);
     const location = useLocation();
     const navigate = useNavigate();
     const anchorId = location.state ? location.state.anchorId : null;
+    const listOrders: IOrderFromHistory[] = useAppSelector((state) => state.orders.orders);
     const searchParams = new URLSearchParams(location.search);
     const activeTabParam = searchParams.get('tab') || 'profile';
 
@@ -39,7 +40,7 @@ const UserPage: FC = () => {
                 </TabPane>
                 <TabPane tab="Заказы" key="order">
                     <h3>Заказы</h3>
-                    <OrderHistory orders={listOrder}/>
+                    <OrderHistory listOrders = {listOrders}/>
                 </TabPane>
             </Tabs>
         </div>

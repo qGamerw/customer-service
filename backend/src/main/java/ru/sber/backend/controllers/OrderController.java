@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/orders ")
+@RequestMapping("/orders")
 public class OrderController {
 
     private final OrderServiceClient orderServiceClient;
@@ -29,13 +29,15 @@ public class OrderController {
      */
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<?>> getOrdersByClientId(@PathVariable Long clientId) {
+        log.info("Выводим историю пользователя с id: {}", clientId);
         List<?> listOrders = orderServiceClient.getOrdersByClientId(clientId);
 
         return ResponseEntity.ok().body(listOrders);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderResponse order) {
+        log.info("Создает заказ клиента {}", order);
         OrderResponse createdOrder = orderServiceClient.createOrder(order);
 
         return ResponseEntity.ok().body(createdOrder);

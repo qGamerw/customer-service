@@ -22,25 +22,6 @@ public class CartController {
     }
 
     /**
-     * Добавляет блюдо в корзину
-     *
-     * @param cartId   id корзины
-     * @param dishId   id блюда
-     * @return корзину с добавленными блюдами
-     */
-    @PostMapping("/{cartId}/dish/{dishId}")
-    public ResponseEntity<?> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId) {
-        log.info("Добавление в корзину блюда с id: {}", dishId);
-
-        boolean recordInserted = cartService.addToCart(cartId, dishId);
-        if (recordInserted) {
-            return ResponseEntity.ok("Товар успешно добавлен в корзину");
-        } else {
-            return ResponseEntity.badRequest().body("Не удалось добавить товар в корзину");
-        }
-    }
-
-    /**
      * Получает список блюд по id корзины
      *
      * @param cartId id корзины
@@ -48,9 +29,28 @@ public class CartController {
      */
     @GetMapping("/{cartId}")
     public ResponseEntity<List<CartItem>> getDishes(@PathVariable long cartId) {
+        log.info("Получаем список блюд в корзине c id: {}", cartId);
         List<CartItem> cartItems = cartService.getCartItemsByCartId(cartId);
 
         return ResponseEntity.ok().body(cartItems);
+    }
+
+    /**
+     * Добавляет блюдо в корзину
+     *
+     * @param cartId   id корзины
+     * @param dishId   id блюда
+     * @return корзину с добавленными блюдами
+     */
+    @PostMapping("/{cartId}/dish/{dishId}")
+    public ResponseEntity<String> addProductToCart(@PathVariable long cartId, @PathVariable Long dishId) {
+        log.info("Добавление в корзину блюда с id: {}", dishId);
+        boolean recordInserted = cartService.addToCart(cartId, dishId);
+        if (recordInserted) {
+            return ResponseEntity.ok("Товар успешно добавлен в корзину");
+        } else {
+            return ResponseEntity.badRequest().body("Не удалось добавить товар в корзину");
+        }
     }
 
     /**
@@ -63,9 +63,7 @@ public class CartController {
      */
     @PutMapping("/{cartId}/dish/{dishId}")
     public ResponseEntity<?> updateCartItemQuantity(@PathVariable long cartId, @PathVariable long dishId, @RequestBody CartItem dish) {
-
-        log.info("Изменяется количество товара в корзине");
-
+        log.info("Изменяется количество товара в корзине c id: {}", cartId);
         boolean recordUpdated = cartService.updateDishAmount(cartId, dishId, dish.getQuantity());
 
         if (recordUpdated) {

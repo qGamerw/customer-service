@@ -23,9 +23,23 @@ export interface IDishFromCart extends IDish {
     cartItemId: number;
 }
 
+//нужно будет переназначить поля для отправляемых блюд в заказе
+export interface IDishFromOrderResponse {
+    dishId: number;
+    dishName: string;
+    quantity: number;
+}
+
+export interface IDishFromOrderHistory {
+    orderId: number;
+    dishId: number;
+    dishName: string;
+    quantity: number;
+}
+
 export interface IDeliveryInfo {
     username: string;
-    phoneNumber: string;
+    clientPhoneNumber: string;
     description: string;
     address: string;
     flat: number;
@@ -33,10 +47,20 @@ export interface IDeliveryInfo {
     frontDoor: number;
 }
 
-export interface IOrder extends IDeliveryInfo{
+export interface IOrderFromHistory extends IDeliveryInfo{
+    id: number;
     clientId: number;
     totalPrice: number;
-    weight: number;
+    totalWeight: number;
+    listDishes: IDishFromOrderHistory[];
+    status: string;
+    refusalReason: string | null;
+}
+
+export interface IOrderResponse extends IDeliveryInfo{
+    clientId: number;
+    totalPrice: number;
+    totalWeight: number;
     listDishes: IDishFromCart[];
 }
 

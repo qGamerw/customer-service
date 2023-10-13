@@ -26,7 +26,7 @@ const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
 
 const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
 
-    console.log(`${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
+    console.log(`Добавление товара ${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
 
     return axios.post(`${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()}).then(
         () => {

@@ -24,7 +24,7 @@ const CartPage: FC = () => {
             })
             .sort((n1: IDishFromCart, n2: IDishFromCart) => n1.cartItemId - n2.cartItemId);
 
-        const amountInCart: number = listDishesFromCart.reduce(
+        const totalPrice: number = listDishesFromCart.reduce(
             (accumulator: number, item: IDishFromCart | undefined) =>
                 accumulator + (item?.price || 0) * (item?.quantity || 0), 0
         );
@@ -81,17 +81,17 @@ const CartPage: FC = () => {
                         <div>
                             <ListDishesFromCart dishes={listDishesFromCart}/>
                             <div className="cartPage-content-delivery">
-                                <DeliveryForm/>
+                                <DeliveryForm listDishesFromCart = {listDishesFromCart} totalPrice={totalPrice} />
                             </div>
                             <div className="cartPage-content-payment">
-                                <Payment amountInCart={amountInCart}/>
+                                <Payment totalPrice={totalPrice}/>
                             </div>
                         </div>
                     )}
                 </div>
                 {isTotalVisible && !isCartEmpty && (
                     <div className="cartPage-total">
-                        <h4 className="cartPage-total-title-count">К оплате: {amountInCart} ₽</h4>
+                        <h4 className="cartPage-total-title-count">К оплате: {totalPrice} ₽</h4>
                     </div>
                 )}
             </div>

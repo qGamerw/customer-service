@@ -1,30 +1,42 @@
 import React, {FC, useState} from 'react';
-import {Form, Input, Radio} from 'antd';
+import {Button, Form, Input, InputNumber, Radio} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
-import {IDeliveryInfo, IOrder, IUserResponse} from "../../types/types";
+import {IDeliveryInfo, IDishFromCart, IOrderResponse, IUserResponse} from "../../types/types";
 import {user} from "../../constants/constants";
+import OrderService from "../../services/orderService";
+import {useAppDispatch} from "../../hooks";
 
-const DeliveryForm: FC = () => {
-    const [name, setName] = useState<string>('');
+interface DeliveryForm {
+    listDishesFromCart: IDishFromCart[];
+    totalPrice: number;
+}
+const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
+
+    const [username, setUsername] = useState<string>('');
     const [address, setAddress] = useState<string>('');
-    const [flat, setFlat] = useState<string>('');
-    const [floor, setFloor] = useState<string>('');
-    const [frontDoor, setFrontDoor] = useState<string>('');
+    const [flat, setFlat] = useState<number>(0);
+    const [floor, setFloor] = useState<number>(0);
+    const [frontDoor, setFrontDoor] = useState<number>(0);
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [description, setDescription] = useState<string>('');
 
+    const dispatch = useAppDispatch();
     const client: IUserResponse | null = user;
+    const totalWeight: number = listDishesFromCart.reduce(
+        (accumulator: number, item: IDishFromCart | undefined) =>
+            accumulator + (item?.weight|| 0) * (item?.quantity || 0), 0
+    );
 
     const onFinish = (values: IDeliveryInfo) => {
-        let order: IOrder = {
+        let order: IOrderResponse = {
             ...values,
             clientId: client?.id ?? 0,
-            totalPrice: 0,
-            weight: 0,
-            listDishes: []
+            totalPrice: totalPrice,
+            totalWeight: totalWeight,
+            listDishes: listDishesFromCart
         };
-
+        OrderService.createOrder(order);
     };
 
     return (
@@ -36,7 +48,7 @@ const DeliveryForm: FC = () => {
                     name="clientName"
                     rules={[{required: true, message: 'Пожалуйста, введите ваше имя!'}]}
                 >
-                    <Input value={name} onChange={(e) => setName(e.target.value)}/>
+                    <Input value={username} onChange={(e) => setUsername(e.target.value)}/>
                 </Form.Item>
                 <Form.Item
                     label="Адрес:"
@@ -53,8 +65,8 @@ const DeliveryForm: FC = () => {
                     name="flat"
                     rules={[{required: true, message: 'Пожалуйста, введите номер квартиры'}]}
                 >
-                    <Input
-                        value={flat} onChange={(e) => setFlat(e.target.value)}
+                    <InputNumber
+                        value={flat} onChange={(flat) => setFlat(flat ?? 0)}
                     />
                 </Form.Item>
                 <Form.Item
@@ -62,8 +74,8 @@ const DeliveryForm: FC = () => {
                     name="floor"
                     rules={[{required: true, message: 'Пожалуйста, введите этаж'}]}
                 >
-                    <Input
-                        value={floor} onChange={(e) => setFloor(e.target.value)}
+                    <InputNumber
+                        value={floor} onChange={(floor) => setFloor(floor ?? 0)}
                     />
                 </Form.Item>
                 <Form.Item
@@ -71,8 +83,8 @@ const DeliveryForm: FC = () => {
                     name="frontDoor"
                     rules={[{required: true, message: 'Пожалуйста, введите номер подъезда'}]}
                 >
-                    <Input
-                        value={frontDoor} onChange={(e) => setFrontDoor(e.target.value)}
+                    <InputNumber
+                        value={frontDoor} onChange={(e) => setFrontDoor(frontDoor ?? 0)}
                     />
                 </Form.Item>
                 <Form.Item
@@ -94,6 +106,11 @@ const DeliveryForm: FC = () => {
                         value={description} onChange={(e) => setDescription(e.target.value)}
                         placeholder="Ваше пожелание"
                     />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Оформить заказ
+                    </Button>
                 </Form.Item>
             </Form>
         </div>

@@ -6,12 +6,12 @@ import './styles/Payment.css';
 import StripeCheckout, {Token} from 'react-stripe-checkout';
 
 interface PaymentProps {
-    amountInCart: number;
+    totalPrice: number;
 }
 
 const Payment: FC<PaymentProps> =
     ({
-         amountInCart
+         totalPrice
      }) => {
         const [checkBoxOffer, setCheckBoxOffer] = useState<boolean>(true);
         const currentTime: Date = new Date();
@@ -64,13 +64,13 @@ const Payment: FC<PaymentProps> =
                     </div>
                 )}
                 <h4>Доставим до: {formattedTime}</h4>
-                <h3>К оплате: {amountInCart} ₽</h3>
+                <h3>К оплате: {totalPrice} ₽</h3>
                 <StripeCheckout
                     label="Оплатить"
                     token={onToken}
                     name="Оплата заказа"
                     currency="RUB"
-                    amount={amountInCart * 100}
+                    amount={totalPrice * 100}
                     locale="auto"
                     stripeKey={stripePublishableKey}
                 />

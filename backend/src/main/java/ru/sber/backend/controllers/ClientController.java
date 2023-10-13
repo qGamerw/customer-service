@@ -32,7 +32,7 @@ public class ClientController {
     @GetMapping("/{clientId}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable long clientId) {
 
-        log.info("Выводим данные о пользователе с id: {}", clientId);
+        log.info("Выводим данные о клиенет с id: {}", clientId);
 
         Optional<User> user = clientService.getClientById(clientId);
 
@@ -54,7 +54,7 @@ public class ClientController {
     @PutMapping("/{clientId}")
     public ResponseEntity<?> updateClientInfo(@PathVariable long clientId, @RequestBody User client) {
 
-        log.info("Изменяется информацию о клиенте");
+        log.info("Изменяется информация о клиенте с id: {}", clientId);
 
         boolean recordUpdated = clientService.updateClientInfo(clientId, client.getUsername(), client.getDateOfBirth(), client.getNumber());
 

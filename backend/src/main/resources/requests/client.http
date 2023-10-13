@@ -4,11 +4,11 @@ POST localhost:8080/api/auth/signup
 Content-Type: application/json
 
 {
-  "username": "Смирнов Павел",
+  "username": "Смирнов f",
   "number": "+89432849392",
   "dateOfBirth": "2000-12-12",
-  "email": "smirnovpa4@yandex.ru",
-  "password": "password"
+  "email": "smirnovpa4@yandex.ru1",
+  "password": "password1"
 }
 
 ###Аутентификация
