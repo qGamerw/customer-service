@@ -47,9 +47,9 @@ public class CartController {
         log.info("Добавление в корзину блюда с id: {}", dishId);
         boolean recordInserted = cartService.addToCart(cartId, dishId);
         if (recordInserted) {
-            return ResponseEntity.ok("Товар успешно добавлен в корзину");
+            return ResponseEntity.ok("Блюдо успешно добавлено в корзину");
         } else {
-            return ResponseEntity.badRequest().body("Не удалось добавить товар в корзину");
+            return ResponseEntity.badRequest().body("Не удалось добавить блюдо в корзину");
         }
     }
 
@@ -62,14 +62,14 @@ public class CartController {
      * @return корзину с измененным количеством блюда
      */
     @PutMapping("/{cartId}/dish/{dishId}")
-    public ResponseEntity<?> updateCartItemQuantity(@PathVariable long cartId, @PathVariable long dishId, @RequestBody CartItem dish) {
+    public ResponseEntity<String> updateCartItemQuantity(@PathVariable long cartId, @PathVariable long dishId, @RequestBody CartItem dish) {
         log.info("Изменяется количество товара в корзине c id: {}", cartId);
         boolean recordUpdated = cartService.updateDishAmount(cartId, dishId, dish.getQuantity());
 
         if (recordUpdated) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Количество блюд изменено");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Не удалось изменить блюдо");
         }
     }
 
@@ -81,16 +81,16 @@ public class CartController {
      * @return корзина с внесенными изменениями
      */
     @DeleteMapping("/{cartId}/dish/{dishId}")
-    public ResponseEntity<?> deleteDish(@PathVariable long cartId, @PathVariable long dishId) {
+    public ResponseEntity<String> deleteDish(@PathVariable long cartId, @PathVariable long dishId) {
 
         log.info("Удаление из {} корзины блюда с id: {}", cartId,dishId);
 
         boolean isDeleted = cartService.deleteDish(cartId, dishId);
 
         if (isDeleted) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok("Блюдо удалено из корзины");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Не удалось удалить блюдо");
         }
     }
 }

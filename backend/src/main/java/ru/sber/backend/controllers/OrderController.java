@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.orders.OrderServiceClient;
-import ru.sber.backend.entities.OrderResponse;
+import ru.sber.backend.models.OrderResponse;
 
 import java.util.List;
 
@@ -28,9 +28,9 @@ public class OrderController {
      * @return получение списка заказов клиента
      */
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByClientId(@PathVariable Long clientId) {
+    public ResponseEntity<?> getOrdersByClientId(@PathVariable Long clientId) {
         log.info("Обращаемся к серверу заказов для получения истории пользователя с id: {}", clientId);
-        List<OrderResponse> listOrders = orderServiceClient.getOrdersByClientId(clientId);
+        List<?> listOrders = orderServiceClient.getOrdersByClientId(clientId);
         log.info("Выводим историю пользователя с id: {} История: {}", clientId, listOrders);
         return ResponseEntity.ok().body(listOrders);
     }

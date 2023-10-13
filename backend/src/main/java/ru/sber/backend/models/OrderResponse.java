@@ -1,4 +1,4 @@
-package ru.sber.backend.entities;
+package ru.sber.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Temporal;
@@ -13,6 +13,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class OrderResponse {
+    private long id;
+
     private long clientId;
 
     private String clientName;

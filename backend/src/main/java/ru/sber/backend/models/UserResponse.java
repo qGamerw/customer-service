@@ -1,7 +1,8 @@
-package ru.sber.backend.entities;
+package ru.sber.backend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.sber.backend.entities.User;
 
 import java.util.Date;
 

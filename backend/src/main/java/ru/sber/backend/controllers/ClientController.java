@@ -4,9 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.entities.User;
-import ru.sber.backend.entities.UserResponse;
+import ru.sber.backend.models.UserResponse;
 import ru.sber.backend.services.ClientService;
 
 import java.util.Optional;

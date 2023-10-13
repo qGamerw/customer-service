@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.restaurants.RestaurantServiceClient;
+import ru.sber.backend.models.Dish;
+
 import java.util.List;
 
 @Slf4j
@@ -26,9 +28,9 @@ public class DishController {
      * @return получение списка блюд
      */
     @GetMapping("/any")
-    public ResponseEntity<List<?>> getDishes() {
+    public ResponseEntity<List<Dish>> getDishes() {
         log.info("Получаем меню ресторана");
-        List<?> listDishes = restaurantServiceClient.getListAllDish();
+        List<Dish> listDishes = restaurantServiceClient.getListAllDish();
 
         return ResponseEntity.ok().body(listDishes);
     }
