@@ -28,15 +28,15 @@ public class OrderController {
      * @return получение списка заказов клиента
      */
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<?>> getOrdersByClientId(@PathVariable Long clientId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByClientId(@PathVariable Long clientId) {
         log.info("Обращаемся к серверу заказов для получения истории пользователя с id: {}", clientId);
-        List<?> listOrders = orderServiceClient.getOrdersByClientId(clientId);
+        List<OrderResponse> listOrders = orderServiceClient.getOrdersByClientId(clientId);
         log.info("Выводим историю пользователя с id: {} История: {}", clientId, listOrders);
         return ResponseEntity.ok().body(listOrders);
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderResponse order) {
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderResponse order) {
         log.info("Создает заказ клиента {}", order);
         OrderResponse createdOrder = orderServiceClient.createOrder(order);
 
