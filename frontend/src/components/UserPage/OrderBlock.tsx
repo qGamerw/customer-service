@@ -11,12 +11,14 @@ const OrderBlock: FC<OrderBlockProps> = ({ order }) => {
         <div className="orderBlock">
             <Card hoverable className="orderBlock__card">
                 <div className="orderBlock__card-content">
-                    <p>Номер заказа: {order.clientId}</p>
+                    <p>Номер заказа: {order.id}</p>
                     <p>Адрес: {order.address}, кв. {order.flat}, этаж {order.floor}, подъезд {order.frontDoor}</p>
-                    <p>Дата: {order.totalPrice}</p>
+                    <p>Дата и время заказа: {order.orderTime}</p>
+                    <p>Стоимость: {order.totalPrice} ₽</p>
+                    <p>Статус: {order.status}</p>
                     <p>Блюда:</p>
                     <ul>
-                        {order.listDishes.map((dish) => (
+                        {order.listDishesFromOrder.map((dish) => (
                             <li key={dish.dishId}>
                                 {dish.dishName} - Количество: {dish.quantity}
                             </li>

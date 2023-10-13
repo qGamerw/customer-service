@@ -23,7 +23,6 @@ export interface IDishFromCart extends IDish {
     cartItemId: number;
 }
 
-//нужно будет переназначить поля для отправляемых блюд в заказе
 export interface IDishFromOrderResponse {
     dishId: number;
     dishName: string;
@@ -52,8 +51,9 @@ export interface IOrderFromHistory extends IDeliveryInfo{
     clientId: number;
     totalPrice: number;
     totalWeight: number;
-    listDishes: IDishFromOrderHistory[];
+    listDishesFromOrder: IDishFromOrderHistory[];
     status: string;
+    orderTime: string;
     refusalReason: string | null;
 }
 
@@ -61,7 +61,7 @@ export interface IOrderResponse extends IDeliveryInfo{
     clientId: number;
     totalPrice: number;
     totalWeight: number;
-    listDishes: IDishFromCart[];
+    listDishesFromOrder: IDishFromOrderResponse[];
 }
 
 export interface IUser{

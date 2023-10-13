@@ -26,7 +26,7 @@ const CartPage: FC = () => {
 
         const totalPrice: number = listDishesFromCart.reduce(
             (accumulator: number, item: IDishFromCart | undefined) =>
-                accumulator + (item?.price || 0) * (item?.quantity || 0), 0
+                accumulator + (item?.price ?? 0) * (item?.quantity ?? 0), 0
         );
 
         const [isTotalVisible, setIsTotalVisible] = useState<boolean>(true);

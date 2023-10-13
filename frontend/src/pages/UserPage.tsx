@@ -2,9 +2,9 @@ import React, {FC, useEffect} from 'react';
 import {UserProfile} from '../components/UserPage/UserProfile';
 import OrderHistory from '../components/UserPage/OrderHistory';
 import {useLocation, useNavigate} from 'react-router-dom';
-import DeliveryCard from '../components/UserPage/DeliveryCard';
+import CurrentOrders from '../components/UserPage/CurrentOrders';
 import {Tabs} from 'antd';
-import {IOrderFromHistory, IOrderResponse} from "../types/types";
+import {IOrderFromHistory} from "../types/types";
 import {useAppSelector} from "../hooks";
 const {TabPane} = Tabs;
 
@@ -34,13 +34,13 @@ const UserPage: FC = () => {
                     <h3>Профиль</h3>
                     <UserProfile/>
                 </TabPane>
-                <TabPane tab="Доставка" key="delivery">
-                    <h3>Доставка</h3>
-                    <DeliveryCard/>
+                <TabPane tab="Текущие доставки" key="delivery">
+                    <h3>Текущие доставки</h3>
+                    <CurrentOrders listOfCurrentOrders={listOrders.filter(order => order.status !== "COMPLETED" && order.status !== "CANCELLED")} />
                 </TabPane>
-                <TabPane tab="Заказы" key="order">
-                    <h3>Заказы</h3>
-                    <OrderHistory listOrders = {listOrders}/>
+                <TabPane tab="История заказов" key="order">
+                    <h3>История заказов</h3>
+                    <OrderHistory listOrdersFromHistory={listOrders.filter(order => order.status === "COMPLETED" || order.status === "CANCELLED")} />
                 </TabPane>
             </Tabs>
         </div>

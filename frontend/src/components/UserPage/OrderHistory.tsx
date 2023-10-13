@@ -1,34 +1,34 @@
 import {Space} from 'antd';
 import React, {FC, useEffect} from 'react';
-import {IDish, IOrderFromHistory, IOrderResponse} from '../../types/types';
+import { IOrderFromHistory} from '../../types/types';
 import OrderBlock from './OrderBlock';
 import './styles/OrderHistory.css';
 import OrderService from "../../services/orderService";
 import {user} from "../../constants/constants";
-import {useAppDispatch, useAppSelector} from "../../hooks";
+import {useAppDispatch} from "../../hooks";
 
 interface OrderHistory {
-    listOrders: IOrderFromHistory[];
+    listOrdersFromHistory: IOrderFromHistory[];
 }
 
 const OrderHistory: FC<OrderHistory> =
-    ({listOrders}) => {
+    ({listOrdersFromHistory}) => {
     const client = user;
     const dispatch = useAppDispatch();
 
-        console.log(listOrders)
+        console.log(listOrdersFromHistory)
 
     useEffect(() => {
         const getCart = () => {
-            // OrderService.getOrders(client?.id ?? 0, dispatch)
+            OrderService.getOrders(client?.id ?? 0, dispatch)
         };
         getCart();
     }, []);
         return (
             <div className={"orderHistory"}>
-                {listOrders.length > 0 ? (
+                {listOrdersFromHistory.length > 0 ? (
                     <Space direction="horizontal" size="large" wrap>
-                        {listOrders.map((order) => (
+                        {listOrdersFromHistory.map((order) => (
                             <OrderBlock
                                 order={order}
                                 key={order.id}

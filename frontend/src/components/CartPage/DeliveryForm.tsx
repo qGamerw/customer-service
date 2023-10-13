@@ -2,10 +2,9 @@ import React, {FC, useState} from 'react';
 import {Button, Form, Input, InputNumber, Radio} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
-import {IDeliveryInfo, IDishFromCart, IOrderResponse, IUserResponse} from "../../types/types";
+import {IDeliveryInfo, IDishFromCart, IDishFromOrderResponse, IOrderResponse, IUserResponse} from "../../types/types";
 import {user} from "../../constants/constants";
 import OrderService from "../../services/orderService";
-import {useAppDispatch} from "../../hooks";
 
 interface DeliveryForm {
     listDishesFromCart: IDishFromCart[];
@@ -21,12 +20,20 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
     const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [description, setDescription] = useState<string>('');
 
-    const dispatch = useAppDispatch();
     const client: IUserResponse | null = user;
     const totalWeight: number = listDishesFromCart.reduce(
         (accumulator: number, item: IDishFromCart | undefined) =>
             accumulator + (item?.weight|| 0) * (item?.quantity || 0), 0
     );
+
+    const listDishesFromOrder: IDishFromOrderResponse[] = listDishesFromCart.map((dish) => {
+        return{
+            dishId: dish.id,
+            dishName: dish.name,
+            quantity: dish.quantity,
+        }
+    })
+
 
     const onFinish = (values: IDeliveryInfo) => {
         let order: IOrderResponse = {
@@ -34,7 +41,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
             clientId: client?.id ?? 0,
             totalPrice: totalPrice,
             totalWeight: totalWeight,
-            listDishes: listDishesFromCart
+            listDishesFromOrder: listDishesFromOrder
         };
         OrderService.createOrder(order);
     };

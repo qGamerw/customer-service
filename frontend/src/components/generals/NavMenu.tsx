@@ -54,10 +54,10 @@ const NavigationMenu: FC = () => {
                                 <Link to="/user?tab=profile">Профиль</Link>
                             </Menu.Item>
                             <Menu.Item key="delivery">
-                                <Link to="/user?tab=delivery">Доставка</Link>
+                                <Link to="/user?tab=delivery">Текущие доставки</Link>
                             </Menu.Item>
                             <Menu.Item key="order">
-                                <Link to="/user?tab=order">Заказы</Link>
+                                <Link to="/user?tab=order">История заказов</Link>
                             </Menu.Item>
                         </Menu.SubMenu>
                     ) : (

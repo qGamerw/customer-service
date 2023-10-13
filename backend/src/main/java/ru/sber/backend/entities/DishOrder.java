@@ -4,7 +4,7 @@ package ru.sber.backend.entities;
 import lombok.Data;
 
 @Data
-public class DishResponse {
+public class DishOrder {
 
     private Long dishId;
 

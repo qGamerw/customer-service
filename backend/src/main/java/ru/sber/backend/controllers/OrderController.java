@@ -29,9 +29,9 @@ public class OrderController {
      */
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<?>> getOrdersByClientId(@PathVariable Long clientId) {
-        log.info("Выводим историю пользователя с id: {}", clientId);
+        log.info("Обращаемся к серверу заказов для получения истории пользователя с id: {}", clientId);
         List<?> listOrders = orderServiceClient.getOrdersByClientId(clientId);
-
+        log.info("Выводим историю пользователя с id: {} История: {}", clientId, listOrders);
         return ResponseEntity.ok().body(listOrders);
     }
 

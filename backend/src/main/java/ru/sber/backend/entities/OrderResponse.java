@@ -1,5 +1,8 @@
 package ru.sber.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,6 +19,10 @@ public class OrderResponse {
 
     private String clientPhoneNumber;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime orderTime;
+
     private BigDecimal totalPrice;
 
     private Integer totalWeight;
@@ -30,6 +37,8 @@ public class OrderResponse {
 
     private Integer frontDoor;
 
-    private List<DishResponse> dishes; //доделать
+    private String status;
+
+    private List<DishOrder> listDishesFromOrder;
 
 }

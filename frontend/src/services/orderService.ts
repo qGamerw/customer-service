@@ -10,7 +10,7 @@ const API_URL = "/orders";
 const getOrders = (userId: number, dispatch: AppDispatch) => {
     return axios.get(API_URL+`/client/${userId}`, {headers: authHeader()}).then(
         (response: AxiosResponse<IOrderFromHistory[]>) => {
-            console.log(`${API_URL}/client/${userId}`, {headers: authHeader()})
+            console.log(response.data)
             dispatch(setOrders(response.data));
         },
         (error) => {
@@ -30,7 +30,7 @@ const createOrder = (order: IOrderResponse) => {
     return axios.post(API_URL, order, {headers: authHeader()}).then(
         (response) => {
             console.log("Создан заказ {}", response)
-            // getOrders(order.clientId, dispatch)
+
         },
         (error) => {
             const _content = (error.response && error.response.data) ||

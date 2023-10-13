@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderServiceClient {
 
     @GetMapping(value = "/client/{clientId}", produces = "application/json")
-    List<?> getOrdersByClientId(@PathVariable Long clientId);
+    List<OrderResponse> getOrdersByClientId(@PathVariable Long clientId);
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     OrderResponse createOrder(@RequestBody OrderResponse orderResponse);
