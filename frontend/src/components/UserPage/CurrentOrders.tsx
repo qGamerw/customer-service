@@ -1,4 +1,4 @@
-import {Card, Space} from "antd";
+import { Space} from "antd";
 import React, {FC, useEffect} from "react";
 import './styles/DeliveryCard.css';
 import {IOrderFromHistory} from "../../types/types";

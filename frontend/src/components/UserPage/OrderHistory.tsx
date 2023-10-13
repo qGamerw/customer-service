@@ -16,7 +16,6 @@ const OrderHistory: FC<OrderHistory> =
     const client = user;
     const dispatch = useAppDispatch();
 
-        console.log(listOrdersFromHistory)
 
     useEffect(() => {
         const getCart = () => {

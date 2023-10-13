@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Button, Form, Input, InputNumber, Radio} from 'antd';
+import {Button, Form, Input, InputNumber} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
 import {IDeliveryInfo, IDishFromCart, IDishFromOrderResponse, IOrderResponse, IUserResponse} from "../../types/types";
@@ -12,13 +12,6 @@ interface DeliveryForm {
 }
 const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
 
-    const [username, setUsername] = useState<string>('');
-    const [address, setAddress] = useState<string>('');
-    const [flat, setFlat] = useState<number>(0);
-    const [floor, setFloor] = useState<number>(0);
-    const [frontDoor, setFrontDoor] = useState<number>(0);
-    const [phoneNumber, setPhoneNumber] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
 
     const client: IUserResponse | null = user;
     const totalWeight: number = listDishesFromCart.reduce(
@@ -55,7 +48,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     name="clientName"
                     rules={[{required: true, message: 'Пожалуйста, введите ваше имя!'}]}
                 >
-                    <Input value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    <Input placeholder="Введите имя"/>
                 </Form.Item>
                 <Form.Item
                     label="Адрес:"
@@ -63,7 +56,6 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     rules={[{required: true, message: 'Пожалуйста, введите ваш адрес!'}]}
                 >
                     <Input
-                        value={address} onChange={(e) => setAddress(e.target.value)}
                         placeholder="Введите улицу и номер дома"
                     />
                 </Form.Item>
@@ -72,8 +64,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     name="flat"
                     rules={[{required: true, message: 'Пожалуйста, введите номер квартиры'}]}
                 >
-                    <InputNumber
-                        value={flat} onChange={(flat) => setFlat(flat ?? 0)}
+                    <InputNumber placeholder="Квартира"
                     />
                 </Form.Item>
                 <Form.Item
@@ -81,8 +72,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     name="floor"
                     rules={[{required: true, message: 'Пожалуйста, введите этаж'}]}
                 >
-                    <InputNumber
-                        value={floor} onChange={(floor) => setFloor(floor ?? 0)}
+                    <InputNumber placeholder="Этаж"
                     />
                 </Form.Item>
                 <Form.Item
@@ -90,8 +80,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     name="frontDoor"
                     rules={[{required: true, message: 'Пожалуйста, введите номер подъезда'}]}
                 >
-                    <InputNumber
-                        value={frontDoor} onChange={(e) => setFrontDoor(frontDoor ?? 0)}
+                    <InputNumber placeholder="Подъезд"
                     />
                 </Form.Item>
                 <Form.Item
@@ -110,8 +99,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     name="description"
                 >
                     <TextArea
-                        value={description} onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Ваше пожелание"
+                        placeholder="Ваши пожелания"
                     />
                 </Form.Item>
                 <Form.Item>
