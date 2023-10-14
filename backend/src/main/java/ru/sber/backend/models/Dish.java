@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 /**
  * Блюдо
  */
-
 @AllArgsConstructor
 @Data
 public class Dish {

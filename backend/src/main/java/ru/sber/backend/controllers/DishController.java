@@ -10,6 +10,9 @@ import ru.sber.backend.models.Dish;
 
 import java.util.List;
 
+/**
+ * Контроллер для получения информации от ресторана
+ */
 @Slf4j
 @RestController
 @RequestMapping("/dishes")

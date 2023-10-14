@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Заказ с ограниченной информацией
+ */
 @Data
 @AllArgsConstructor
 public class OrderResponse {

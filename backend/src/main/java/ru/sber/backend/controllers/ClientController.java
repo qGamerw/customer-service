@@ -10,7 +10,9 @@ import ru.sber.backend.services.ClientService;
 
 import java.util.Optional;
 
-
+/**
+ * Контроллер для обработки запросов к клиенту
+ */
 @Slf4j
 @RestController
 @RequestMapping("clients")

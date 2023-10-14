@@ -6,6 +6,9 @@ import ru.sber.backend.models.Dish;
 
 import java.util.List;
 
+/**
+ * Интерфейс для взаимодействия с сервисом ресторана
+ */
 @FeignClient(value = "feignDishes", url = "http://localhost:8081/dishes")
 public interface RestaurantServiceClient {
 

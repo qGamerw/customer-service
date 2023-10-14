@@ -8,6 +8,9 @@ import ru.sber.backend.entities.enums.ERole;
 
 import java.util.Optional;
 
+/**
+ * Репозиторий для взаимодействия с ролями клиентов
+ */
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
     /**

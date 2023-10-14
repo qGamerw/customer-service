@@ -6,6 +6,9 @@ import ru.sber.backend.entities.User;
 
 import java.util.Optional;
 
+/**
+ * Репозиторий для взаимодействия с клиентом
+ */
 @Repository
 public interface ClientRepository extends JpaRepository<User, Long> {
     /**

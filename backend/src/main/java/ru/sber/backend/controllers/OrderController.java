@@ -9,6 +9,9 @@ import ru.sber.backend.models.OrderResponse;
 
 import java.util.List;
 
+/**
+ * Контроллер для обработки запросов к заказу клиента
+ */
 @Slf4j
 @RestController
 @RequestMapping("/orders")
@@ -35,6 +38,12 @@ public class OrderController {
         return ResponseEntity.ok().body(listOrders);
     }
 
+    /**
+     * Создает заказ
+     *
+     * @param order заказ клиента
+     * @return статус запроса
+     */
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderResponse order) {
         log.info("Создает заказ клиента {}", order);

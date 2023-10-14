@@ -6,6 +6,9 @@ import ru.sber.backend.models.OrderResponse;
 
 import java.util.List;
 
+/**
+ * Интерфейс для взаимодействия с сервисом заказов
+ */
 @FeignClient(value = "feignOrders", url = "http://localhost:8083/orders")
 public interface OrderServiceClient {
 

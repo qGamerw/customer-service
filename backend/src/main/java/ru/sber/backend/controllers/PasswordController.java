@@ -15,17 +15,22 @@ import ru.sber.backend.entities.User;
 import ru.sber.backend.services.ClientService;
 import ru.sber.backend.services.EmailService;
 
+/**
+ * Контроллер для сброса и изменения пароля аккаунта клиента
+ */
 @RestController
 public class PasswordController {
 
-    @Autowired
-    private ClientService userService;
+    private final ClientService userService;
+    private final EmailService emailService;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private PasswordEncoder bCryptPasswordEncoder;
+    public PasswordController(ClientService userService, EmailService emailService, PasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.emailService = emailService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     /**
      * Отправляет ссылку для сброса пароля на почту пользователя

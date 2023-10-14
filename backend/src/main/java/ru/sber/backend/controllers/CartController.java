@@ -9,6 +9,9 @@ import ru.sber.backend.services.CartService;
 
 import java.util.List;
 
+/**
+ * Контроллер для обработки запросов к корзине клиента
+ */
 @Slf4j
 @RestController
 @RequestMapping("cart")

@@ -6,6 +6,9 @@ import ru.sber.backend.entities.User;
 
 import java.util.Date;
 
+/**
+ * Клиент с ограниченной информацией
+ */
 @Data
 @AllArgsConstructor
 public class UserResponse {
