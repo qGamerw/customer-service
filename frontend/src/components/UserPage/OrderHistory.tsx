@@ -30,7 +30,7 @@ const OrderHistory: FC<OrderHistory> =
                         {listOrdersFromHistory.map((order) => (
                             <OrderBlock
                                 order={order}
-                                key={order.id}
+                                key={order.clientId}
                             />
                         ))}
                     </Space>

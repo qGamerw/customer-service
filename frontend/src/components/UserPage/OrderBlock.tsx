@@ -1,12 +1,12 @@
-import { Card } from 'antd';
-import React, { FC } from 'react';
-import { IOrderFromHistory} from '../../types/types';
+import {Card} from 'antd';
+import React, {FC} from 'react';
+import {IOrderFromHistory} from '../../types/types';
 
 interface OrderBlockProps {
     order: IOrderFromHistory;
 }
 
-const OrderBlock: FC<OrderBlockProps> = ({ order }) => {
+const OrderBlock: FC<OrderBlockProps> = ({order}) => {
     return (
         <div className="orderBlock">
             <Card hoverable className="orderBlock__card">

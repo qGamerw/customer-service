@@ -4,6 +4,9 @@ import ru.sber.backend.entities.CartItem;
 
 import java.util.List;
 
+/**
+ * Сервис для взаимодействия с корзиной клиента
+ */
 public interface CartService {
     /**
      * Добавление блюда в корзину

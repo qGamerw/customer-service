@@ -1,4 +1,4 @@
-import { Space} from "antd";
+import {Space} from "antd";
 import React, {FC, useEffect} from "react";
 import './styles/DeliveryCard.css';
 import {IOrderFromHistory} from "../../types/types";
@@ -10,6 +10,7 @@ import {useAppDispatch} from "../../hooks";
 interface CurrentOrders {
     listOfCurrentOrders: IOrderFromHistory[];
 }
+
 const CurrentOrders: FC<CurrentOrders> = ({listOfCurrentOrders}) => {
     const dispatch = useAppDispatch();
     const client = user;

@@ -11,12 +11,14 @@ import './styles/NavMenu.css';
 import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
 import {user} from "../../constants/constants";
+import ResetPassword from "../../pages/ResetPassword";
+import ForgotPassword from "../../pages/ForgotPassword";
 
 const NavigationMenu: FC = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
-                setIsUserAuthenticated(user != null);
+        setIsUserAuthenticated(user != null);
     }, []);
 
 
@@ -24,23 +26,23 @@ const NavigationMenu: FC = () => {
         <div>
             <div className="navigationMenu">
                 <Menu mode="horizontal">
-                        <Menu.SubMenu key="restaurant-menu" title="Меню" icon={<MenuOutlined/>}>
-                            <Menu.Item key="category:1">
-                                <Link to="/" state={{anchorId: 'category:1'}}>Салаты</Link>
-                            </Menu.Item>
-                            <Menu.Item key="category:2">
-                                <Link to="/" state={{anchorId: 'category:2'}}>Роллы</Link>
-                            </Menu.Item>
-                            <Menu.Item key="category:3">
-                                <Link to="/" state={{anchorId: 'category:3'}}>Вторые блюда</Link>
-                            </Menu.Item>
-                            <Menu.Item key="category:4">
-                                <Link to="/" state={{anchorId: 'category:4'}}>Пицца</Link>
-                            </Menu.Item>
-                            <Menu.Item key="category:5">
-                                <Link to="/" state={{anchorId: 'category:5'}}>Напитки</Link>
-                            </Menu.Item>
-                        </Menu.SubMenu>
+                    <Menu.SubMenu key="restaurant-menu" title="Меню" icon={<MenuOutlined/>}>
+                        <Menu.Item key="category:1">
+                            <Link to="/" state={{anchorId: 'category:1'}}>Салаты</Link>
+                        </Menu.Item>
+                        <Menu.Item key="category:2">
+                            <Link to="/" state={{anchorId: 'category:2'}}>Роллы</Link>
+                        </Menu.Item>
+                        <Menu.Item key="category:3">
+                            <Link to="/" state={{anchorId: 'category:3'}}>Вторые блюда</Link>
+                        </Menu.Item>
+                        <Menu.Item key="category:4">
+                            <Link to="/" state={{anchorId: 'category:4'}}>Пицца</Link>
+                        </Menu.Item>
+                        <Menu.Item key="category:5">
+                            <Link to="/" state={{anchorId: 'category:5'}}>Напитки</Link>
+                        </Menu.Item>
+                    </Menu.SubMenu>
                     <Menu.Item key="cart" icon={<ShoppingCartOutlined/>}>
                         {isUserAuthenticated ? (
                             <Link to="/cart">Корзина</Link>
@@ -86,6 +88,8 @@ const NavigationMenu: FC = () => {
                     </>
                 )}
                 <Route path="*" element={<NotFoundPage/>}/>
+                <Route path="/forgot" element={<ForgotPassword/>}/>
+                <Route path="/reset" element={<ResetPassword/>}/>
             </Routes>
         </div>
     );

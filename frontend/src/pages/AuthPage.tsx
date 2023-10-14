@@ -81,7 +81,7 @@ const AuthPage: FC = () => {
                             </Form.Item>
                         </Form>
                         <p style={{fontSize: '18px', textAlign: 'center'}}>Забыли пароль? <Link
-                            to="/recovery">Восстановите</Link></p>
+                            to="/forgot">Восстановите</Link></p>
                     </div>
                 </div>
             </Card>

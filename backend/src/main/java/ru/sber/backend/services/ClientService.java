@@ -5,6 +5,9 @@ import ru.sber.backend.entities.User;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Сервис для взаимодействия с пользователем
+ */
 public interface ClientService {
     /**
      * Регистрирует пользователя
@@ -56,4 +59,12 @@ public interface ClientService {
      * @return true, если информация о клиенте успешно обновлена
      */
     boolean updateClientInfo(long clientId, String name, Date dateOfBirth, String number);
+
+    /**
+     * Ищет клиента по токену для сброса пароля
+     *
+     * @param resetToken токен для сброса пароля
+     * @return пользователь
+     */
+    Optional<User> findUserByResetToken(String resetToken);
 }
