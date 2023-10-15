@@ -1,15 +1,15 @@
-import { Button, Card, Modal, message } from 'antd';
-import React, { FC, useState } from 'react';
-import { IOrderFromHistory } from '../../types/types';
+import {Button, Card, Modal, message} from 'antd';
+import React, {FC, useState} from 'react';
+import {IOrderFromHistory} from '../../types/types';
 import TextArea from 'antd/es/input/TextArea';
 import orderService from '../../services/orderService';
-import {useAppDispatch} from "../../hooks";
+import {useAppDispatch} from '../../hooks';
 
 interface OrderBlockProps {
     order: IOrderFromHistory;
 }
 
-const OrderBlock: FC<OrderBlockProps> = ({ order }) => {
+const OrderBlock: FC<OrderBlockProps> = ({order}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
     const dispatch = useAppDispatch();
@@ -59,7 +59,16 @@ const OrderBlock: FC<OrderBlockProps> = ({ order }) => {
                             </li>
                         ))}
                     </ul>
-                    <Button onClick={showModal}>Отменить заказ</Button>
+                    {order.status === 'CANCELLED' ? (
+                        <p></p>
+                    ) : (
+                        <Button
+                            style={{backgroundColor: 'red'}}
+                            type="primary"
+                            onClick={showModal}>
+                            Отменить заказ
+                        </Button>
+                    )}
                 </div>
             </Card>
             <Modal
@@ -78,4 +87,4 @@ const OrderBlock: FC<OrderBlockProps> = ({ order }) => {
     );
 };
 
-export { OrderBlock };
+export {OrderBlock};
