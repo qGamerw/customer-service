@@ -14,7 +14,7 @@ const Header: FC = () => {
     }, []);
 
     const getUserGeolocationDetails = () => {
-        fetch('https://ipinfo.io/5.144.76.96?token=a704a8e6e2bc35')
+        fetch('http://ipwho.is/')
             .then((response) => response.json())
             .then((data) => setDetails(data));
     };

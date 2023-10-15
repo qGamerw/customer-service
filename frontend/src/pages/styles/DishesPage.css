@@ -4,13 +4,15 @@
     align-items: center;
     min-height: 100vh;
     flex: 1;
+    position: relative;
 }
 
-.dishPage__content{
+.dishPage__content {
     max-width: 85%;
     margin-top: 20px;
     background-color: #fff;
     flex-wrap: wrap;
+    flex-grow: 1;
 }
 
 .dishPage__content_p {

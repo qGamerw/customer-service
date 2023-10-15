@@ -1,12 +1,12 @@
 .cardDish {
-    width: auto;
+    width: 400px;
     box-shadow: 1px 2px 4px gray;
     border-radius: 10%;
     height: auto;
 }
 
 .cardDish__image {
-    width: auto;
+    width: 400px;
     border-radius: 10%;
     height: 270px;
     cursor: pointer;
