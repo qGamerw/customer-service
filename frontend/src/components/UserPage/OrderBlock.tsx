@@ -59,7 +59,7 @@ const OrderBlock: FC<OrderBlockProps> = ({order}) => {
                             </li>
                         ))}
                     </ul>
-                    {order.status === 'CANCELLED' ? (
+                    {order.status === "COMPLETED" || order.status === 'CANCELLED' ? (
                         <p></p>
                     ) : (
                         <Button
