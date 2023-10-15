@@ -37,6 +37,10 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
             listDishesFromOrder: listDishesFromOrder
         };
         OrderService.createOrder(order);
+        const reloadTime = 1;
+        setTimeout(() => {
+            window.location.reload();
+        }, reloadTime);
     };
 
     return (

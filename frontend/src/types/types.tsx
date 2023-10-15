@@ -46,7 +46,7 @@ export interface IDeliveryInfo {
     frontDoor: number;
 }
 
-export interface IOrderFromHistory extends IDeliveryInfo{
+export interface IOrderFromHistory extends IDeliveryInfo {
     id: number;
     clientId: number;
     totalPrice: number;
@@ -57,14 +57,14 @@ export interface IOrderFromHistory extends IDeliveryInfo{
     refusalReason: string | null;
 }
 
-export interface IOrderResponse extends IDeliveryInfo{
+export interface IOrderResponse extends IDeliveryInfo {
     clientId: number;
     totalPrice: number;
     totalWeight: number;
     listDishesFromOrder: IDishFromOrderResponse[];
 }
 
-export interface IUser{
+export interface IUser {
     id: number;
     username: string;
     number: string;

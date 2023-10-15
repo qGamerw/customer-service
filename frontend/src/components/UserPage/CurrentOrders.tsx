@@ -2,7 +2,7 @@ import {Space} from "antd";
 import React, {FC, useEffect} from "react";
 import './styles/DeliveryCard.css';
 import {IOrderFromHistory} from "../../types/types";
-import OrderBlock from "./OrderBlock";
+import {OrderBlock} from "./OrderBlock";
 import OrderService from "../../services/orderService";
 import {user} from "../../constants/constants";
 import {useAppDispatch} from "../../hooks";

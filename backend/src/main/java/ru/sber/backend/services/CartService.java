@@ -27,6 +27,13 @@ public interface CartService {
     boolean deleteDish(long cartId, long dishId);
 
     /**
+     * Удаляет все блюда из корзины по id клиента
+     *
+     * @param clientId Уникальный идентификатор клиента
+     */
+    void deleteAllDish(long clientId);
+
+    /**
      * Изменение количества блюда в корзине
      *
      * @param clientId   Уникальный идентификатор пользователя

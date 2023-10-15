@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.orders.OrderServiceClient;
 import ru.sber.backend.models.OrderResponse;
+import ru.sber.backend.services.CartService;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ import java.util.List;
 public class OrderController {
 
     private final OrderServiceClient orderServiceClient;
+    private final CartService cartService;
 
     @Autowired
-    public OrderController(OrderServiceClient orderServiceClient) {
+    public OrderController(OrderServiceClient orderServiceClient, CartService cartService) {
         this.orderServiceClient = orderServiceClient;
+        this.cartService = cartService;
     }
 
     /**
@@ -48,7 +51,26 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderResponse order) {
         log.info("Создает заказ клиента {}", order);
         OrderResponse createdOrder = orderServiceClient.createOrder(order);
+        long clientId = order.getClientId();
+        cartService.deleteAllDish(clientId);
 
         return ResponseEntity.ok().body(createdOrder);
     }
+
+    /**
+     * Отменяет заказ по его ID
+     *
+     * @param orderId      ID заказа, который нужно отменить
+     * @param cancelReason Причина отмены заказа
+     * @return статус выполнения операции
+     */
+    @PutMapping("/{orderId}/cancel")
+    public ResponseEntity<?> cancelOrder(@PathVariable Long orderId, @RequestBody String cancelReason) {
+        log.info("Отменяет заказ с id: {}", orderId);
+
+        orderServiceClient.cancelOrder(orderId, cancelReason);
+
+        return ResponseEntity.accepted().build();
+    }
+
 }

@@ -17,6 +17,9 @@ public interface OrderServiceClient {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     OrderResponse createOrder(@RequestBody OrderResponse orderResponse);
+
+    @PutMapping(value = "/{orderId}/cancel", consumes = "application/json")
+    void cancelOrder(@PathVariable Long orderId, @RequestBody String cancelReason);
 }
 
 

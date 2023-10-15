@@ -66,12 +66,17 @@ public class CartServiceImpl implements CartService {
         return false;
     }
 
-
     @Override
     @Transactional
     public boolean deleteDish(long cartId, long dishId) {
         cartItemRepository.deleteCartItemByCartIdAndDishId(cartId, dishId);
         return true;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllDish(long clientId) {
+        cartItemRepository.deleteAll();
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 import axios, {AxiosResponse} from "axios";
 import {setOrders} from "../slices/ordersSlice";
 import authHeader from "./auth-header";
@@ -8,7 +7,7 @@ import {IOrderFromHistory, IOrderResponse} from "../types/types";
 const API_URL = "/orders";
 
 const getOrders = (userId: number, dispatch: AppDispatch) => {
-    return axios.get(API_URL+`/client/${userId}`, {headers: authHeader()}).then(
+    return axios.get(API_URL + `/client/${userId}`, {headers: authHeader()}).then(
         (response: AxiosResponse<IOrderFromHistory[]>) => {
             console.log(response.data)
             dispatch(setOrders(response.data));
@@ -40,25 +39,25 @@ const createOrder = (order: IOrderResponse) => {
             console.error(_content)
         });
 };
-//
-// const cancelOrder = (order, dispatch: AppDispatch) => {
-//     return axios.put(API_URL, order, {headers: authHeader()}).then(
-//         (response) => {
-//             getOrders(dispatch)
-//         },
-//         (error) => {
-//             const _content = (error.response && error.response.data) ||
-//                 error.message ||
-//                 error.toString();
-//
-//             console.error(_content)
-//         });
-// };
+
+const cancelOrder = (userId: number, orderId: number, message: string, dispatch: AppDispatch) => {
+    return axios.put(`${API_URL}/${orderId}/cancel`, {orderId, message}, {headers: authHeader()}).then(
+        (response) => {
+            getOrders(userId, dispatch);
+        },
+        (error) => {
+            const _content = (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+            console.error(_content);
+        }
+    );
+};
 
 const orderService = {
     getOrders,
     createOrder,
-    // cancelOrder,
+    cancelOrder,
 };
 
 export default orderService
