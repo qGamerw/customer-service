@@ -1,8 +1,15 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import './styles/Footer.css';
+import {user} from "../../constants/constants";
 
 const Footer: FC = () => {
+    const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsUserAuthenticated(user != null);
+    }, []);
+
     return (
         <footer className="footer">
             <div className="footer__menu">
@@ -43,13 +50,25 @@ const Footer: FC = () => {
                             <RouterLink to="/cart">Корзина</RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/user?tab=profile">Профиль</RouterLink>
+                            {isUserAuthenticated ? (
+                                <RouterLink to="/user?tab=profile">Профиль</RouterLink>
+                            ) : (
+                                <RouterLink to="/api/auth/signin">Профиль</RouterLink>
+                            )}
                         </li>
                         <li>
-                            <RouterLink to="/user?tab=delivery">Текущие доставки</RouterLink>
+                            {isUserAuthenticated ? (
+                                <RouterLink to="/user?tab=delivery">Текущие доставки</RouterLink>
+                            ) : (
+                                <RouterLink to="/api/auth/signin">Текущие доставки</RouterLink>
+                            )}
                         </li>
                         <li>
-                            <RouterLink to="/user?tab=order">История заказов</RouterLink>
+                            {isUserAuthenticated ? (
+                                <RouterLink to="/user?tab=order">История заказов</RouterLink>
+                            ) : (
+                                <RouterLink to="/api/auth/signin">История заказов</RouterLink>
+                            )}
                         </li>
                     </ul>
                 </div>
