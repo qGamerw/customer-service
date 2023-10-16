@@ -60,8 +60,8 @@ const CartPage: FC = () => {
 
         return (
             <div className="cartPage">
-                <div className="cartPage-content">
-                    <h2>Корзина</h2>
+                <div className="cartPage--content">
+                    <h2 className="cartPage--content--title-cart">Корзина</h2>
                     {isCartEmpty ? (
                         <div className={"cartEmpty"}>
                             <h2>Ваша корзина пуста :(</h2>
@@ -79,13 +79,16 @@ const CartPage: FC = () => {
                         </div>
                     ) : (
                         <div>
-                            <ListDishesFromCart dishes={listDishesFromCart}/>
-                            <div className="cartPage-content-delivery">
-                                <DeliveryForm listDishesFromCart = {listDishesFromCart} totalPrice={totalPrice} />
-                            </div>
-                            <div className="cartPage-content-payment">
-                                <Payment totalPrice={totalPrice}/>
-                            </div>
+                            <div className="border-bottom-container"><ListDishesFromCart dishes={listDishesFromCart}/></div>
+
+                            <Payment totalPrice={totalPrice}>
+                                <div className="border-bottom-container">
+                                    <DeliveryForm
+                                        listDishesFromCart={listDishesFromCart}
+                                        totalPrice={totalPrice}
+                                    />
+                                </div>
+                            </Payment>
                         </div>
                     )}
                 </div>

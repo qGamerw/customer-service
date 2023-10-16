@@ -51,7 +51,8 @@ const ModalCardDish: FC<ModalCardDishProps> =
                             alt={'Фото ' + dish.name}
                             style={{
                                 width: "100%",
-                                height: "auto",
+                                height: "400px",
+                                maxHeight: "400px",
                                 maxWidth: "500px",
                             }}
                         />

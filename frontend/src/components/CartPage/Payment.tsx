@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import { Checkbox} from 'antd';
+import {Checkbox} from 'antd';
 import {Link} from 'react-router-dom';
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';
@@ -7,11 +7,13 @@ import StripeCheckout, {Token} from 'react-stripe-checkout';
 
 interface PaymentProps {
     totalPrice: number;
+    children?: React.ReactNode;
 }
 
 const Payment: FC<PaymentProps> =
     ({
-         totalPrice
+         totalPrice,
+         children
      }) => {
         const [checkBoxOffer, setCheckBoxOffer] = useState<boolean>(true);
         const currentTime: Date = new Date();
@@ -46,34 +48,40 @@ const Payment: FC<PaymentProps> =
             }
         }, [checkBoxOffer]);
 
+
         return (
             <div>
-                <h2>Оплата</h2>
-                <Checkbox
-                    checked={checkBoxOffer}
-                    onChange={() => {
-                        setCheckBoxOffer(!checkBoxOffer);
-                    }}
-                >
-                    Соглашаюсь на распространение указанных в заказе персональных данных третьим лицам. С условиями{' '}
-                    <Link to={'https://p.finance/pdf/offer_ru.pdf'}>Публичной оферты</Link> ознакомлен.
-                </Checkbox>
-                {!checkBoxOffer && (
-                    <div>
-                        <span style={{color: 'red'}}>Необходимо подтвердить согласие с условиями публичной оферты</span>
-                    </div>
-                )}
-                <h4>Доставим до: {formattedTime}</h4>
-                <h3>К оплате: {totalPrice} ₽</h3>
-                <StripeCheckout
-                    label="Оплатить"
-                    token={onToken}
-                    name="Оплата заказа"
-                    currency="RUB"
-                    amount={totalPrice * 100}
-                    locale="auto"
-                    stripeKey={stripePublishableKey}
-                />
+                {children}
+                <div className="cartPage--content--payment">
+                    <h2>Оплата</h2>
+                    <Checkbox
+                        checked={checkBoxOffer}
+                        onChange={() => {
+                            setCheckBoxOffer(!checkBoxOffer);
+                        }}
+                    >
+                        Соглашаюсь на распространение указанных в заказе персональных данных третьим лицам. С
+                        условиями{' '}
+                        <Link to={'https://p.finance/pdf/offer_ru.pdf'}>Публичной оферты</Link> ознакомлен.
+                    </Checkbox>
+                    {!checkBoxOffer && (
+                        <div>
+                            <span
+                                style={{color: 'red'}}>Необходимо подтвердить согласие с условиями публичной оферты</span>
+                        </div>
+                    )}
+                    <h4>Доставим до: {formattedTime}</h4>
+                    <h3>К оплате: {totalPrice} ₽</h3>
+                    <StripeCheckout
+                        label="Оплатить"
+                        token={onToken}
+                        name="Оплата заказа"
+                        currency="RUB"
+                        amount={totalPrice * 100}
+                        locale="auto"
+                        stripeKey={stripePublishableKey}
+                    />
+                </div>
             </div>
         );
     };

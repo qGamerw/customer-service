@@ -2,18 +2,25 @@ import React, {FC} from 'react';
 import {Button, Form, Input, InputNumber} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
-import {IDeliveryInfo, IDishFromCart, IDishFromOrderResponse, IOrderResponse, IUserResponse} from "../../types/types";
+import {
+    IDeliveryInfo,
+    IDishFromCart,
+    IDishFromOrderResponse,
+    IOrderResponse,
+    IUserResponse
+} from "../../types/types";
 import {user} from "../../constants/constants";
 import OrderService from "../../services/orderService";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 interface DeliveryForm {
     listDishesFromCart: IDishFromCart[];
     totalPrice: number;
 }
 const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
-
-
-    const client: IUserResponse | null = user;
+    // const client: IUserResponse | null = user;
+    const dispatch = useAppDispatch();
+    const lastOrderId: number = useAppSelector((state) => state.orders.lastOrderId);
     const totalWeight: number = listDishesFromCart.reduce(
         (accumulator: number, item: IDishFromCart | undefined) =>
             accumulator + (item?.weight|| 0) * (item?.quantity || 0), 0
@@ -27,16 +34,23 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
         }
     })
 
+    const handlePayment = () => {
+        OrderService.paymentOfOrderById(user?.id ?? 0, 5, dispatch)
+
+    }
 
     const onFinish = (values: IDeliveryInfo) => {
         let order: IOrderResponse = {
             ...values,
-            clientId: client?.id ?? 0,
+            clientId: user?.id ?? 0,
             totalPrice: totalPrice,
-            totalWeight: totalWeight,
+            weight: totalWeight,
             listDishesFromOrder: listDishesFromOrder
         };
-        OrderService.createOrder(order);
+            OrderService.createOrder(order, dispatch).then((orderId) => {
+            console.log(orderId)
+        })
+
         const reloadTime = 1;
         setTimeout(() => {
             window.location.reload();
@@ -44,7 +58,7 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
     };
 
     return (
-        <div>
+        <div className="cartPage--content--delivery">
             <h2>Информация о доставке</h2>
             <Form name="deliveryForm" onFinish={onFinish}>
                 <Form.Item
@@ -112,6 +126,9 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                     </Button>
                 </Form.Item>
             </Form>
+            <Button type="primary" onClick={handlePayment}>
+                Оплатить
+            </Button>
         </div>
     );
 };

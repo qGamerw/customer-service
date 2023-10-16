@@ -1,13 +1,9 @@
 package ru.sber.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,13 +20,11 @@ public class OrderResponse {
 
     private String clientPhoneNumber;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime orderTime;
+    private String orderTime;
 
     private BigDecimal totalPrice;
 
-    private Integer totalWeight;
+    private Integer weight;
 
     private String description;
 

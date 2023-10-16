@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 import {Pagination} from 'antd';
 import CardDishFromCart from './CardDishFromCart';
 import {IDishFromCart} from "../../types/types";
-
+import "../../pages/styles/CartPage.css"
 interface ListDishesFromCart {
     dishes: IDishFromCart[];
 }
@@ -18,14 +18,14 @@ const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
     };
 
     return (
-        <div>
+        <div className="cartPage--content--ListDishesFromCart">
             <div style={{
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "30px",
                 flexWrap: "wrap",
                 height: "400",
-                margin: "10px"
+                marginBottom: "20px",
             }}>
                 {itemsToDisplay.map((dish) => (
                     <CardDishFromCart dish={dish} key={dish.id}/>

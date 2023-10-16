@@ -50,7 +50,6 @@ export interface IOrderFromHistory extends IDeliveryInfo {
     id: number;
     clientId: number;
     totalPrice: number;
-    totalWeight: number;
     listDishesFromOrder: IDishFromOrderHistory[];
     status: string;
     orderTime: string;
@@ -60,7 +59,7 @@ export interface IOrderFromHistory extends IDeliveryInfo {
 export interface IOrderResponse extends IDeliveryInfo {
     clientId: number;
     totalPrice: number;
-    totalWeight: number;
+    weight: number;
     listDishesFromOrder: IDishFromOrderResponse[];
 }
 

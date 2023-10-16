@@ -26,7 +26,6 @@ const OrderBlock: FC<OrderBlockProps> = ({order}) => {
             orderService
                 .cancelOrder(userId, orderId, cancelReason, dispatch)
                 .then(() => {
-                    orderService.getOrders(userId, dispatch);
                     setIsModalVisible(false);
                     message.success('Заказ успешно отменен');
                 })
@@ -73,7 +72,7 @@ const OrderBlock: FC<OrderBlockProps> = ({order}) => {
             </Card>
             <Modal
                 title="Причина отмены заказа"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >

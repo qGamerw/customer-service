@@ -34,9 +34,9 @@ public class OrderController {
      * @return получение списка заказов клиента
      */
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<?> getOrdersByClientId(@PathVariable Long clientId) {
+    public ResponseEntity<List<OrderResponse>> getOrdersByClientId(@PathVariable Long clientId) {
         log.info("Обращаемся к серверу заказов для получения истории пользователя с id: {}", clientId);
-        List<?> listOrders = orderServiceClient.getOrdersByClientId(clientId);
+        List<OrderResponse> listOrders = orderServiceClient.getOrdersByClientId(clientId);
         log.info("Выводим историю пользователя с id: {} История: {}", clientId, listOrders);
         return ResponseEntity.ok().body(listOrders);
     }
@@ -48,13 +48,23 @@ public class OrderController {
      * @return статус запроса
      */
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderResponse order) {
-        log.info("Создает заказ клиента {}", order);
-        OrderResponse createdOrder = orderServiceClient.createOrder(order);
+    public ResponseEntity<Long> createOrder(@RequestBody OrderResponse order) {
+        log.info("Создаем заказ клиента {}", order);
+        Long idCreatedOrder = orderServiceClient.createOrder(order);
+        log.info("Id созданного заказа: {}", idCreatedOrder);
         long clientId = order.getClientId();
+        log.info("Очищаем корзину пользователся с Id: {}", clientId);
         cartService.deleteAllDish(clientId);
+        return ResponseEntity.ok().body(idCreatedOrder);
+    }
 
-        return ResponseEntity.ok().body(createdOrder);
+    @PutMapping("/{orderId}/payment")
+    public ResponseEntity<?> paymentOfOrderById(@PathVariable Long orderId){
+        log.info("Оплачиваем заказ  с id {}", orderId);
+
+        orderServiceClient.paymentOfOrderById(orderId);
+
+        return ResponseEntity.accepted().build();
     }
 
     /**
