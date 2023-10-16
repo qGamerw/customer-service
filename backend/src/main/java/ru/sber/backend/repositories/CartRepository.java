@@ -6,6 +6,9 @@ import ru.sber.backend.entities.Cart;
 
 import java.util.Optional;
 
+/**
+ * Репозиторий для взаимодействия с корзиной клиента
+ */
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findCartByClient_Id(long clientId);

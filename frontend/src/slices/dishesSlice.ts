@@ -1,23 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {IDish} from "../types/types";
 
-interface Dish {
-    id: number;
-    name: string;
-    description: string;
-    urlImage: string;
-    category: {
-        id: number;
-        category: string;
-    };
-    price: number;
-    weight: number;
+interface DishesState {
+    dishes: IDish[];
 }
 
-interface DishState {
-    dishes: Dish[];
-}
-
-const initialState: DishState = {
+const initialState: DishesState = {
     dishes: [],
 };
 
@@ -25,7 +13,7 @@ export const dishesSlice = createSlice({
     name: 'dishes',
     initialState: initialState,
     reducers: {
-        setDishes: (state, action: PayloadAction<Dish[]>) => {
+        setDishes: (state, action: PayloadAction<IDish[]>) => {
             state.dishes = action.payload;
         }
     },

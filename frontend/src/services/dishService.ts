@@ -1,11 +1,13 @@
 import axios from "axios";
 import {setDishes} from "../slices/dishesSlice";
+import {AppDispatch} from "../store";
 
-const API_URL = "/dishes";
+const API_URL: string = "/dishes";
 
-const getDishes = (dispatch) => {
+const getDishes = (dispatch: AppDispatch) => {
     return axios.get(API_URL+"/any").then(
         (response) => {
+            console.log(response.data)
             dispatch(setDishes(response.data));
         },
         (error) => {
@@ -17,6 +19,7 @@ const getDishes = (dispatch) => {
 
             dispatch(setDishes([]));
         });
+
 
 };
 

@@ -3,12 +3,10 @@ package ru.sber.backend.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,12 +24,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
     @Size(max = 100)
     @Column(nullable = false)
     private String username;
 
-    @NotBlank
     @Size(max = 100)
     private String number;
 
@@ -39,16 +35,17 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
 
-    @NotBlank
     @Size(max = 100)
     @Column(nullable = false, unique = true)
     @Email
     private String email;
 
-    @NotBlank
     @Size(max = 100)
     @Column(nullable = false)
     private String password;
+
+    @Column
+    private String resetToken;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -62,5 +59,9 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String email) {
+        this.email = email;
     }
 }

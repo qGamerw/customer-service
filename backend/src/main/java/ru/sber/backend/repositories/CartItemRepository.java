@@ -6,6 +6,9 @@ import ru.sber.backend.entities.CartItem;
 
 import java.util.List;
 
+/**
+ * Репозиторий для взаимодействия с элементами корзины клиента
+ */
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     /**

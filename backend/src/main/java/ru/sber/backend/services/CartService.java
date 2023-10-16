@@ -4,6 +4,9 @@ import ru.sber.backend.entities.CartItem;
 
 import java.util.List;
 
+/**
+ * Сервис для взаимодействия с корзиной клиента
+ */
 public interface CartService {
     /**
      * Добавление блюда в корзину
@@ -24,6 +27,13 @@ public interface CartService {
     boolean deleteDish(long cartId, long dishId);
 
     /**
+     * Удаляет все блюда из корзины по id клиента
+     *
+     * @param clientId Уникальный идентификатор клиента
+     */
+    void deleteAllDish(long clientId);
+
+    /**
      * Изменение количества блюда в корзине
      *
      * @param clientId   Уникальный идентификатор пользователя
@@ -34,11 +44,11 @@ public interface CartService {
     boolean updateDishAmount(long clientId, long dishId, int quantity);
 
     /**
-     * Полностью очищает корзину пользователя
+     * Удаление корзины по ID клиента
      *
      * @param clientId Уникальный идентификатор пользователя
      */
-    void clearCart(long clientId);
+    void deleteCart(long clientId);
 
     /**
      * Выдает список идентификаторов блюд в корзине пользователя

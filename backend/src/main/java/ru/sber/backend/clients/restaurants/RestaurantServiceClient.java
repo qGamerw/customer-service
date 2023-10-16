@@ -1,15 +1,21 @@
 package ru.sber.backend.clients.restaurants;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import ru.sber.backend.models.Dish;
+
 import java.util.List;
 
+/**
+ * Интерфейс для взаимодействия с сервисом ресторана
+ */
 @FeignClient(value = "feignDishes", url = "http://localhost:8081/dishes")
 public interface RestaurantServiceClient {
-
-    @RequestMapping(method = RequestMethod.GET, value = "/any", produces = "application/json")
-    List<?> getListAllDish();
-
+    /**
+     * Получает список всех блюд у сервиса ресторана
+     *
+     * @return список блюд
+     */
+    @GetMapping(value = "/any", produces = "application/json")
+    List<Dish> getListAllDish();
 }
-

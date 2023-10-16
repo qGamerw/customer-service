@@ -37,6 +37,7 @@ public class CartServiceImpl implements CartService {
             if (user.isPresent()) {
                 Cart newCart = new Cart();
                 newCart.setClient(user.get());
+
                 return cartRepository.save(newCart);
             }
 
@@ -60,18 +61,25 @@ public class CartServiceImpl implements CartService {
             }
 
             cartRepository.save(shoppingCart);
+
             return true;
         }
 
         return false;
     }
 
-
     @Override
     @Transactional
     public boolean deleteDish(long cartId, long dishId) {
         cartItemRepository.deleteCartItemByCartIdAndDishId(cartId, dishId);
+
         return true;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllDish(long clientId) {
+        cartItemRepository.deleteAll();
     }
 
     @Override
@@ -86,6 +94,7 @@ public class CartServiceImpl implements CartService {
                 if (cartItem.getDishId() == dishId) {
                     cartItem.setQuantity(quantity);
                     cartRepository.save(shoppingCart);
+
                     return true;
                 }
             }
@@ -95,13 +104,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void clearCart(long clientId) {
+    public void deleteCart(long clientId) {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
 
         if (cart.isPresent()) {
-            Cart shoppingCart = cart.get();
-            cartItemRepository.deleteAll(shoppingCart.getCartItems());
-            cartRepository.delete(shoppingCart);
+            long cartId = cart.get().getId();
+            cartItemRepository.deleteAll();
+            cartRepository.deleteById(cartId);
         }
     }
 
@@ -120,12 +129,14 @@ public class CartServiceImpl implements CartService {
 
             return dishIds;
         } else {
+
             return Collections.emptyList();
         }
     }
 
     @Override
     public List<CartItem> getCartItemsByCartId(long cartId) {
+
         return cartItemRepository.findByCartId(cartId);
     }
 
@@ -144,6 +155,7 @@ public class CartServiceImpl implements CartService {
 
             return totalQuantity;
         } else {
+
             return 0;
         }
     }

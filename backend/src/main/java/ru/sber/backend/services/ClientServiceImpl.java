@@ -10,9 +10,6 @@ import ru.sber.backend.repositories.ClientRepository;
 import java.util.Date;
 import java.util.Optional;
 
-/**
- * Сервис для взаимодействия с пользователем
- */
 @Service
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
@@ -26,16 +23,19 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public long signUp(User client) {
+
         return clientRepository.save(client).getId();
     }
 
     @Override
     public Optional<User> getClientById(long clientId) {
+
         return clientRepository.findById(clientId);
     }
 
     @Override
     public boolean checkClientExistence(long clientId) {
+
         return clientRepository.existsById(clientId);
     }
 
@@ -43,8 +43,9 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public boolean deleteClientById(long clientId) {
         if (checkClientExistence(clientId)) {
-            cartService.clearCart(clientId);
+            cartService.deleteCart(clientId);
             clientRepository.deleteById(clientId);
+
             return true;
         }
         return false;
@@ -52,6 +53,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Optional<User> getClientByEmail(String email) {
+
         return clientRepository.findUserByEmail(email);
     }
 
@@ -72,5 +74,11 @@ public class ClientServiceImpl implements ClientService {
         } else {
             throw new EntityNotFoundException("Клиент с id " + clientId + " не найден");
         }
+    }
+
+    @Override
+    public Optional<User> findUserByResetToken(String resetToken) {
+
+        return clientRepository.findByResetToken(resetToken);
     }
 }
