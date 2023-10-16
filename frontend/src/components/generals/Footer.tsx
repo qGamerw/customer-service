@@ -47,7 +47,11 @@ const Footer: FC = () => {
                     <h3>Клиент</h3>
                     <ul>
                         <li>
-                            <RouterLink to="/cart">Корзина</RouterLink>
+                            {isUserAuthenticated ? (
+                                <RouterLink to="/cart">Корзина</RouterLink>
+                            ) : (
+                                <RouterLink to="/api/auth/signin">Корзина</RouterLink>
+                            )}
                         </li>
                         <li>
                             {isUserAuthenticated ? (
