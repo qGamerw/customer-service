@@ -44,11 +44,11 @@ public interface CartService {
     boolean updateDishAmount(long clientId, long dishId, int quantity);
 
     /**
-     * Полностью очищает корзину пользователя
+     * Удаление корзины по ID клиента
      *
      * @param clientId Уникальный идентификатор пользователя
      */
-    void clearCart(long clientId);
+    void deleteCart(long clientId);
 
     /**
      * Выдает список идентификаторов блюд в корзине пользователя

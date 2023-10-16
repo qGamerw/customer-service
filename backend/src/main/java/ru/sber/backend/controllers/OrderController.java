@@ -52,9 +52,9 @@ public class OrderController {
         log.info("Создаем заказ клиента {}", order);
         Long idCreatedOrder = orderServiceClient.createOrder(order);
         log.info("Id созданного заказа: {}", idCreatedOrder);
-        long clientId = order.getClientId();
-        log.info("Очищаем корзину пользователся с Id: {}", clientId);
-        cartService.deleteAllDish(clientId);
+        long orderId = order.getClientId();
+        log.info("Очищаем корзину пользователся с Id: {}", orderId);
+        cartService.deleteAllDish(orderId);
         return ResponseEntity.ok().body(idCreatedOrder);
     }
 

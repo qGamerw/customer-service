@@ -11,9 +11,11 @@ import java.util.List;
  */
 @FeignClient(value = "feignDishes", url = "http://localhost:8081/dishes")
 public interface RestaurantServiceClient {
-
+    /**
+     * Получает список всех блюд у сервиса ресторана
+     *
+     * @return список блюд
+     */
     @GetMapping(value = "/any", produces = "application/json")
     List<Dish> getListAllDish();
-
 }
-
