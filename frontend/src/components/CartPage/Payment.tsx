@@ -52,7 +52,7 @@ const Payment: FC<PaymentProps> =
         return (
             <div>
                 {children}
-                <div className="cartPage--content--payment">
+                <div>
                     <h2>Оплата</h2>
                     <Checkbox
                         checked={checkBoxOffer}
@@ -72,15 +72,6 @@ const Payment: FC<PaymentProps> =
                     )}
                     <h4>Доставим до: {formattedTime}</h4>
                     <h3>К оплате: {totalPrice} ₽</h3>
-                    <StripeCheckout
-                        label="Оплатить"
-                        token={onToken}
-                        name="Оплата заказа"
-                        currency="RUB"
-                        amount={totalPrice * 100}
-                        locale="auto"
-                        stripeKey={stripePublishableKey}
-                    />
                 </div>
             </div>
         );

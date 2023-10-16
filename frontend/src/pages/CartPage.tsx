@@ -1,7 +1,6 @@
 import React, {useState, useEffect, FC} from 'react';
 import ListDishesFromCart from '../components/CartPage/ListDishesFromCart';
 import DeliveryForm from '../components/CartPage/DeliveryForm';
-import Payment from '../components/CartPage/Payment';
 import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import DishService from "../services/dishService";
@@ -64,7 +63,7 @@ const CartPage: FC = () => {
                     <h2 className="cartPage--content--title-cart">Корзина</h2>
                     {isCartEmpty ? (
                         <div className={"cartEmpty"}>
-                            <h2>Ваша корзина пуста :(</h2>
+                            <h2 className="cartPage--content--title-cart">Ваша корзина пуста :(</h2>
                             <div className={"cartEmpty__images__container"}><img
                                 className="cartPage-img-empty"
                                 src="https://ne-kurim.ru/forum/attachments/orig-gif.1566829/"
@@ -80,15 +79,10 @@ const CartPage: FC = () => {
                     ) : (
                         <div>
                             <div className="border-bottom-container"><ListDishesFromCart dishes={listDishesFromCart}/></div>
-
-                            <Payment totalPrice={totalPrice}>
-                                <div className="border-bottom-container">
-                                    <DeliveryForm
-                                        listDishesFromCart={listDishesFromCart}
-                                        totalPrice={totalPrice}
-                                    />
-                                </div>
-                            </Payment>
+                            <DeliveryForm
+                                listDishesFromCart={listDishesFromCart}
+                                totalPrice={totalPrice}
+                            />
                         </div>
                     )}
                 </div>
