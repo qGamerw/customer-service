@@ -5,7 +5,7 @@ import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import DishService from "../services/dishService";
 import {user} from "../constants/constants";
-import {ICartItem, IDish, IDishFromCart} from "../types/types";
+import {ICartItem, IDish, IDishFromCart, IOrderFromHistory, IOrderResponse} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
 const CartPage: FC = () => {

@@ -54,10 +54,9 @@ const cancelOrder = (userId: number, orderId: number, message: string, dispatch:
     );
 };
 
-
-const paymentOfOrderById = (userId: number, orderId: number, dispatch: AppDispatch) => {
+const paymentOfOrderById = (orderId: number) => {
     console.log(`Оплата заказа ${API_URL}/${orderId}/payment`, {headers: authHeader()})
-    return axios.put(`${API_URL}/${orderId}/payment`, {headers: authHeader()}).then(
+    return axios.put(`${API_URL}/${orderId}/payment`, {orderId}, {headers: authHeader()}).then(
         (response) => {
         },
         (error) => {

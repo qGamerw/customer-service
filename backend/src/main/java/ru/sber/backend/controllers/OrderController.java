@@ -58,9 +58,15 @@ public class OrderController {
         return ResponseEntity.ok().body(idCreatedOrder);
     }
 
+    /**
+     * Оплачивает заказ по его ID
+     *
+     * @param orderId ID заказа
+     * @return статус выполнения операции
+     */
     @PutMapping("/{orderId}/payment")
     public ResponseEntity<?> paymentOfOrderById(@PathVariable Long orderId){
-        log.info("Оплачиваем заказ  с id {}", orderId);
+        log.info("Оплачиваем заказ с id {}", orderId);
 
         orderServiceClient.paymentOfOrderById(orderId);
 

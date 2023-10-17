@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import TextArea from "antd/es/input/TextArea";
-import {Button, Form, Input, InputNumber, Radio} from 'antd';
+import {Button, Form, Input, InputNumber, message, Radio} from 'antd';
 import PhoneInput from 'react-phone-input-2';
 import {
     IDeliveryInfo,
@@ -21,7 +21,7 @@ interface DeliveryFormProps {
 
 const DeliveryForm: FC<DeliveryFormProps> = ({
                                                  listDishesFromCart,
-                                                 totalPrice,
+                                                 totalPrice
                                              }) => {
     const dispatch = useAppDispatch();
     const currentTime: Date = new Date();
@@ -43,10 +43,6 @@ const DeliveryForm: FC<DeliveryFormProps> = ({
         dishName: dish.name,
         quantity: dish.quantity,
     }));
-
-    const handlePayment = () => {
-        OrderService.paymentOfOrderById(user?.id ?? 0, 5, dispatch)
-    };
 
     const onFinish = (values: IDeliveryInfo) => {
         let order: IOrderResponse = {
@@ -90,21 +86,21 @@ const DeliveryForm: FC<DeliveryFormProps> = ({
                     name="flat"
                     rules={[{required: true, message: 'Пожалуйста, введите номер квартиры'}]}
                 >
-                    <InputNumber placeholder="Квартира"/>
+                    <InputNumber placeholder="Квартира" min={1} max={500}/>
                 </Form.Item>
                 <Form.Item
                     label="Этаж:"
                     name="floor"
                     rules={[{required: true, message: 'Пожалуйста, введите этаж'}]}
                 >
-                    <InputNumber placeholder="Этаж"/>
+                    <InputNumber placeholder="Этаж" min={1} max={100}/>
                 </Form.Item>
                 <Form.Item
                     label="Номер подъезда:"
                     name="frontDoor"
                     rules={[{required: true, message: 'Пожалуйста, введите номер подъезда'}]}
                 >
-                    <InputNumber placeholder="Подъезд"/>
+                    <InputNumber placeholder="Подъезд" min={1} max={25}/>
                 </Form.Item>
                 <Form.Item
                     label="Телефон:"
@@ -125,13 +121,6 @@ const DeliveryForm: FC<DeliveryFormProps> = ({
                 {paymentMethod === 'online' && (
                     <div>
                         <Payment totalPrice={totalPrice}/>
-                        <Button
-                            onClick={handlePayment}
-                            type="primary"
-                            htmlType="submit"
-                        >
-                            Оплатить
-                        </Button>
                     </div>
                 )}
                 {paymentMethod === 'offline' && (

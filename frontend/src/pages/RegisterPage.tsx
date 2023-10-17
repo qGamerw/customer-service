@@ -1,7 +1,7 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Row, Card, Form, Input, Button, Select, message} from 'antd';
-import {UserOutlined, MailOutlined, CalendarOutlined, LockOutlined, PhoneOutlined} from '@ant-design/icons';
+import {UserOutlined, MailOutlined, CalendarOutlined, LockOutlined} from '@ant-design/icons';
 import authService from '../services/authService';
 import {IRegistration} from "../types/types";
 import './styles/RegisterPage.css';
@@ -12,6 +12,7 @@ const {Option} = Select;
 const RegisterPage: FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const currentDate = new Date();
 
     const onFinish = (values: IRegistration) => {
         authService
@@ -24,12 +25,6 @@ const RegisterPage: FC = () => {
                 message.error('Ошибка при регистрации');
                 console.error(error);
             });
-    };
-
-    const [value, setValue] = useState<number>(1);
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('radio checked', e.target.value);
-        setValue(Number(e.target.value));
     };
 
     return (
@@ -88,7 +83,26 @@ const RegisterPage: FC = () => {
                             </Form.Item>
                             <Form.Item
                                 name="dateOfBirth"
-                                rules={[{required: true, message: 'Пожалуйста, введите дату рождения!'}]}
+                                rules={[
+                                    {required: true, message: 'Пожалуйста, введите дату рождения!'},
+                                    ({getFieldValue}) => ({
+                                        validator(_, value) {
+                                            const selectedDate = new Date(value);
+
+                                            if (selectedDate.getFullYear() >= 1901 && selectedDate <= currentDate) {
+                                                return Promise.resolve();
+                                            }
+
+                                            if (selectedDate.getFullYear() < 1901) {
+                                                return Promise.reject('Год рождения не может быть раньше 1901.');
+                                            }
+
+                                            if (selectedDate > currentDate) {
+                                                return Promise.reject('Год рождения не может превышать текущую дату');
+                                            }
+                                        },
+                                    }),
+                                ]}
                             >
                                 <Input prefix={<CalendarOutlined/>} type="date" placeholder="Дата рождения"/>
                             </Form.Item>

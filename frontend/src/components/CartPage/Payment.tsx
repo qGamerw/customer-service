@@ -1,9 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Checkbox} from 'antd';
+import {Button, Checkbox, message} from 'antd';
 import {Link} from 'react-router-dom';
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';
-import StripeCheckout, {Token} from 'react-stripe-checkout';
+import OrderService from "../../services/orderService";
+import {useAppDispatch} from "../../hooks";
 
 interface PaymentProps {
     totalPrice: number;
@@ -19,22 +20,17 @@ const Payment: FC<PaymentProps> =
         const currentTime: Date = new Date();
         const deliveryTime: Date = addMinutes(currentTime, 60);
         const formattedTime: string = format(deliveryTime, 'HH:mm');
-        const stripePublishableKey =
-            'pk_test_51Nw1DlI64lV8opEVvQQ0MOs33EPOddlFi6wpBWpjMdEvGMp5wBH89SOsZvAxkkq7mOtlvyCBrEZDv01rzkF52d1w00on7r85QY';
 
-        const onToken = (res: Token) => {
-            fetch('/cart/create-checkout-session', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbWlybm92cGEzQHlhbmRleC5ydSIsImlhdCI6MTY5NjExMjEzOSwiZXhwIjoxNjk2MTk4NTM5fQ.F0QR3elE5I04Vi18AMcb-puO8PvQSIzB1febD4fYUuM`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(res),
-            }).then((res: Response) => {
-                res.json().then((data) => {
-                    console.log(`Payment token generated, ${data.name}`);
+        const handlePayment = () => {
+            const orderId = 11;
+
+            OrderService.paymentOfOrderById(orderId)
+                .then(() => {
+                    message.success('Заказ успешно оплачен');
+                })
+                .catch((error) => {
+                    message.error('Ошибка при оплате заказа: ' + error.message);
                 });
-            });
         };
 
         useEffect(() => {
@@ -72,6 +68,13 @@ const Payment: FC<PaymentProps> =
                     )}
                     <h4>Доставим до: {formattedTime}</h4>
                     <h3>К оплате: {totalPrice} ₽</h3>
+                    <Button
+                        onClick={handlePayment}
+                        type="primary"
+                        htmlType="button"
+                    >
+                        Оплатить
+                    </Button>
                 </div>
             </div>
         );

@@ -30,6 +30,11 @@ public interface OrderServiceClient {
     @PostMapping(consumes = "application/json", produces = "application/json")
     Long createOrder(@RequestBody OrderResponse orderResponse);
 
+    /**
+     * Оплачивает заказ
+     *
+     * @param orderId ID оплачеваемого заказа
+     */
     @PutMapping(value = "/{orderId}/payment", consumes = "application/json")
     void paymentOfOrderById(@PathVariable Long orderId);
 
