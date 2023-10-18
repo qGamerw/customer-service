@@ -37,7 +37,7 @@ export interface IDishFromOrderHistory {
 }
 
 export interface IDeliveryInfo {
-    username: string;
+    clientName: string;
     clientPhoneNumber: string;
     description: string;
     address: string;

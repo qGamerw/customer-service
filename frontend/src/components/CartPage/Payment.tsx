@@ -1,37 +1,24 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Checkbox, message} from 'antd';
+import {Button, Checkbox} from 'antd';
 import {Link} from 'react-router-dom';
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';
-import OrderService from "../../services/orderService";
-import {useAppDispatch} from "../../hooks";
 
 interface PaymentProps {
     totalPrice: number;
-    children?: React.ReactNode;
+    onFinish: () => void;
 }
 
 const Payment: FC<PaymentProps> =
     ({
          totalPrice,
-         children
+         onFinish,
      }) => {
         const [checkBoxOffer, setCheckBoxOffer] = useState<boolean>(true);
         const currentTime: Date = new Date();
         const deliveryTime: Date = addMinutes(currentTime, 60);
         const formattedTime: string = format(deliveryTime, 'HH:mm');
 
-        const handlePayment = () => {
-            const orderId = 11;
-
-            OrderService.paymentOfOrderById(orderId)
-                .then(() => {
-                    message.success('Заказ успешно оплачен');
-                })
-                .catch((error) => {
-                    message.error('Ошибка при оплате заказа: ' + error.message);
-                });
-        };
 
         useEffect(() => {
             const cartTotal: Element | null = document.querySelector('.cartPage__total');
@@ -47,8 +34,7 @@ const Payment: FC<PaymentProps> =
 
         return (
             <div>
-                {children}
-                <div>
+                <div className="cartPage--content--payment">
                     <h2>Оплата</h2>
                     <Checkbox
                         checked={checkBoxOffer}
@@ -68,11 +54,8 @@ const Payment: FC<PaymentProps> =
                     )}
                     <h4>Доставим до: {formattedTime}</h4>
                     <h3>К оплате: {totalPrice} ₽</h3>
-                    <Button
-                        onClick={handlePayment}
-                        type="primary"
-                        htmlType="button"
-                    >
+
+                    <Button type="primary" onClick={onFinish}>
                         Оплатить
                     </Button>
                 </div>

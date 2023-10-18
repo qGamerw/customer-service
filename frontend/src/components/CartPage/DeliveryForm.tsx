@@ -1,72 +1,62 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
+import { Form, Input, InputNumber} from 'antd';
 import TextArea from "antd/es/input/TextArea";
-import {Button, Form, Input, InputNumber, message, Radio} from 'antd';
-import PhoneInput from 'react-phone-input-2';
+import PhoneInput from "react-phone-input-2";
 import {
     IDeliveryInfo,
     IDishFromCart,
     IDishFromOrderResponse,
     IOrderResponse,
-} from '../../types/types';
-import {user} from '../../constants/constants';
-import Payment from "./Payment";
-import {addMinutes, format} from "date-fns";
+} from "../../types/types";
+import {user} from "../../constants/constants";
 import OrderService from "../../services/orderService";
 import {useAppDispatch} from "../../hooks";
+import Payment from "./Payment";
 
-interface DeliveryFormProps {
+interface DeliveryForm {
     listDishesFromCart: IDishFromCart[];
     totalPrice: number;
+
 }
 
-const DeliveryForm: FC<DeliveryFormProps> = ({
-                                                 listDishesFromCart,
-                                                 totalPrice
-                                             }) => {
+const DeliveryForm: FC<DeliveryForm> = ({
+                                            listDishesFromCart,
+                                            totalPrice,
+                                        }) => {
+    const [form] = Form.useForm<IDeliveryInfo>();
     const dispatch = useAppDispatch();
-    const currentTime: Date = new Date();
-    const deliveryTime: Date = addMinutes(currentTime, 60);
-    const [paymentMethod, setPaymentMethod] = useState('online');
-    const formattedTime: string = format(deliveryTime, 'HH:mm');
-
-    const onPaymentMethodChange = (e: any) => {
-        setPaymentMethod(e.target.value);
-    };
-
-    const totalWeight = listDishesFromCart.reduce(
-        (accumulator, item) => accumulator + (item?.weight || 0) * (item?.quantity || 0),
-        0
+    const totalWeight: number = listDishesFromCart.reduce(
+        (accumulator: number, item: IDishFromCart | undefined) =>
+            accumulator + (item?.weight || 0) * (item?.quantity || 0), 0
     );
 
-    const listDishesFromOrder: IDishFromOrderResponse[] = listDishesFromCart.map((dish) => ({
-        dishId: dish.id,
-        dishName: dish.name,
-        quantity: dish.quantity,
-    }));
+    const listDishesFromOrder: IDishFromOrderResponse[] = listDishesFromCart.map((dish: IDishFromCart) => {
+        return {
+            dishId: dish.id,
+            dishName: dish.name,
+            quantity: dish.quantity,
+        }
+    })
 
-    const onFinish = (values: IDeliveryInfo) => {
+    const onFinish = () => {
         let order: IOrderResponse = {
-            ...values,
+            ...form.getFieldsValue(),
             clientId: user?.id ?? 0,
             totalPrice: totalPrice,
             weight: totalWeight,
-            listDishesFromOrder: listDishesFromOrder,
+            listDishesFromOrder: listDishesFromOrder
         };
-
         OrderService.createOrder(order, dispatch).then((orderId) => {
-            console.log(orderId)
+            OrderService.paymentOfOrderById(user?.id ?? 0, orderId, dispatch)
         })
-
-        const reloadTime = 1000;
-        setTimeout(() => {
-            window.location.reload();
-        }, reloadTime);
+        alert("Заказ совершен")
     };
+
 
     return (
         <div className="cartPage--content--delivery">
             <h2>Информация о доставке</h2>
-            <Form name="deliveryForm" onFinish={onFinish}>
+            <Form name="deliveryForm" form={form}>
                 <Form.Item
                     label="Имя:"
                     name="clientName"
@@ -79,60 +69,57 @@ const DeliveryForm: FC<DeliveryFormProps> = ({
                     name="address"
                     rules={[{required: true, message: 'Пожалуйста, введите ваш адрес!'}]}
                 >
-                    <Input placeholder="Введите улицу и номер дома"/>
+                    <Input
+                        placeholder="Введите улицу и номер дома"
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Номер квартиры:"
                     name="flat"
                     rules={[{required: true, message: 'Пожалуйста, введите номер квартиры'}]}
                 >
-                    <InputNumber placeholder="Квартира" min={1} max={500}/>
+                    <InputNumber placeholder="Квартира"
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Этаж:"
                     name="floor"
                     rules={[{required: true, message: 'Пожалуйста, введите этаж'}]}
                 >
-                    <InputNumber placeholder="Этаж" min={1} max={100}/>
+                    <InputNumber placeholder="Этаж"
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Номер подъезда:"
                     name="frontDoor"
                     rules={[{required: true, message: 'Пожалуйста, введите номер подъезда'}]}
                 >
-                    <InputNumber placeholder="Подъезд" min={1} max={25}/>
+                    <InputNumber placeholder="Подъезд"
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Телефон:"
                     name="clientPhoneNumber"
                     rules={[{required: true, message: 'Пожалуйста, введите ваш номер телефона!'}]}
                 >
-                    <PhoneInput country="ru" onlyCountries={['ru']} placeholder="+7-xxx-xxx-xx-xx"/>
+                    <PhoneInput
+                        country="ru"
+                        onlyCountries={["ru"]}
+                        placeholder="+7-xxx-xxx-xx-xx"
+                    />
                 </Form.Item>
-                <Form.Item label="Дополнительная информация:" name="description">
-                    <TextArea placeholder="Ваши пожелания"/>
+                <Form.Item
+                    label="Дополнительная информация:"
+                    name="description"
+                >
+                    <TextArea
+                        placeholder="Ваши пожелания"
+                    />
                 </Form.Item>
-                <Form.Item label="Способ оплаты: ">
-                    <Radio.Group onChange={onPaymentMethodChange} value={paymentMethod}>
-                        <Radio.Button value="online">Онлайн оплата</Radio.Button>
-                        <Radio.Button value="offline">Оплата на месте</Radio.Button>
-                    </Radio.Group>
-                </Form.Item>
-                {paymentMethod === 'online' && (
-                    <div>
-                        <Payment totalPrice={totalPrice}/>
-                    </div>
-                )}
-                {paymentMethod === 'offline' && (
-                    <div>
-                        <h4>Доставим до: {formattedTime}</h4>
-                        <h3>К оплате: {totalPrice} ₽</h3>
-                        <Button type="primary" htmlType="submit">
-                            Оформить заказ
-                        </Button>
-                    </div>
-                )}
             </Form>
+
+            <Payment totalPrice={totalPrice} onFinish={onFinish}/>
+
         </div>
     );
 };

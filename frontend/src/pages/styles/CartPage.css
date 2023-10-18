@@ -15,16 +15,16 @@
     border-radius: 25px;
 }
 
-[class^="cartPage--content--"] {
+.cartPage--content--title-cart{
     margin: 40px;
 }
 
-
-.cartPage--content--title-cart{
-
+.cartPage--content--title-cartIsEmpty{
+    margin-left: 40px;
 }
 
 .cartPage--content--ListDishesFromCart{
+    margin: 40px;
 }
 
 .border-bottom-container{
@@ -32,10 +32,12 @@
 }
 
 .cartPage--content--delivery {
+    margin: 40px;
     background-color: #fff;
 }
 
 .cartPage--content--payment {
+    margin-top: 40px;
     background-color: #fff;
 }
 

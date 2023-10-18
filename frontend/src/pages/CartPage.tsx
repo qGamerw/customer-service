@@ -5,7 +5,7 @@ import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import DishService from "../services/dishService";
 import {user} from "../constants/constants";
-import {ICartItem, IDish, IDishFromCart, IOrderFromHistory, IOrderResponse} from "../types/types";
+import {ICartItem, IDish, IDishFromCart} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
 const CartPage: FC = () => {
@@ -63,7 +63,7 @@ const CartPage: FC = () => {
                     <h2 className="cartPage--content--title-cart">Корзина</h2>
                     {isCartEmpty ? (
                         <div className={"cartEmpty"}>
-                            <h2 className="cartPage--content--title-cart">Ваша корзина пуста :(</h2>
+                            <h2 className="cartPage--content--title-cartIsEmpty">Ваша корзина пуста :(</h2>
                             <div className={"cartEmpty__images__container"}><img
                                 className="cartPage-img-empty"
                                 src="https://ne-kurim.ru/forum/attachments/orig-gif.1566829/"
@@ -79,10 +79,8 @@ const CartPage: FC = () => {
                     ) : (
                         <div>
                             <div className="border-bottom-container"><ListDishesFromCart dishes={listDishesFromCart}/></div>
-                            <DeliveryForm
-                                listDishesFromCart={listDishesFromCart}
-                                totalPrice={totalPrice}
-                            />
+                                <DeliveryForm listDishesFromCart={listDishesFromCart}
+                                              totalPrice={totalPrice}/>
                         </div>
                     )}
                 </div>

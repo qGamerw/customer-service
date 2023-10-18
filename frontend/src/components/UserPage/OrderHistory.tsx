@@ -23,11 +23,12 @@ const OrderHistory: FC<OrderHistory> =
         };
         getCart();
     }, []);
+
         return (
             <div className={"orderHistory"}>
                 {listOrdersFromHistory.length > 0 ? (
                     <Space direction="horizontal" size="large" wrap>
-                        {listOrdersFromHistory.map((order) => (
+                        {listOrdersFromHistory.sort((n1: IOrderFromHistory, n2: IOrderFromHistory) => n2.id - n1.id).map((order) => (
                             <OrderBlock
                                 order={order}
                                 key={order.clientId}
