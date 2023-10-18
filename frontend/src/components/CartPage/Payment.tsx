@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Checkbox} from 'antd';
+import {Button, Checkbox} from 'antd';
 import {Link} from 'react-router-dom';
 import {addMinutes, format} from 'date-fns';
 import './styles/Payment.css';
@@ -7,13 +7,13 @@ import StripeCheckout, {Token} from 'react-stripe-checkout';
 
 interface PaymentProps {
     totalPrice: number;
-    children?: React.ReactNode;
+    onFinish: () => void;
 }
 
 const Payment: FC<PaymentProps> =
     ({
          totalPrice,
-         children
+         onFinish,
      }) => {
         const [checkBoxOffer, setCheckBoxOffer] = useState<boolean>(true);
         const currentTime: Date = new Date();
@@ -51,7 +51,6 @@ const Payment: FC<PaymentProps> =
 
         return (
             <div>
-                {children}
                 <div className="cartPage--content--payment">
                     <h2>Оплата</h2>
                     <Checkbox
@@ -72,7 +71,7 @@ const Payment: FC<PaymentProps> =
                     )}
                     <h4>Доставим до: {formattedTime}</h4>
                     <h3>К оплате: {totalPrice} ₽</h3>
-                    <StripeCheckout
+                    {/*<StripeCheckout
                         label="Оплатить"
                         token={onToken}
                         name="Оплата заказа"
@@ -80,7 +79,10 @@ const Payment: FC<PaymentProps> =
                         amount={totalPrice * 100}
                         locale="auto"
                         stripeKey={stripePublishableKey}
-                    />
+                    />*/}
+                    <Button type="primary" onClick={onFinish}>
+                        Оплатить
+                    </Button>
                 </div>
             </div>
         );

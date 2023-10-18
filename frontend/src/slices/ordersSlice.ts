@@ -4,12 +4,10 @@ import {IOrderFromHistory} from "../types/types";
 
 interface OrderState {
     orders: IOrderFromHistory[];
-    lastOrderId: number;
 }
 
 const initialState: OrderState = {
     orders: [],
-    lastOrderId: 0
 };
 
 export const ordersSlice = createSlice({
@@ -19,12 +17,10 @@ export const ordersSlice = createSlice({
         setOrders: (state, action: PayloadAction<IOrderFromHistory[]>) => {
             state.orders = action.payload;
         },
-        setLastOrderId: (state, action: PayloadAction<number>) => {
-            state.lastOrderId = action.payload;
-        },
+
     },
 })
 
-export const {setOrders, setLastOrderId} = ordersSlice.actions;
+export const {setOrders} = ordersSlice.actions;
 
 export default ordersSlice.reducer;

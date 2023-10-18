@@ -1,6 +1,6 @@
 import {Space} from 'antd';
 import React, {FC, useEffect} from 'react';
-import { IOrderFromHistory} from '../../types/types';
+import {IDishFromCart, IOrderFromHistory} from '../../types/types';
 import {OrderBlock} from './OrderBlock';
 import './styles/OrderHistory.css';
 import OrderService from "../../services/orderService";
@@ -23,11 +23,12 @@ const OrderHistory: FC<OrderHistory> =
         };
         getCart();
     }, []);
+
         return (
             <div className={"orderHistory"}>
                 {listOrdersFromHistory.length > 0 ? (
                     <Space direction="horizontal" size="large" wrap>
-                        {listOrdersFromHistory.map((order) => (
+                        {listOrdersFromHistory.sort((n1: IOrderFromHistory, n2: IOrderFromHistory) => n2.id - n1.id).map((order) => (
                             <OrderBlock
                                 order={order}
                                 key={order.clientId}

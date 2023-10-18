@@ -1,8 +1,10 @@
-import {setOrders, setLastOrderId} from "../slices/ordersSlice";
+import {setOrders} from "../slices/ordersSlice";
 import axios, {AxiosResponse} from "axios";
 import authHeader from "./auth-header";
 import {AppDispatch} from "../store";
 import {IOrderFromHistory, IOrderResponse} from "../types/types";
+import CartService from "./cartService";
+import {user} from "../constants/constants";
 
 const API_URL = "/orders";
 
@@ -25,10 +27,10 @@ const getOrders = (userId: number, dispatch: AppDispatch) => {
 };
 
 const createOrder = (order: IOrderResponse, dispatch: AppDispatch) => {
+    console.log(`Создание заказа: ${API_URL}`, {order}, {headers: authHeader()})
     return axios.post(API_URL, order, {headers: authHeader()}).then(
         (response) => {
-            dispatch(setLastOrderId(response.data));
-            console.log(response.data)
+            CartService.getCart(user?.id, dispatch)
             return response.data;
         },
         (error) => {
@@ -41,6 +43,8 @@ const createOrder = (order: IOrderResponse, dispatch: AppDispatch) => {
 };
 
 const cancelOrder = (userId: number, orderId: number, message: string, dispatch: AppDispatch) => {
+    console.log(`Отмена заказа: ${API_URL}/${orderId}/cancel`, {orderId, message}, {headers: authHeader()})
+
     return axios.put(`${API_URL}/${orderId}/cancel`, {orderId, message}, {headers: authHeader()}).then(
         (response) => {
             getOrders(userId, dispatch);
@@ -57,7 +61,7 @@ const cancelOrder = (userId: number, orderId: number, message: string, dispatch:
 
 const paymentOfOrderById = (userId: number, orderId: number, dispatch: AppDispatch) => {
     console.log(`Оплата заказа ${API_URL}/${orderId}/payment`, {headers: authHeader()})
-    return axios.put(`${API_URL}/${orderId}/payment`, {headers: authHeader()}).then(
+    return axios.put(`${API_URL}/${orderId}/payment`, "",{headers: authHeader()}).then(
         (response) => {
         },
         (error) => {

@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Button, Form, Input, InputNumber} from 'antd';
+import {Alert, Form, Input, InputNumber} from 'antd';
 import TextArea from "antd/es/input/TextArea";
 import PhoneInput from "react-phone-input-2";
 import {
@@ -7,60 +7,56 @@ import {
     IDishFromCart,
     IDishFromOrderResponse,
     IOrderResponse,
-    IUserResponse
 } from "../../types/types";
 import {user} from "../../constants/constants";
 import OrderService from "../../services/orderService";
-import {useAppDispatch, useAppSelector} from "../../hooks";
+import {useAppDispatch} from "../../hooks";
+import Payment from "./Payment";
 
 interface DeliveryForm {
     listDishesFromCart: IDishFromCart[];
     totalPrice: number;
+
 }
-const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
-    // const client: IUserResponse | null = user;
+
+const DeliveryForm: FC<DeliveryForm> = ({
+                                            listDishesFromCart,
+                                            totalPrice,
+                                        }) => {
+    const [form] = Form.useForm<IDeliveryInfo>();
     const dispatch = useAppDispatch();
-    const lastOrderId: number = useAppSelector((state) => state.orders.lastOrderId);
     const totalWeight: number = listDishesFromCart.reduce(
         (accumulator: number, item: IDishFromCart | undefined) =>
-            accumulator + (item?.weight|| 0) * (item?.quantity || 0), 0
+            accumulator + (item?.weight || 0) * (item?.quantity || 0), 0
     );
 
-    const listDishesFromOrder: IDishFromOrderResponse[] = listDishesFromCart.map((dish) => {
-        return{
+    const listDishesFromOrder: IDishFromOrderResponse[] = listDishesFromCart.map((dish: IDishFromCart) => {
+        return {
             dishId: dish.id,
             dishName: dish.name,
             quantity: dish.quantity,
         }
     })
 
-    const handlePayment = () => {
-        OrderService.paymentOfOrderById(user?.id ?? 0, 5, dispatch)
-
-    }
-
-    const onFinish = (values: IDeliveryInfo) => {
+    const onFinish = () => {
         let order: IOrderResponse = {
-            ...values,
+            ...form.getFieldsValue(),
             clientId: user?.id ?? 0,
             totalPrice: totalPrice,
             weight: totalWeight,
             listDishesFromOrder: listDishesFromOrder
         };
-            OrderService.createOrder(order, dispatch).then((orderId) => {
-            console.log(orderId)
+        OrderService.createOrder(order, dispatch).then((orderId) => {
+            OrderService.paymentOfOrderById(user?.id ?? 0, orderId, dispatch)
         })
-
-        const reloadTime = 1;
-        setTimeout(() => {
-            window.location.reload();
-        }, reloadTime);
+        alert("Заказ совершен")
     };
+
 
     return (
         <div className="cartPage--content--delivery">
             <h2>Информация о доставке</h2>
-            <Form name="deliveryForm" onFinish={onFinish}>
+            <Form name="deliveryForm" form={form}>
                 <Form.Item
                     label="Имя:"
                     name="clientName"
@@ -120,15 +116,10 @@ const DeliveryForm: FC<DeliveryForm> = ({listDishesFromCart, totalPrice}) => {
                         placeholder="Ваши пожелания"
                     />
                 </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Оформить заказ
-                    </Button>
-                </Form.Item>
             </Form>
-            <Button type="primary" onClick={handlePayment}>
-                Оплатить
-            </Button>
+
+            <Payment totalPrice={totalPrice} onFinish={onFinish}/>
+
         </div>
     );
 };
