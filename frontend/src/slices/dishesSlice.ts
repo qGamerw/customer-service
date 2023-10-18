@@ -14,8 +14,9 @@ export const dishesSlice = createSlice({
     initialState: initialState,
     reducers: {
         setDishes: (state, action: PayloadAction<IDish[]>) => {
-            state.dishes = action.payload;
+            state.dishes = [...state.dishes, ...action.payload];
         }
+
     },
 })
 

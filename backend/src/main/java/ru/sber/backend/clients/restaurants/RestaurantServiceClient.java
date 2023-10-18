@@ -1,10 +1,11 @@
 package ru.sber.backend.clients.restaurants;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.sber.backend.models.Dish;
 
-import java.util.List;
 
 /**
  * Интерфейс для взаимодействия с сервисом ресторана
@@ -12,10 +13,10 @@ import java.util.List;
 @FeignClient(value = "feignDishes", url = "http://localhost:8081/dishes")
 public interface RestaurantServiceClient {
     /**
-     * Получает список всех блюд у сервиса ресторана
+     * Получает необходимую страницу блюд с запрашиваемым размером
      *
-     * @return список блюд
+     * @return получение страницы блюд
      */
-    @GetMapping(value = "/any", produces = "application/json")
-    List<Dish> getListAllDish();
+    @GetMapping(value = "/any/{size}/{page}", produces = "application/json")
+    Page<Dish> getListAllDish(@PathVariable int page, @PathVariable int size);
 }

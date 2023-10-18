@@ -12,17 +12,39 @@ import SearchDishes from "../components/DishesPage/SearchDishes";
 
 const DishesPage: FC = () => {
     const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
+    const [size, setSize] = useState<number>(10)
+    const [page, setPage] = useState<number>(1)
+    const [fetching, setFetching] = useState<boolean>(true)
+    const [ scrollValue,setScrollValue] = useState<number>(700)
     const dispatch = useAppDispatch()
     const location = useLocation();
     const anchorId = location.state ? location.state.anchorId : null;
     const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        const getDishes = () => {
-            DishService.getDishes(dispatch);
+        if (fetching) {
+            console.log('fetching')
+            DishService.getDishes(size, page, dispatch)
+                .then(() => {
+                    setPage(prevState => prevState + 1)
+                    setScrollValue(prevState => prevState + 200)
+                })
+                .finally(() => setFetching(false))
+        }
+    }, [fetching]);
+
+    useEffect(() => {
+        document.addEventListener('scroll', scrollHandler)
+        return function () {
+            document.removeEventListener('scroll', scrollHandler)
         };
-        getDishes();
-    }, []);
+    }, [])
+
+    const scrollHandler = () => {
+        if (document.documentElement.scrollHeight - (document.documentElement.scrollTop + window.innerHeight) < scrollValue) {
+            setFetching(true)
+        }
+    }
 
     useEffect(() => {
         if (anchorId) {

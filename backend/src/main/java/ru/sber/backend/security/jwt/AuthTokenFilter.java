@@ -36,7 +36,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         if (request.getRequestURI().equals("/api/auth/signin") ||
                 request.getRequestURI().equals("/api/auth/signup") ||
-                request.getRequestURI().equals("/dishes/any") ||
+                request.getRequestURI().contains("/dishes/any") ||
                 request.getRequestURI().equals("/forgot") ||
                 request.getRequestURI().equals("/reset")
         ) {
