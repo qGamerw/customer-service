@@ -1,7 +1,6 @@
 import React, {useState, useEffect, FC} from 'react';
 import ListDishesFromCart from '../components/CartPage/ListDishesFromCart';
 import DeliveryForm from '../components/CartPage/DeliveryForm';
-import Payment from '../components/CartPage/Payment';
 import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import DishService from "../services/dishService";

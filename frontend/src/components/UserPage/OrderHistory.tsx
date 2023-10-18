@@ -1,6 +1,6 @@
 import {Space} from 'antd';
 import React, {FC, useEffect} from 'react';
-import {IDishFromCart, IOrderFromHistory} from '../../types/types';
+import { IOrderFromHistory} from '../../types/types';
 import {OrderBlock} from './OrderBlock';
 import './styles/OrderHistory.css';
 import OrderService from "../../services/orderService";
