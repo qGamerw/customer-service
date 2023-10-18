@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +18,9 @@ import ru.sber.backend.services.EmailService;
 /**
  * Контроллер для сброса и изменения пароля аккаунта клиента
  */
+@Slf4j
 @RestController
 public class PasswordController {
-
     private final ClientService userService;
     private final EmailService emailService;
     private final PasswordEncoder bCryptPasswordEncoder;
@@ -35,17 +35,22 @@ public class PasswordController {
     /**
      * Отправляет ссылку для сброса пароля на почту пользователя
      *
-     * @param email электронная почта пользователя
      * @return статус отправки запроса
      */
     @PostMapping("/forgot")
-    public ResponseEntity<Map<String, String>> processForgotPasswordForm(@RequestParam("email") String email) {
+    public ResponseEntity<Map<String, String>> processForgotPasswordForm(@RequestBody Map<String, String> request) {
         Map<String, String> response = new HashMap<>();
+
+        String email = request.get("email");
 
         Optional<User> optional = userService.getClientByEmail(email);
 
         if (optional.isEmpty()) {
             response.put("error", "Аккаунт с таким email не найден");
+
+            log.info("Аккаунт с таким email не найден");
+
+            return ResponseEntity.badRequest().body(response);
         } else {
             User user = optional.get();
             user.setResetToken(UUID.randomUUID().toString());
@@ -55,15 +60,16 @@ public class PasswordController {
             passwordResetEmail.setFrom("consumer.service@yandex.ru");
             passwordResetEmail.setTo(user.getEmail());
             passwordResetEmail.setSubject("Сброс пароля аккаунта");
-            passwordResetEmail.setText("Ссылка для смены пароля:\n" + "http://localhost:3000"
+            passwordResetEmail.setText("Здравствуйте, " + user.getUsername() + "! \nСсылка для смены пароля:\n" + "http://localhost:3000"
                     + "/reset?token=" + user.getResetToken());
 
             emailService.sendEmail(passwordResetEmail);
 
             response.put("success", "Ссылка была отправлена на почту: " + email);
-        }
+            response.put("token", user.getResetToken());
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+        }
     }
 
     /**
@@ -81,7 +87,7 @@ public class PasswordController {
 
         if (newPassword == null || newPassword.isEmpty()) {
             response.put("errorMessage", "Пароль не может быть пустым.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.badRequest().body(response);
         }
 
         Optional<User> user = userService.findUserByResetToken(token);
@@ -95,10 +101,12 @@ public class PasswordController {
 
             response.put("successMessage", "Вы успешно изменили свой пароль");
             response.put("token", token);
+
             return ResponseEntity.ok(response);
         } else {
             response.put("errorMessage", "Упс! Это неверная ссылка для сброса пароля");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const forgotPassword = (email: string) => {
-    return axios.post(`/forgot?email=${email}`)
+    return axios.post(`/forgot`, {email: email})
         .then((response) => response.data)
         .catch((error) => {
             console.error(error);
@@ -9,8 +9,8 @@ const forgotPassword = (email: string) => {
         });
 };
 
-const resetPassword = (token: string | undefined, password: string) => {
-    return axios.post(`/reset?token=${token}`, {token, password})
+const resetPassword = (token: string | undefined, password: string, confirmPassword: string) => {
+    return axios.post(`/reset?token=${token}`, {password, confirmPassword})
         .then((response) => response.data)
         .catch((error) => {
             console.error(error);
