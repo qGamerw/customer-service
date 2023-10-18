@@ -2,11 +2,13 @@ package ru.sber.backend.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.orders.OrderServiceClient;
 import ru.sber.backend.models.OrderResponse;
 import ru.sber.backend.services.CartService;
+import ru.sber.backend.services.EmailService;
 
 import java.util.List;
 
@@ -20,11 +22,13 @@ public class OrderController {
 
     private final OrderServiceClient orderServiceClient;
     private final CartService cartService;
+    private final EmailService emailService;
 
     @Autowired
-    public OrderController(OrderServiceClient orderServiceClient, CartService cartService) {
+    public OrderController(OrderServiceClient orderServiceClient, CartService cartService, EmailService emailService) {
         this.orderServiceClient = orderServiceClient;
         this.cartService = cartService;
+        this.emailService = emailService;
     }
 
     /**
@@ -52,6 +56,14 @@ public class OrderController {
         log.info("Создаем заказ клиента {}", order);
         Long idCreatedOrder = orderServiceClient.createOrder(order);
         log.info("Id созданного заказа: {}", idCreatedOrder);
+
+        try {
+            emailService.sendOrderConfirmation(order);
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
         long orderId = order.getClientId();
         log.info("Очищаем корзину пользователся с Id: {}", orderId);
         cartService.deleteAllDish(orderId);
@@ -65,9 +77,8 @@ public class OrderController {
      * @return статус выполнения операции
      */
     @PutMapping("/{orderId}/payment")
-    public ResponseEntity<?> paymentOfOrderById(@PathVariable Long orderId){
+    public ResponseEntity<?> paymentOfOrderById(@PathVariable Long orderId) {
         log.info("Оплачиваем заказ с id {}", orderId);
-
         orderServiceClient.paymentOfOrderById(orderId);
 
         return ResponseEntity.accepted().build();
@@ -88,5 +99,4 @@ public class OrderController {
 
         return ResponseEntity.accepted().build();
     }
-
 }
