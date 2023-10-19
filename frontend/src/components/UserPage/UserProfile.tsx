@@ -120,7 +120,9 @@ const UserProfile: FC = () => {
                                     <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx" />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button className={"userProfile__button_save"}
+                                    <Button type="primary" htmlType="submit"
+                                        className={"userProfile__button_save"}
+
                                     >
                                         <SaveOutlined />
                                         Сохранить
