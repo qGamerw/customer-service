@@ -4,8 +4,8 @@ import {AppDispatch} from "../store";
 
 const API_URL: string = "/dishes";
 
-const getDishes = (dispatch: AppDispatch) => {
-    return axios.get(API_URL+"/any").then(
+const getDishes = (size: number, page: number, dispatch: AppDispatch) => {
+    return axios.get(`${API_URL}/any/${size}/${page}`).then(
         (response) => {
             console.log(response.data)
             dispatch(setDishes(response.data));
@@ -19,10 +19,7 @@ const getDishes = (dispatch: AppDispatch) => {
 
             dispatch(setDishes([]));
         });
-
-
 };
-
 
 const dishService = {
     getDishes,
