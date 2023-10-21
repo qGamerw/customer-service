@@ -31,7 +31,7 @@ const CartPage: FC = () => {
 
         useEffect(() => {
             const getCart = () => {
-                // DishService.getDishes(dispatch);
+                // DishService.getDishes(1000, 0, dispatch);
                 CartService.getCart(user?.id, dispatch)
             };
             getCart();

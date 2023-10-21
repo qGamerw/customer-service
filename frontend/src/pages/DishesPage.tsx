@@ -9,27 +9,29 @@ import Slider from "../components/DishesPage/Carousel";
 import {IDish} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import SearchDishes from "../components/DishesPage/SearchDishes";
+import {setCurrentPage, setFetching, setTotalPage} from "../slices/dishesSlice";
 
 const DishesPage: FC = () => {
     const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
-    const [size, setSize] = useState<number>(10)
-    const [page, setPage] = useState<number>(1)
-    const [fetching, setFetching] = useState<boolean>(true)
-    const [ scrollValue,setScrollValue] = useState<number>(700)
+    const [size] = useState<number>(10)
+    const currentPage = useAppSelector((state) => state.dishes.currentPage);
+    const totalPage = useAppSelector((state) => state.dishes.totalPage);
+    const fetching = useAppSelector((state) => state.dishes.fetching);
+    const [scrollValueInPercent] = useState<number>(50)
     const dispatch = useAppDispatch()
     const location = useLocation();
     const anchorId = location.state ? location.state.anchorId : null;
     const [searchText, setSearchText] = useState('');
 
+
     useEffect(() => {
-        if (fetching) {
-            console.log('fetching')
-            DishService.getDishes(size, page, dispatch)
-                .then(() => {
-                    setPage(prevState => prevState + 1)
-                    setScrollValue(prevState => prevState + 200)
+        if (fetching && currentPage < totalPage) {
+            DishService.getDishes(size, currentPage, dispatch)
+                .then((response) => {
+                    dispatch(setCurrentPage(currentPage + 1))
+                    dispatch(setTotalPage(parseInt(response?.headers['x-total-pages'])))
                 })
-                .finally(() => setFetching(false))
+                .finally(() => dispatch(setFetching(false)))
         }
     }, [fetching]);
 
@@ -41,10 +43,11 @@ const DishesPage: FC = () => {
     }, [])
 
     const scrollHandler = () => {
-        if (document.documentElement.scrollHeight - (document.documentElement.scrollTop + window.innerHeight) < scrollValue) {
-            setFetching(true)
+        if ((document.documentElement.scrollTop / (document.documentElement.scrollHeight - window.innerHeight)) * 100 > scrollValueInPercent && currentPage < totalPage) {
+            dispatch(setFetching(true))
         }
     }
+
 
     useEffect(() => {
         if (anchorId) {

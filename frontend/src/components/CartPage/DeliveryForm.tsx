@@ -27,7 +27,7 @@ const DeliveryForm: FC<DeliveryForm> = ({
     const dispatch = useAppDispatch();
     const totalWeight: number = listDishesFromCart.reduce(
         (accumulator: number, item: IDishFromCart | undefined) =>
-            accumulator + (item?.weight || 0) * (item?.quantity || 0), 0
+            accumulator + (item?.weight ?? 0) * (item?.quantity ?? 0), 0
     );
 
     const listDishesFromOrder: IDishFromOrderResponse[] = listDishesFromCart.map((dish: IDishFromCart) => {
@@ -78,7 +78,7 @@ const DeliveryForm: FC<DeliveryForm> = ({
                     name="flat"
                     rules={[{required: true, message: 'Пожалуйста, введите номер квартиры'}]}
                 >
-                    <InputNumber placeholder="Квартира"
+                    <InputNumber min={1} placeholder="Квартира"
                     />
                 </Form.Item>
                 <Form.Item
@@ -86,7 +86,7 @@ const DeliveryForm: FC<DeliveryForm> = ({
                     name="floor"
                     rules={[{required: true, message: 'Пожалуйста, введите этаж'}]}
                 >
-                    <InputNumber placeholder="Этаж"
+                    <InputNumber min={1} placeholder="Этаж"
                     />
                 </Form.Item>
                 <Form.Item
@@ -94,7 +94,7 @@ const DeliveryForm: FC<DeliveryForm> = ({
                     name="frontDoor"
                     rules={[{required: true, message: 'Пожалуйста, введите номер подъезда'}]}
                 >
-                    <InputNumber placeholder="Подъезд"
+                    <InputNumber min={1} placeholder="Подъезд"
                     />
                 </Form.Item>
                 <Form.Item
