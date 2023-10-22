@@ -4,23 +4,13 @@ import DeliveryForm from '../components/CartPage/DeliveryForm';
 import CartService from "../services/cartService";
 import './styles/CartPage.css';
 import {user} from "../constants/constants";
-import {ICartItem, IDish, IDishFromCart} from "../types/types";
+import { IDishFromCart} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
 const CartPage: FC = () => {
-        const listItemFromCart: ICartItem[] = useAppSelector((state) => state.cart.cartItems)
-        const isCartEmpty: boolean = listItemFromCart.length === 0;
-        const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
+        const listDishesFromCart: IDishFromCart[] = useAppSelector((state) => state.cart.cartItems);
+        const isCartEmpty: boolean = listDishesFromCart.length === 0;
         const dispatch = useAppDispatch();
-        const listDishesFromCart: IDishFromCart[] = listDishes
-            .filter((dish) => {
-                return listItemFromCart.some((selectedDish: ICartItem): boolean => selectedDish.dishId === dish.id);
-            })
-            .map((dish: IDish) => {
-                const selectedDish: ICartItem | undefined = listItemFromCart.find((cartItem: ICartItem) => cartItem.dishId === dish.id);
-                return {...dish, quantity: selectedDish?.quantity ?? 0, cartItemId: selectedDish?.id ?? 0};
-            })
-            .sort((n1: IDishFromCart, n2: IDishFromCart) => n1.cartItemId - n2.cartItemId);
 
         const totalPrice: number = listDishesFromCart.reduce(
             (accumulator: number, item: IDishFromCart | undefined) =>
@@ -31,7 +21,6 @@ const CartPage: FC = () => {
 
         useEffect(() => {
             const getCart = () => {
-                // DishService.getDishes(1000, 0, dispatch);
                 CartService.getCart(user?.id, dispatch)
             };
             getCart();

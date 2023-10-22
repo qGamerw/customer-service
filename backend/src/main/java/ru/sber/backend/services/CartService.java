@@ -53,10 +53,10 @@ public interface CartService {
     /**
      * Выдает список идентификаторов блюд в корзине пользователя
      *
-     * @param clientId Уникальный идентификатор пользователя
+     * @param cartId Уникальный идентификатор пользователя
      * @return Возвращает список идентификаторов блюд
      */
-    List<Long> getListOfDishIdsInCart(long clientId);
+    List<Long> getListOfDishIdsInCart(long cartId);
 
     /**
      * Подсчитывает количество блюд в корзине пользователя
@@ -73,4 +73,6 @@ public interface CartService {
      * @return список элементов корзины
      */
     List<CartItem> getCartItemsByCartId(long cartId);
+
+
 }

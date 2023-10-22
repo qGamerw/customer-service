@@ -4,9 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.clients.restaurants.RestaurantServiceClient;
 import ru.sber.backend.entities.CartItem;
+import ru.sber.backend.models.DishFromCart;
 import ru.sber.backend.services.CartService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +22,11 @@ public class CartController {
 
     private final CartService cartService;
 
+    private final RestaurantServiceClient restaurantServiceClient;
     @Autowired
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, RestaurantServiceClient restaurantServiceClient) {
         this.cartService = cartService;
+        this.restaurantServiceClient = restaurantServiceClient;
     }
 
     /**
@@ -31,12 +36,34 @@ public class CartController {
      * @return получение списка блюд
      */
     @GetMapping("/{cartId}")
-    public ResponseEntity<List<CartItem>> getDishes(@PathVariable long cartId) {
-        log.info("Получаем список блюд в корзине c id: {}", cartId);
+    public ResponseEntity<List<DishFromCart>> getDishes(@PathVariable long cartId) {
         List<CartItem> cartItems = cartService.getCartItemsByCartId(cartId);
 
-        return ResponseEntity.ok().body(cartItems);
+        log.info("Получаем список id блюд в корзине c id: {}", cartId);
+        List<Long> listDishesIds = cartService.getListOfDishIdsInCart(cartId);
+        String stringWithDishesIds = listDishesIds.toString().substring(1, listDishesIds.toString().length() - 1).replaceAll("\\s","");
+
+        log.info("Получаем список блюд в корзине по строке с id блюд: {}", stringWithDishesIds);
+
+        List<DishFromCart> dishes = new ArrayList<>();
+        for (DishFromCart dish : restaurantServiceClient.getListDishesById(stringWithDishesIds)) {
+            CartItem cartItem = cartItems.stream()
+                    .filter(item -> item.getId() == dish.getId())
+                    .findFirst()
+                    .orElse(null);
+
+            if (cartItem != null) {
+                dish.setQuantity(cartItem.getQuantity());
+            } else {
+                dish.setQuantity(0);
+            }
+            dishes.add(dish);
+        }
+
+        return ResponseEntity.ok().body(dishes);
     }
+
+
 
     /**
      * Добавляет блюдо в корзину
@@ -66,7 +93,7 @@ public class CartController {
      */
     @PutMapping("/{cartId}/dish/{dishId}")
     public ResponseEntity<String> updateCartItemQuantity(@PathVariable long cartId, @PathVariable long dishId, @RequestBody CartItem dish) {
-        log.info("Изменяется количество товара в корзине c id: {}", cartId);
+        log.info("Изменяется количество товара на {} в корзине c id: {}", dish.getQuantity(), cartId);
         boolean recordUpdated = cartService.updateDishAmount(cartId, dishId, dish.getQuantity());
 
         if (recordUpdated) {

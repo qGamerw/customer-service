@@ -5,6 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.sber.backend.models.Dish;
+import ru.sber.backend.models.DishFromCart;
+
+import java.util.List;
 
 
 /**
@@ -19,4 +22,7 @@ public interface RestaurantServiceClient {
      */
     @GetMapping(value = "/any", produces = "application/json")
     Page<Dish> getListAllDish(@RequestParam int page, @RequestParam int size);
+
+    @GetMapping(value = "/basket", produces = "application/json")
+    List<DishFromCart> getListDishesById(@RequestParam String list);
 }

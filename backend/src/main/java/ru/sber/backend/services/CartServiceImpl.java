@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean addToCart(long cartId, long dishId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(cartId);
+        Optional<Cart> cart = cartRepository.findCartById(cartId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
             Optional<User> user = clientRepository.findById(cartId);
@@ -84,7 +84,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean updateDishAmount(long clientId, long dishId, int quantity) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+        Optional<Cart> cart = cartRepository.findCartById(clientId);
 
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();
@@ -105,7 +105,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCart(long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+        Optional<Cart> cart = cartRepository.findCartById(clientId);
 
         if (cart.isPresent()) {
             long cartId = cart.get().getId();
@@ -115,8 +115,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Long> getListOfDishIdsInCart(long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+    public List<Long> getListOfDishIdsInCart(long cartId) {
+        Optional<Cart> cart = cartRepository.findCartById(cartId);
 
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();
@@ -142,7 +142,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public int countDishesInCart(long clientId) {
-        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
+        Optional<Cart> cart = cartRepository.findCartById(clientId);
 
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();

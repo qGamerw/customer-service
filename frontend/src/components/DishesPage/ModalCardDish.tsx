@@ -3,7 +3,7 @@ import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {Link} from "react-router-dom";
 import CartService from "../../services/cartService";
 import {user} from "../../constants/constants";
-import {ICartItem, IDish} from "../../types/types";
+import { IDish, IDishFromCart} from "../../types/types";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 
 interface ModalCardDishProps {
@@ -19,7 +19,7 @@ const ModalCardDish: FC<ModalCardDishProps> =
 
         const [isLogged] = useState<boolean>(user !== null);
         const dispatch = useAppDispatch();
-        const itemFromCartById: ICartItem | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.dishId === dish.id))
+        const itemFromCartById: IDishFromCart | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.id === dish.id))
 
         const handleAddClick = () => {
             isLogged && (

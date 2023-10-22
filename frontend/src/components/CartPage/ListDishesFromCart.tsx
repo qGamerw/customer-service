@@ -31,7 +31,7 @@ const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
                     <CardDishFromCart dish={dish} key={dish.id}/>
                 ))}
             </div>
-            {dishes.length &&
+            {dishes.length > 0 &&
                 <Pagination
                     current={currentPage}
                     total={dishes.length}
