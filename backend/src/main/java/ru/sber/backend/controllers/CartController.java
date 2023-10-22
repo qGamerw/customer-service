@@ -48,7 +48,7 @@ public class CartController {
         List<DishFromCart> dishes = new ArrayList<>();
         for (DishFromCart dish : restaurantServiceClient.getListDishesById(stringWithDishesIds)) {
             CartItem cartItem = cartItems.stream()
-                    .filter(item -> item.getId() == dish.getId())
+                    .filter(item -> item.getDishId() == dish.getId())
                     .findFirst()
                     .orElse(null);
 

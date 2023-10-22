@@ -7,7 +7,7 @@ import { IDish, IDishFromCart} from "../../types/types";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 
 interface ModalCardDishProps {
-    dish: IDish;
+    dish: IDish | IDishFromCart;
     isModalOpen: boolean;
     onClose: () => void;
 }
@@ -19,8 +19,8 @@ const ModalCardDish: FC<ModalCardDishProps> =
 
         const [isLogged] = useState<boolean>(user !== null);
         const dispatch = useAppDispatch();
-        const itemFromCartById: IDishFromCart | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.id === dish.id))
-
+        const dishFromCartById: IDishFromCart | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.id === dish.id))
+        console.log(dishFromCartById)
         const handleAddClick = () => {
             isLogged && (
                 CartService.addToCart(user?.id, dish.id, dispatch)
@@ -71,9 +71,9 @@ const ModalCardDish: FC<ModalCardDishProps> =
                         </Tooltip>
                         <div>
                             <p>{dish.price} ₽</p>
-                            {itemFromCartById ? (
+                            {dishFromCartById ? (
                                 <InputNumber
-                                    value={itemFromCartById?.quantity ?? 0}
+                                    value={dishFromCartById?.quantity ?? 0}
                                     min={0}
                                     onChange={(quantity: number | null) => handleUpdateAmount(dish.id, quantity ?? 0)}
                                 />
