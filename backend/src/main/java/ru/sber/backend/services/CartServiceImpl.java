@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
 
             if (cartItem.isPresent()) {
                 CartItem existingCartItem = cartItem.get();
-                existingCartItem.setQuantity(1);
+                existingCartItem.setQuantity(existingCartItem.getQuantity() + 1);
             } else {
                 CartItem newCartItem = new CartItem();
                 newCartItem.setCart(shoppingCart);
@@ -99,7 +99,6 @@ public class CartServiceImpl implements CartService {
                 }
             }
         }
-
         return false;
     }
 
