@@ -11,5 +11,11 @@ import java.util.Optional;
  */
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
+    /**
+     * Получает корзину по id
+     *
+     * @param cartId уникальный идентификатор корзины
+     * @return корзину
+     */
     Optional<Cart> findCartById(long cartId);
 }

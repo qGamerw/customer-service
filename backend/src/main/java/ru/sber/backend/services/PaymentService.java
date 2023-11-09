@@ -6,7 +6,6 @@ import ru.sber.backend.entities.Payment;
  * Сервис для оплаты товаров
  */
 public interface PaymentService {
-
     /**
      * Совершает платеж
      *
