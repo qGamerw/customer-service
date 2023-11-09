@@ -1,9 +1,13 @@
 import React, {FC, useState} from 'react';
 import {Form, Input, Button, message} from 'antd';
-import resetPasswordService from '../services/resetPasswordService';
-import './styles/ResetPassword.css';
+import resetPasswordService from '../../services/resetPasswordService';
+import '../../pages/styles/ResetPassword.css';
 import {Link} from "react-router-dom";
 
+/**
+ * Форма для ввода нового пароля от аккаунта
+ * @constructor
+ */
 const ResetPassword: FC = () => {
     const params: URLSearchParams = new URLSearchParams(window.location.search);
     const token: string | null = params.get("token");

@@ -11,16 +11,8 @@ export interface IDish {
     weight: number;
 }
 
-export interface ICartItem {
-    id: number;
-    dishId: number;
-    quantity: number;
-    cartId: number;
-}
-
 export interface IDishFromCart extends IDish {
     quantity: number;
-    // cartItemId: number;
 }
 
 export interface IDishFromOrderResponse {

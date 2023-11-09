@@ -6,6 +6,10 @@ import {IUserResponse} from "../types/types";
 
 const API_URL = "/clients";
 
+/**
+ * Запрос на получения инфомрации о пользователе
+ * @constructor
+ */
 const getUser = (userId: number, dispatch: AppDispatch) => {
     return axios.get(API_URL + `/${userId}`, {headers: authHeader()}).then(
         (response) => {
@@ -23,10 +27,12 @@ const getUser = (userId: number, dispatch: AppDispatch) => {
         });
 };
 
+/**
+ * Запрос на обновление данных пользователя
+ * @constructor
+ */
 const updateUser = (idUser: number, user: IUserResponse, dispatch: AppDispatch) => {
-
     console.log(`Обновление данных пользователя ${API_URL}/${idUser}`, user, {headers: authHeader()})
-
     return axios.put(`${API_URL}/${idUser}`, user, {headers: authHeader()}).then(
         () => {
             getUser(idUser, dispatch);
@@ -35,10 +41,14 @@ const updateUser = (idUser: number, user: IUserResponse, dispatch: AppDispatch) 
             const _content = (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
-
             console.error(_content)
         });
 };
+
+/**
+ * Запрос на удаление пользователя
+ * @constructor
+ */
 const deleteUser = (id: number, dispatch: AppDispatch) => {
     return axios.delete(API_URL + `/${id}`, {headers: authHeader()}).then(
         () => {
@@ -48,7 +58,6 @@ const deleteUser = (id: number, dispatch: AppDispatch) => {
             const _content = (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
-
             console.error(_content)
         });
 };

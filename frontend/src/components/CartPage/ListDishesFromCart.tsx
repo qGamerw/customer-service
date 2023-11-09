@@ -7,6 +7,10 @@ interface ListDishesFromCart {
     dishes: IDishFromCart[];
 }
 
+/**
+ * Список карточек-блюд в корзине
+ * @constructor
+ */
 const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState<number>(1);

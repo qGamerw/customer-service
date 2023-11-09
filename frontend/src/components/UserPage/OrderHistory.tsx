@@ -11,6 +11,10 @@ interface OrderHistory {
     listOrdersFromHistory: IOrderFromHistory[];
 }
 
+/**
+ * Вкладка с историей заказов пользователя
+ * @constructor
+ */
 const OrderHistory: FC<OrderHistory> =
     ({listOrdersFromHistory}) => {
     const client = user;

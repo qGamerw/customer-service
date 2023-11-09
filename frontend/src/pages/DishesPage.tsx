@@ -11,6 +11,10 @@ import {useAppDispatch, useAppSelector} from "../hooks";
 import SearchDishes from "../components/DishesPage/SearchDishes";
 import {setCurrentPage, setFetching, setTotalPage} from "../slices/dishesSlice";
 
+/**
+ * Страница меню ресторана
+ * @constructor
+ */
 const DishesPage: FC = () => {
     const listDishes: IDish[] = useAppSelector((state) => state.dishes.dishes);
     const [size] = useState<number>(10)

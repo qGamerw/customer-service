@@ -7,6 +7,10 @@ import {user} from "../constants/constants";
 import { IDishFromCart} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
+/**
+ * Страница корзины пользователя
+ * @constructor
+ */
 const CartPage: FC = () => {
         const listDishesFromCart: IDishFromCart[] = useAppSelector((state) => state.cart.cartItems);
         const isCartEmpty: boolean = listDishesFromCart.length === 0;

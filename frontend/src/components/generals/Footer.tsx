@@ -3,6 +3,10 @@ import {Link as RouterLink} from 'react-router-dom';
 import './styles/Footer.css';
 import {user} from "../../constants/constants";
 
+/**
+ * Компонент-футер
+ * @constructor
+ */
 const Footer: FC = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
 

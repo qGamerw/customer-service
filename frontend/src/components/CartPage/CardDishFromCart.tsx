@@ -8,6 +8,10 @@ import {IDishFromCart} from "../../types/types";
 import {user} from "../../constants/constants";
 import {useAppDispatch} from "../../hooks";
 
+/**
+ * Карточка блюда в корзине
+ * @constructor
+ */
 interface CardDishFromCart {
     dish: IDishFromCart
 }

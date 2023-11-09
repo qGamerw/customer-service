@@ -8,6 +8,10 @@ import {useDispatch} from "react-redux";
 import {ILogin} from "../types/types";
 import './styles/AuthPage.css';
 
+/**
+ * Страница аутентификации пользователя
+ * @constructor
+ */
 const AuthPage: FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();

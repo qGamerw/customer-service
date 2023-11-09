@@ -1,8 +1,12 @@
 import React, {FC, useState} from 'react';
 import {Form, Input, Button, message} from 'antd';
-import resetPasswordService from '../services/resetPasswordService';
-import './styles/ForgotPassword.css';
+import resetPasswordService from '../../services/resetPasswordService';
+import '../../pages/styles/ForgotPassword.css';
 
+/**
+ * Форма для отправки на почту ссылки для сброса пароля от аккаунта
+ * @constructor
+ */
 const ForgotPassword: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);

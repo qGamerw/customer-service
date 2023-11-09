@@ -11,6 +11,10 @@ interface CurrentOrders {
     listOfCurrentOrders: IOrderFromHistory[];
 }
 
+/**
+ * Вкладка с текущими заказами пользователя
+ * @constructor
+ */
 const CurrentOrders: FC<CurrentOrders> = ({listOfCurrentOrders}) => {
     const dispatch = useAppDispatch();
     const client = user;

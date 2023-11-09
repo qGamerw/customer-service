@@ -5,6 +5,10 @@ import {AppDispatch} from "../store";
 
 const API_URL = "/cart";
 
+/**
+ * Запрос для получения корзины
+ * @constructor
+ */
 const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
 
     return axios.get(API_URL + `/${cartId}`, {headers: authHeader()}).then(
@@ -24,6 +28,10 @@ const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
         });
 }
 
+/**
+ * Запрос для добавления блюда в корзину
+ * @constructor
+ */
 const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
 
     console.log(`Добавление товара ${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
@@ -41,12 +49,14 @@ const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDisp
         });
 };
 
+/**
+ * Запрос для обновления кол-ва блюд в корзине
+ * @constructor
+ */
 const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
     quantity: number
 }, dispatch: AppDispatch) => {
-
     console.log(`Обновление кол-ва ${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()})
-
     return axios.put(`${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
         () => {
             getCart(cartId, dispatch)
@@ -60,6 +70,10 @@ const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
         });
 };
 
+/**
+ * Запрос для удаления блюда из корзины
+ * @constructor
+ */
 const deleteFromCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
     console.log(`Удаление ${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()})
     return axios.delete(`${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()}).then(

@@ -16,6 +16,10 @@ import {IUserResponse} from "../../types/types";
 import {useAppDispatch} from "../../hooks";
 import './styles/UserProfile.css';
 
+/**
+ * Вкладка профиля пользователя
+ * @constructor
+ */
 const UserProfile: FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const dispatch = useAppDispatch();

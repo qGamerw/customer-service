@@ -16,9 +16,12 @@ import Payment from "./Payment";
 interface DeliveryForm {
     listDishesFromCart: IDishFromCart[];
     totalPrice: number;
-
 }
 
+/**
+ * Форма с указанием данных для доставки
+ * @constructor
+ */
 const DeliveryForm: FC<DeliveryForm> = ({
                                             listDishesFromCart,
                                             totalPrice,

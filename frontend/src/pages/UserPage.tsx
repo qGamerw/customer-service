@@ -9,6 +9,10 @@ import {useAppSelector} from "../hooks";
 import './styles/UserPage.css'
 const {TabPane} = Tabs;
 
+/**
+ * Страница пользователя
+ * @constructor
+ */
 const UserPage: FC = () => {
     const location = useLocation();
     const navigate = useNavigate();

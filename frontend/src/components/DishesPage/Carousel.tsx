@@ -2,6 +2,10 @@ import React, { useState, useEffect, useCallback, FC } from 'react';
 import './styles/Slider.css';
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 
+/**
+ * Слайдер изобажений блюд
+ * @constructor
+ */
 const Slider: FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userActive, setUserActive] = useState<boolean>(false);

@@ -3,6 +3,10 @@ import {ILogin, IRegistration} from "../types/types";
 
 const API_URL = "/api/auth/";
 
+/**
+ * Запрос для регистрации пользователя
+ * @constructor
+ */
 const register = (registration: IRegistration) => {
     const { username, number, dateOfBirth, email, password } = registration;
     return axios.post(API_URL + "signup", {
@@ -14,6 +18,10 @@ const register = (registration: IRegistration) => {
     });
 };
 
+/**
+ * Запрос для аутентификации пользователя
+ * @constructor
+ */
 const login = (loginData: ILogin) => {
     const { email, password } = loginData;
 
@@ -32,6 +40,10 @@ const login = (loginData: ILogin) => {
         });
 };
 
+/**
+ * Выход из аккаунта пользователя
+ * @constructor
+ */
 const logout = () => {
     console.log("logout");
     localStorage.removeItem("user");

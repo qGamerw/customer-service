@@ -8,6 +8,10 @@ import {user} from "../constants/constants";
 
 const API_URL = "/orders";
 
+/**
+ * Запрос для получения заказов пользователя
+ * @constructor
+ */
 const getOrders = (userId: number, dispatch: AppDispatch) => {
     return axios.get(API_URL + `/client/${userId}`, {headers: authHeader()}).then(
         (response: AxiosResponse<IOrderFromHistory[]>) => {
@@ -20,12 +24,14 @@ const getOrders = (userId: number, dispatch: AppDispatch) => {
                 error.toString();
 
             console.error(_content)
-
             dispatch(setOrders([]));
         });
-
 };
 
+/**
+ * Запрос на создание заказа
+ * @constructor
+ */
 const createOrder = (order: IOrderResponse, dispatch: AppDispatch) => {
     console.log(`Создание заказа: ${API_URL}`, {order}, {headers: authHeader()})
     return axios.post(API_URL, order, {headers: authHeader()}).then(
@@ -42,6 +48,10 @@ const createOrder = (order: IOrderResponse, dispatch: AppDispatch) => {
         });
 };
 
+/**
+ * Запрос на отмену заказа
+ * @constructor
+ */
 const cancelOrder = (userId: number, orderId: number, message: string, dispatch: AppDispatch) => {
     console.log(`Отмена заказа: ${API_URL}/${orderId}/cancel`, {orderId, message}, {headers: authHeader()})
 
@@ -58,7 +68,10 @@ const cancelOrder = (userId: number, orderId: number, message: string, dispatch:
     );
 };
 
-
+/**
+ * Запрос для оплаты заказа
+ * @constructor
+ */
 const paymentOfOrderById = (userId: number, orderId: number, dispatch: AppDispatch) => {
     console.log(`Оплата заказа ${API_URL}/${orderId}/payment`, {headers: authHeader()})
     return axios.put(`${API_URL}/${orderId}/payment`, "",{headers: authHeader()}).then(

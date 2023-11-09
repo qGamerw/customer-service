@@ -12,6 +12,10 @@ interface ModalCardDishProps {
     onClose: () => void;
 }
 
+/**
+ * Модальное окно с подробной информацией о блюде
+ * @constructor
+ */
 const ModalCardDish: FC<ModalCardDishProps> =
     ({
          dish, isModalOpen, onClose

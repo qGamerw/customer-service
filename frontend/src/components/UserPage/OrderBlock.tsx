@@ -9,6 +9,10 @@ interface OrderBlockProps {
     order: IOrderFromHistory;
 }
 
+/**
+ * Блок с информацией о заказе
+ * @constructor
+ */
 const OrderBlock: FC<OrderBlockProps> = ({order}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [cancelReason, setCancelReason] = useState('');

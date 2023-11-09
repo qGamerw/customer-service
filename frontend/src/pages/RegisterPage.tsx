@@ -1,14 +1,17 @@
 import React, {FC} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {Row, Card, Form, Input, Button, Select, message} from 'antd';
+import {Row, Card, Form, Input, Button, message} from 'antd';
 import {UserOutlined, MailOutlined, CalendarOutlined, LockOutlined} from '@ant-design/icons';
 import authService from '../services/authService';
 import {IRegistration} from "../types/types";
 import './styles/RegisterPage.css';
 import PhoneInput from "react-phone-input-2";
 
-const {Option} = Select;
 
+/**
+ * Страница регистрации пользователя
+ * @constructor
+ */
 const RegisterPage: FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();

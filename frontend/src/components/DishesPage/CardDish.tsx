@@ -10,6 +10,10 @@ interface DishItemProps {
     children?: React.ReactNode;
 }
 
+/**
+ * Карточка блюда в меню
+ * @constructor
+ */
 const CardDish: FC<DishItemProps> =
     ({
          dish,
