@@ -67,7 +67,7 @@
     padding: 20px;
 }
 
-h3 {
+.userProfile__tabs h3 {
     font-family: Sylfaen, "BPG Glaho", Arial, sans-serif;
     font-size: 32px;
     color: #D73E14;
@@ -76,4 +76,5 @@ h3 {
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     margin-top: 0;
+    margin-bottom: 0;
 }
