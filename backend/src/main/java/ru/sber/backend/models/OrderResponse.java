@@ -2,6 +2,7 @@ package ru.sber.backend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderResponse {
     private long id;
 
@@ -18,7 +20,7 @@ public class OrderResponse {
 
     private String clientName;
 
-    private String clientPhoneNumber;
+    private String clientPhone;
 
     private String orderTime;
 
@@ -38,6 +40,6 @@ public class OrderResponse {
 
     private String status;
 
-    private List<DishOrder> listDishesFromOrder;
+    private List<DishOrder> dishesOrders;
 
 }

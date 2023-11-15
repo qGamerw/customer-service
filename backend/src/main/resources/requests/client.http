@@ -7,8 +7,8 @@ Content-Type: application/json
   "username": "Смирнов f",
   "number": "89432849392",
   "dateOfBirth": "2000-12-12",
-  "email": "smirnovpa4@yandex.ru1",
-  "password": "password1"
+  "email": "ke.s2013@yandex.ru",
+  "password": "password"
 }
 
 ###Аутентификация

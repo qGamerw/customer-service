@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
             StringBuilder emailText = new StringBuilder(String.format("Уважаемый %s!\n\n", order.getClientName()));
             emailText.append(String.format("Дата и время оформления заказа: %s\n\n", LocalDateTime.now().format(dateTimeFormatter)));
 
-            for (DishOrder dishOrder : order.getListDishesFromOrder()) {
+            for (DishOrder dishOrder : order.getDishesOrders()) {
                 emailText.append(String.format("%s - %d шт.\n", dishOrder.getDishName(), dishOrder.getQuantity()));
             }
 
