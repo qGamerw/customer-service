@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderNotify {
     private Long id;
-    private Long clientId;
+    private String clientId;
     private String clientName;
     private String description;
     private String clientPhone;

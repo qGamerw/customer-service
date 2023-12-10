@@ -29,7 +29,7 @@ public class Notify {
         this.id = id;
     }
 
-    public Notify(long userId, long orderId) {
+    public Notify(String userId, long orderId) {
         User userModel = new User();
         userModel.setId(userId);
         this.user = userModel;

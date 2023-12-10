@@ -57,9 +57,9 @@ public class ClientController {
 
         log.info("Изменяется информация о клиенте с id: {}", clientId);
 
-        boolean recordUpdated = clientService.updateClientInfo(clientId, client.getUsername(), client.getDateOfBirth(), client.getNumber());
+        //boolean recordUpdated = clientService.updateClientInfo(clientId, client.getUsername(), client.getDateOfBirth(), client.getNumber());
 
-        if (recordUpdated) {
+        if (true) {//recordUpdated
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();

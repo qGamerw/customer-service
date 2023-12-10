@@ -21,10 +21,10 @@ public class ClientServiceImpl implements ClientService {
         this.cartService = cartService;
     }
 
+
     @Override
     public long signUp(User client) {
-
-        return clientRepository.save(client).getId();
+        return 0;
     }
 
     @Override
@@ -53,9 +53,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Optional<User> getClientByEmail(String email) {
-
-        return clientRepository.findUserByEmail(email);
+        return Optional.empty();
     }
+
 
     @Override
     public boolean updateClientInfo(long clientId, String name, Date dateOfBirth, String number) {
@@ -64,10 +64,7 @@ public class ClientServiceImpl implements ClientService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
-            user.setUsername(name);
             user.setDateOfBirth(dateOfBirth);
-            user.setNumber(number);
-
             clientRepository.save(user);
 
             return true;

@@ -59,14 +59,6 @@ public interface CartService {
     List<Long> getListOfDishIdsInCart(long cartId);
 
     /**
-     * Подсчитывает количество блюд в корзине пользователя
-     *
-     * @param clientId Уникальный идентификатор пользователя
-     * @return Возвращает количество товаров
-     */
-    int countDishesInCart(long clientId);
-
-    /**
      * Получает список элементов корзины клиента
      *
      * @param cartId id корзины

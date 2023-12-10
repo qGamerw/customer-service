@@ -6,8 +6,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
+import ru.sber.backend.config.JwtTokenContext;
 import ru.sber.backend.entities.User;
+import ru.sber.backend.exceptions.UserNotFound;
 import ru.sber.backend.models.DishOrder;
 import ru.sber.backend.models.OrderResponse;
 
@@ -19,12 +25,15 @@ import java.util.Optional;
 @Service
 public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
-    private final ClientService clientService;
+
+    private final JwtTokenContext jwtTokenContext;
+    private final JwtService jwtService;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender mailSender, ClientService clientService) {
+    public EmailServiceImpl(JavaMailSender mailSender, JwtTokenContext jwtTokenContext, JwtService jwtService) {
         this.mailSender = mailSender;
-        this.clientService = clientService;
+        this.jwtTokenContext = jwtTokenContext;
+        this.jwtService = jwtService;
     }
 
     @Async
@@ -37,13 +46,12 @@ public class EmailServiceImpl implements EmailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            long userId = order.getClientId();
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
 
-            Optional<User> user = clientService.getClientById(userId);
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
             helper.setFrom("consumer.service@yandex.ru");
 
-            helper.setTo(user.get().getEmail());
+            String email = jwtService.getEmailClaim(jwtTokenContext.getJwtSecurityContext());
+            helper.setTo(email);
 
             helper.setSubject("Онлайн чек заказа");
             StringBuilder emailText = new StringBuilder(String.format("Уважаемый %s!\n\n", order.getClientName()));
@@ -62,4 +70,6 @@ public class EmailServiceImpl implements EmailService {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -139,23 +139,4 @@ public class CartServiceImpl implements CartService {
         return cartItemRepository.findByCartId(cartId);
     }
 
-    @Override
-    public int countDishesInCart(long clientId) {
-        Optional<Cart> cart = cartRepository.findCartById(clientId);
-
-        if (cart.isPresent()) {
-            Cart shoppingCart = cart.get();
-            List<CartItem> cartItems = shoppingCart.getCartItems();
-            int totalQuantity = 0;
-
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
-            }
-
-            return totalQuantity;
-        } else {
-
-            return 0;
-        }
-    }
 }

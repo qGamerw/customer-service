@@ -4,10 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.sber.backend.config.JwtTokenContext;
 import ru.sber.backend.entities.Notify;
 import ru.sber.backend.exceptions.UserNotFound;
 import ru.sber.backend.repositories.NotifyRepository;
-import ru.sber.backend.security.services.UserDetailsImpl;
+
 
 import java.util.List;
 
@@ -18,9 +19,14 @@ import java.util.List;
 @Service
 public class NotifyServiceImpl implements NotifyService {
     private final NotifyRepository notifyRepository;
+    private final JwtTokenContext jwtTokenContext;
+    private final JwtService jwtService;
+
     @Autowired
-    public NotifyServiceImpl(NotifyRepository notifyRepository) {
+    public NotifyServiceImpl(NotifyRepository notifyRepository, JwtTokenContext jwtTokenContext, JwtService jwtService) {
         this.notifyRepository = notifyRepository;
+        this.jwtTokenContext = jwtTokenContext;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -42,23 +48,9 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public List<Notify> findNotifyByClientId() {
-        log.info("Удаление уведомления с id: {}", getUserIdSecurityContext());
-        return notifyRepository.findNotifiesByUser_Id(getUserIdSecurityContext());
+        log.info("Удаление уведомления с id: {}", jwtTokenContext);
+        String subClaim = jwtService.getSubClaim(jwtTokenContext.getJwtSecurityContext());
+        return notifyRepository.findNotifiesByUser_Id(subClaim);
     }
 
-    /**
-     * Получает id user из security context
-     *
-     * @return идентификатор пользователя
-     */
-    private long getUserIdSecurityContext() {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetailsImpl) {
-            return ((UserDetailsImpl) principal).getId();
-        } else {
-            throw new UserNotFound("Пользователь не найден");
-        }
-    }
 }

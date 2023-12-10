@@ -21,28 +21,28 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
 
-    @Size(max = 100)
-    @Column(nullable = false)
-    private String username;
+//    @Size(max = 100)
+//    @Column(nullable = false)
+//    private String username;
 
-    @Size(max = 100)
-    private String number;
+//    @Size(max = 100)
+//    private String number;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
 
-    @Size(max = 100)
-    @Column(nullable = false, unique = true)
-    @Email
-    private String email;
+//    @Size(max = 100)
+//    @Column(nullable = false, unique = true)
+//    @Email
+//    private String email;
 
-    @Size(max = 100)
-    @Column(nullable = false)
-    private String password;
+//    @Size(max = 100)
+//    @Column(nullable = false)
+//    private String password;
 
     @Column
     private String resetToken;
@@ -54,14 +54,10 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User(String username, String email, String number, Date dateOfBirth, String password) {
-        this.username = username;
-        this.number = number;
+//        this.username = username;
+//        this.number = number;
         this.dateOfBirth = dateOfBirth;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(String email) {
-        this.email = email;
+//        this.email = email;
+//        this.password = password;
     }
 }
