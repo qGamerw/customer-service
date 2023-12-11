@@ -10,7 +10,7 @@ import java.util.Optional;
  * Репозиторий для взаимодействия с клиентом
  */
 @Repository
-public interface ClientRepository extends JpaRepository<User, Long> {
+public interface ClientRepository extends JpaRepository<User, String> {
 
     /**
      * Ищет пользователя по токену для сброса пароля

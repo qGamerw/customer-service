@@ -31,24 +31,24 @@ public interface CartService {
      *
      * @param clientId Уникальный идентификатор клиента
      */
-    void deleteAllDish(long clientId);
+    void deleteAllDish(String clientId);
 
     /**
      * Изменение количества блюда в корзине
      *
-     * @param clientId   Уникальный идентификатор пользователя
+     * @param cartId   Уникальный идентификатор пользователя
      * @param dishId     Уникальный идентификатор блюда
      * @param quantity   Количество добавляемого блюда
      * @return Возвращает статус обновления количества блюда в корзине
      */
-    boolean updateDishAmount(long clientId, long dishId, int quantity);
+    boolean updateDishAmount(long cartId, long dishId, int quantity);
 
     /**
      * Удаление корзины по ID клиента
      *
      * @param clientId Уникальный идентификатор пользователя
      */
-    void deleteCart(long clientId);
+    void deleteCartByClient(String clientId);
 
     /**
      * Выдает список идентификаторов блюд в корзине пользователя

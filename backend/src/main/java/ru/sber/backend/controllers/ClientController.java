@@ -31,7 +31,7 @@ public class ClientController {
      * @return пользователь с ограниченным количеством полей
      */
     @GetMapping("/{clientId}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable long clientId) {
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String clientId) {
 
         log.info("Выводим данные о клиенет с id: {}", clientId);
 
@@ -73,7 +73,7 @@ public class ClientController {
      * @return статус выполнения
      */
     @DeleteMapping("/{clientId}")
-    public ResponseEntity<?> deleteClient(@PathVariable long clientId) {
+    public ResponseEntity<?> deleteClient(@PathVariable String clientId) {
 
         log.info("Удаляем клиента с id: {}", clientId);
 

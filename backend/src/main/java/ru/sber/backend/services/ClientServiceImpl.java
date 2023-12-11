@@ -23,27 +23,27 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public long signUp(User client) {
-        return 0;
+    public String signUp(User client) {
+        return clientRepository.save(client).getId();
     }
 
     @Override
-    public Optional<User> getClientById(long clientId) {
+    public Optional<User> getClientById(String clientId) {
 
         return clientRepository.findById(clientId);
     }
 
     @Override
-    public boolean checkClientExistence(long clientId) {
+    public boolean checkClientExistence(String clientId) {
 
         return clientRepository.existsById(clientId);
     }
 
     @Override
     @Transactional
-    public boolean deleteClientById(long clientId) {
+    public boolean deleteClientById(String clientId) {
         if (checkClientExistence(clientId)) {
-            cartService.deleteCart(clientId);
+            cartService.deleteCartByClient(clientId);
             clientRepository.deleteById(clientId);
 
             return true;
@@ -58,7 +58,7 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public boolean updateClientInfo(long clientId, String name, Date dateOfBirth, String number) {
+    public boolean updateClientInfo(String clientId, String name, Date dateOfBirth, String number) {
         Optional<User> optionalUser = clientRepository.findById(clientId);
 
         if (optionalUser.isPresent()) {

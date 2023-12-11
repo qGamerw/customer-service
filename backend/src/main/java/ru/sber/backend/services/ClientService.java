@@ -15,7 +15,7 @@ public interface ClientService {
      * @param client Данные о пользователе
      * @return Возвращает идентификатор созданного пользователя
      */
-    long signUp(User client);
+    String signUp(User client);
 
     /**
      * Производит поиск пользователя по id
@@ -23,7 +23,7 @@ public interface ClientService {
      * @param clientId Уникальный идентификатор пользователя
      * @return Возвращает найденного пользователя
      */
-    Optional<User> getClientById(long clientId);
+    Optional<User> getClientById(String clientId);
 
     /**
      * Проверяет существует ли пользователь
@@ -31,7 +31,7 @@ public interface ClientService {
      * @param clientId Уникальный идентификатор пользователя
      * @return Возвращает результат проверки
      */
-    boolean checkClientExistence(long clientId);
+    boolean checkClientExistence(String clientId);
 
     /**
      * Удаляет пользователя по id
@@ -39,7 +39,7 @@ public interface ClientService {
      * @param clientId Уникальный идентификатор пользователя
      * @return true при удачном удалении и false, если пользователя не существует
      */
-    boolean deleteClientById(long clientId);
+    boolean deleteClientById(String clientId);
 
     /**
      * Получает клиента по его email
@@ -58,7 +58,7 @@ public interface ClientService {
      * @param number номер телефона клиента
      * @return true, если информация о клиенте успешно обновлена
      */
-    boolean updateClientInfo(long clientId, String name, Date dateOfBirth, String number);
+    boolean updateClientInfo(String clientId, String name, Date dateOfBirth, String number);
 
     /**
      * Ищет клиента по токену для сброса пароля

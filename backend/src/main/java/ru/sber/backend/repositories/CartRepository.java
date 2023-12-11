@@ -18,4 +18,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
      * @return корзину
      */
     Optional<Cart> findCartById(long cartId);
+    Optional<Cart> findCartByClient_Id(String clientId);
 }

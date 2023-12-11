@@ -1,6 +1,7 @@
 package ru.sber.backend.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +17,13 @@ import ru.sber.backend.config.JwtTokenContext;
 import ru.sber.backend.entities.User;
 import ru.sber.backend.entities.request.LoginRequest;
 import ru.sber.backend.entities.request.SignupRequest;
-import ru.sber.backend.models.Attributes;
-import ru.sber.backend.models.Credential;
-import ru.sber.backend.models.UserRequest;
-import ru.sber.backend.models.UserResponse;
+import ru.sber.backend.models.*;
 import ru.sber.backend.services.ClientService;
 import ru.sber.backend.services.JwtService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -74,7 +73,7 @@ public class AuthorizationController {
 
     @Transactional
     @PostMapping("/signup")
-    public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
         log.info("Выводим данные о клиенте {}", signupRequest);
         UserRequest userRequest = new UserRequest();
         userRequest.setUsername(signupRequest.getUsername());
@@ -94,7 +93,13 @@ public class AuthorizationController {
         credentials.add(credential);
         userRequest.setCredentials(credentials);
 
-        HttpEntity<UserRequest> userEntity = new HttpEntity<>(userRequest, new HttpHeaders());
+        HttpHeaders userHeaders = new HttpHeaders();
+        userHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(signInUser(new LoginRequest("admin", "11111")).getBody());
+        String accessToken = rootNode.path("access_token").asText();
+        userHeaders.setBearerAuth(accessToken);
+        HttpEntity<UserRequest> userEntity = new HttpEntity<>(userRequest, userHeaders);
 
         log.info("Http entity: {}", userEntity);
         try {
@@ -116,6 +121,30 @@ public class AuthorizationController {
         }
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refreshUser(@RequestBody RefreshToken refreshToken) {
+        HttpHeaders tokenHeaders = new HttpHeaders();
+        tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> tokenBody = new LinkedMultiValueMap<>();
+        tokenBody.add("grant_type", "refresh_token");
+        tokenBody.add("client_id", clientId);
+        tokenBody.add("refresh_token", refreshToken.getRefresh_token());
+
+        HttpEntity<MultiValueMap<String, String>> tokenEntity = new HttpEntity<>(tokenBody, tokenHeaders);
+
+        try {
+            ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
+                    keycloakTokenUrl, HttpMethod.POST, tokenEntity, String.class);
+
+            return new ResponseEntity<>(tokenResponseEntity.getBody(),
+                    tokenResponseEntity.getStatusCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping
     public ResponseEntity<String> getUserDetails() {
         HttpHeaders userHeaders = new HttpHeaders();
@@ -124,6 +153,7 @@ public class AuthorizationController {
         Jwt jwt = jwtTokenContext.getJwtSecurityContext();
         UserResponse userDetails = new UserResponse(jwtService.getPreferredUsernameClaim(jwt),
                 jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
+
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userDetailsJson;

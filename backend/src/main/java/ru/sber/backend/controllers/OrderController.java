@@ -64,7 +64,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        long orderId = order.getClientId();
+        String orderId = order.getClientId();
         log.info("Очищаем корзину пользователся с Id: {}", orderId);
         cartService.deleteAllDish(orderId);
         return ResponseEntity.ok().body(idCreatedOrder);

@@ -33,7 +33,7 @@ public class CartServiceImpl implements CartService {
         Optional<Cart> cart = cartRepository.findCartById(cartId);
 
         Cart shoppingCart = cart.orElseGet(() -> {
-            Optional<User> user = clientRepository.findById(cartId);
+            Optional<User> user = clientRepository.findById(cart.get().getClient().getId());
             if (user.isPresent()) {
                 Cart newCart = new Cart();
                 newCart.setClient(user.get());
@@ -78,13 +78,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void deleteAllDish(long clientId) {
+    public void deleteAllDish(String clientId) {
         cartItemRepository.deleteAll();
     }
 
     @Override
-    public boolean updateDishAmount(long clientId, long dishId, int quantity) {
-        Optional<Cart> cart = cartRepository.findCartById(clientId);
+    public boolean updateDishAmount(long cartId, long dishId, int quantity) {
+        Optional<Cart> cart = cartRepository.findCartById(cartId);
 
         if (cart.isPresent()) {
             Cart shoppingCart = cart.get();
@@ -103,13 +103,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCart(long clientId) {
-        Optional<Cart> cart = cartRepository.findCartById(clientId);
+    public void deleteCartByClient(String clientId) {
+        Optional<Cart> cart = cartRepository.findCartByClient_Id(clientId);
 
         if (cart.isPresent()) {
-            long cartId = cart.get().getId();
             cartItemRepository.deleteAll();
-            cartRepository.deleteById(cartId);
+            cartRepository.deleteById(cart.get().getId());
         }
     }
 
