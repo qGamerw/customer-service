@@ -1,14 +1,17 @@
 package ru.sber.backend.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ru.sber.backend.config.JwtTokenContext;
 import ru.sber.backend.entities.request.LoginRequest;
+import ru.sber.backend.models.UserResponse;
 import ru.sber.backend.services.ClientService;
 import ru.sber.backend.services.JwtService;
 
@@ -23,10 +26,13 @@ public class AuthorizationController {
 
     private final ClientService clientService;
     private final JwtService jwtService;
+    private final JwtTokenContext jwtTokenContext;
 
-    public AuthorizationController(ClientService clientService, JwtService jwtService) {
+    @Autowired
+    public AuthorizationController(ClientService clientService, JwtService jwtService, JwtTokenContext jwtTokenContext) {
         this.clientService = clientService;
         this.jwtService = jwtService;
+        this.jwtTokenContext = jwtTokenContext;
     }
 
     @PostMapping("/signin")
@@ -52,5 +58,26 @@ public class AuthorizationController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+
+    @GetMapping
+    public ResponseEntity<String> getUserDetails() {
+        HttpHeaders userHeaders = new HttpHeaders();
+        userHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        Jwt jwt = jwtTokenContext.getJwtSecurityContext();
+        UserResponse userDetails = new UserResponse(jwtService.getPreferredUsernameClaim(jwt),
+                jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userDetailsJson;
+        try {
+            userDetailsJson = objectMapper.writeValueAsString(userDetails);
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>("Error processing user details", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(userDetailsJson, userHeaders, HttpStatus.OK);
     }
 }
