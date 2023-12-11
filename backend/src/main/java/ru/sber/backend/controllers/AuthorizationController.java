@@ -2,19 +2,31 @@ package ru.sber.backend.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.sber.backend.config.JwtTokenContext;
+import ru.sber.backend.entities.User;
 import ru.sber.backend.entities.request.LoginRequest;
+import ru.sber.backend.entities.request.SignupRequest;
+import ru.sber.backend.models.Attributes;
+import ru.sber.backend.models.Credential;
+import ru.sber.backend.models.UserRequest;
 import ru.sber.backend.models.UserResponse;
 import ru.sber.backend.services.ClientService;
 import ru.sber.backend.services.JwtService;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 public class AuthorizationController {
@@ -60,6 +72,49 @@ public class AuthorizationController {
         }
     }
 
+    @Transactional
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) {
+        log.info("Выводим данные о клиенте {}", signupRequest);
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUsername(signupRequest.getUsername());
+        userRequest.setEmail(signupRequest.getEmail());
+        userRequest.setEnabled(true);
+
+        Attributes attributes = new Attributes();
+        attributes.setPhoneNumber(signupRequest.getNumber()
+        );
+        userRequest.setAttributes(attributes);
+
+        Credential credential = new Credential();
+        credential.setType(grantType);
+        credential.setValue(signupRequest.getPassword());
+
+        List<Credential> credentials = new ArrayList<>();
+        credentials.add(credential);
+        userRequest.setCredentials(credentials);
+
+        HttpEntity<UserRequest> userEntity = new HttpEntity<>(userRequest, new HttpHeaders());
+
+        log.info("Http entity: {}", userEntity);
+        try {
+            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
+                    keycloakCreateUserUrl, HttpMethod.POST, userEntity, String.class);
+            log.info("Результат отправки на keycloak: {}", userResponseEntity.getStatusCode());
+            String responseHeader = userResponseEntity.getHeaders().get("Location").get(0);
+
+            int lastSlashIndex = responseHeader.lastIndexOf("/");
+            String userId = responseHeader.substring(lastSlashIndex + 1);
+            User user = new User(userId, signupRequest.getDateOfBirth());
+
+            clientService.signUp(user);
+
+            return new ResponseEntity<>(userResponseEntity.getStatusCode());
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping
     public ResponseEntity<String> getUserDetails() {

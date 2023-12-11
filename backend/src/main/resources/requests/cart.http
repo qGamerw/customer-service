@@ -1,5 +1,5 @@
 ###Добавление блюда в корзину клиента
-POST localhost:8080/cart/3/dish/4
+POST localhost:8084/cart/3/dish/4
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbWlybm92cGE0QHlhbmRleC5ydSIsImlhdCI6MTY5NjE5MTcyMSwiZXhwIjoxNjk2Mjc4MTIxfQ.YuyTeFSW8mt5YIJBBMjh7odo_fLOyy4G_Ja9zKKGuJA
 
