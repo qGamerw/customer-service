@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import ru.sber.backend.clients.orders.OrderServiceClient;
 import ru.sber.backend.entities.OrderToken;
+import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
 
 import java.time.LocalDateTime;
@@ -49,8 +50,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long createOrder(OrderResponse orderResponse) {
+        log.info("order: {}", orderResponse);
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
+        orderResponse.setClientId(jwtService.getSubClaim(jwtService.getJwtSecurityContext()));
+        orderResponse.setClientName(jwtService.getPreferredUsernameClaim(jwtService.getJwtSecurityContext()));
+        orderResponse.setClientPhoneNumber(jwtService.getPhoneNumberClaim(jwtService.getJwtSecurityContext()));
         return orderServiceClient.createOrder("Bearer " + orderToken.get(0).getAccessToken(), orderResponse);
     }
 
@@ -62,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void cancelOrder(Long orderId, String cancelReason) {
+    public void cancelOrder(Long orderId, Message cancelReason) {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
         orderServiceClient.cancelOrder("Bearer " + orderToken.get(0).getAccessToken(),

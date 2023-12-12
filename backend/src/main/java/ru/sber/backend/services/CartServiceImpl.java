@@ -53,7 +53,10 @@ public class CartServiceImpl implements CartService {
         });
 
         if (shoppingCart != null) {
-            Optional<CartItem> cartItem = shoppingCart.getCartItems().stream()
+
+            Optional<CartItem> cartItem = Optional.ofNullable(shoppingCart.getCartItems())
+                    .orElse(Collections.emptyList())
+                    .stream()
                     .filter(item -> item.getDishId() == dishId)
                     .findFirst();
 

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.orders.OrderServiceClient;
+import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
 import ru.sber.backend.services.CartService;
 import ru.sber.backend.services.EmailService;
@@ -97,7 +98,7 @@ public class OrderController {
      */
     @PutMapping("/{orderId}/cancel")
     @PreAuthorize("hasRole('client_user')")
-    public ResponseEntity<?> cancelOrder(@PathVariable Long orderId, @RequestBody String cancelReason) {
+    public ResponseEntity<?> cancelOrder(@PathVariable Long orderId, @RequestBody Message cancelReason) {
         log.info("Отменяет заказ с id: {}", orderId);
 
         orderService.cancelOrder(orderId, cancelReason);

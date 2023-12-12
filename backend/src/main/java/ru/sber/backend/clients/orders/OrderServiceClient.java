@@ -3,6 +3,7 @@ package ru.sber.backend.clients.orders;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public interface OrderServiceClient {
      * @param cancelReason причина отмены заказа
      */
     @PutMapping(value = "/{orderId}/cancel", consumes = "application/json")
-    void cancelOrder(@RequestHeader("Authorization") String bearerToken, @PathVariable Long orderId, @RequestBody String cancelReason);
+    void cancelOrder(@RequestHeader("Authorization") String bearerToken, @PathVariable Long orderId, @RequestBody Message cancelReason);
 }
 
 
