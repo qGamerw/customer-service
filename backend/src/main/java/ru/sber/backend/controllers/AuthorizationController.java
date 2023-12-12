@@ -13,7 +13,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import ru.sber.backend.config.JwtTokenContext;
 import ru.sber.backend.entities.User;
 import ru.sber.backend.entities.request.LoginRequest;
 import ru.sber.backend.entities.request.SignupRequest;
@@ -37,13 +36,12 @@ public class AuthorizationController {
 
     private final ClientService clientService;
     private final JwtService jwtService;
-    private final JwtTokenContext jwtTokenContext;
+
 
     @Autowired
-    public AuthorizationController(ClientService clientService, JwtService jwtService, JwtTokenContext jwtTokenContext) {
+    public AuthorizationController(ClientService clientService, JwtService jwtService) {
         this.clientService = clientService;
         this.jwtService = jwtService;
-        this.jwtTokenContext = jwtTokenContext;
     }
 
     @PostMapping("/signin")
@@ -145,12 +143,13 @@ public class AuthorizationController {
         }
     }
 
+    @PreAuthorize("hasRole('client_user')")
     @GetMapping
     public ResponseEntity<String> getUserDetails() {
         HttpHeaders userHeaders = new HttpHeaders();
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        Jwt jwt = jwtTokenContext.getJwtSecurityContext();
+        Jwt jwt = jwtService.getJwtSecurityContext();
         UserResponse userDetails = new UserResponse(jwtService.getPreferredUsernameClaim(jwt),
                 jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
 

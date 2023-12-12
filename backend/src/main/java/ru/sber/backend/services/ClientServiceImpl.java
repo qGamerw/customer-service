@@ -2,6 +2,7 @@ package ru.sber.backend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sber.backend.entities.User;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final CartService cartService;
+    private final JwtService jwtService;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository, CartService cartService) {
+    public ClientServiceImpl(ClientRepository clientRepository, CartService cartService, JwtService jwtService) {
         this.clientRepository = clientRepository;
         this.cartService = cartService;
+        this.jwtService = jwtService;
     }
 
 
@@ -28,23 +31,23 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<User> getClientById(String clientId) {
+    public Optional<User> getClientById() {
 
-        return clientRepository.findById(clientId);
+        return clientRepository.findById(getIdClient());
     }
 
     @Override
-    public boolean checkClientExistence(String clientId) {
+    public boolean checkClientExistence() {
 
-        return clientRepository.existsById(clientId);
+        return clientRepository.existsById(getIdClient());
     }
 
     @Override
     @Transactional
-    public boolean deleteClientById(String clientId) {
-        if (checkClientExistence(clientId)) {
-            cartService.deleteCartByClient(clientId);
-            clientRepository.deleteById(clientId);
+    public boolean deleteClientById() {
+        if (checkClientExistence()) {
+            cartService.deleteCart();
+            clientRepository.deleteById(getIdClient());
 
             return true;
         }
@@ -52,30 +55,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<User> getClientByEmail(String email) {
-        return Optional.empty();
-    }
-
-
-    @Override
-    public boolean updateClientInfo(String clientId, String name, Date dateOfBirth, String number) {
-        Optional<User> optionalUser = clientRepository.findById(clientId);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            user.setDateOfBirth(dateOfBirth);
-            clientRepository.save(user);
-
-            return true;
-        } else {
-            throw new EntityNotFoundException("Клиент с id " + clientId + " не найден");
-        }
-    }
-
-    @Override
     public Optional<User> findUserByResetToken(String resetToken) {
 
         return clientRepository.findByResetToken(resetToken);
+    }
+
+    private String getIdClient() {
+        Jwt jwt = jwtService.getJwtSecurityContext();
+        return jwtService.getSubClaim(jwt);
     }
 }

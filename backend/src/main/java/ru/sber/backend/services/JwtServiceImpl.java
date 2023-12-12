@@ -1,8 +1,12 @@
 package ru.sber.backend.services;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimNames;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
+import ru.sber.backend.exceptions.UserNotFound;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -25,5 +29,17 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String getPreferredUsernameClaim(Jwt jwt) {
         return jwt.getClaim("preferred_username");
+    }
+
+    public Jwt getJwtSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof JwtAuthenticationToken) {
+            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
+            Jwt jwt = jwtAuthenticationToken.getToken();
+            return jwt;
+        } else {
+            throw new UserNotFound("Пользователь не найден");
+        }
     }
 }

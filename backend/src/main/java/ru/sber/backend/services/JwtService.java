@@ -3,8 +3,13 @@ package ru.sber.backend.services;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 public interface JwtService {
-    public String getSubClaim(Jwt jwt);
-    public String getEmailClaim(Jwt jwt);
-    public String getPhoneNumberClaim(Jwt jwt);
-    public String getPreferredUsernameClaim(Jwt jwt);
+    String getSubClaim(Jwt jwt);
+
+    String getEmailClaim(Jwt jwt);
+
+    String getPhoneNumberClaim(Jwt jwt);
+
+    String getPreferredUsernameClaim(Jwt jwt);
+
+    Jwt getJwtSecurityContext();
 }

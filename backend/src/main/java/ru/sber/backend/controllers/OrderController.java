@@ -4,11 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.orders.OrderServiceClient;
 import ru.sber.backend.models.OrderResponse;
 import ru.sber.backend.services.CartService;
 import ru.sber.backend.services.EmailService;
+import ru.sber.backend.services.OrderService;
 
 import java.util.List;
 
@@ -20,13 +22,13 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderServiceClient orderServiceClient;
+    private final OrderService orderService;
     private final CartService cartService;
     private final EmailService emailService;
 
     @Autowired
-    public OrderController(OrderServiceClient orderServiceClient, CartService cartService, EmailService emailService) {
-        this.orderServiceClient = orderServiceClient;
+    public OrderController(OrderService orderService, CartService cartService, EmailService emailService) {
+        this.orderService = orderService;
         this.cartService = cartService;
         this.emailService = emailService;
     }
@@ -34,14 +36,14 @@ public class OrderController {
     /**
      * Получает список всех заказов клиента по ID
      *
-     * @param clientId ID клиента
      * @return получение списка заказов клиента
      */
-    @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByClientId(@PathVariable Long clientId) {
-        log.info("Обращаемся к серверу заказов для получения истории пользователя с id: {}", clientId);
-        List<OrderResponse> listOrders = orderServiceClient.getOrdersByClientId(clientId);
-        log.info("Выводим историю пользователя с id: {} История: {}", clientId, listOrders);
+    @GetMapping("/client")
+    @PreAuthorize("hasRole('client_user')")
+    public ResponseEntity<List<OrderResponse>> getOrdersByClientId() {
+        log.info("Обращаемся к серверу заказов для получения истории пользователя");
+        List<OrderResponse> listOrders = orderService.getOrdersByClientId();
+        log.info("Выводим историю пользователя. История: {}", listOrders);
         return ResponseEntity.ok().body(listOrders);
     }
 
@@ -52,9 +54,10 @@ public class OrderController {
      * @return статус запроса
      */
     @PostMapping
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<Long> createOrder(@RequestBody OrderResponse order) {
         log.info("Создаем заказ клиента {}", order);
-        Long idCreatedOrder = orderServiceClient.createOrder(order);
+        Long idCreatedOrder = orderService.createOrder(order);
         log.info("Id созданного заказа: {}", idCreatedOrder);
 
         try {
@@ -64,9 +67,9 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        String orderId = order.getClientId();
-        log.info("Очищаем корзину пользователся с Id: {}", orderId);
-        cartService.deleteAllDish(orderId);
+        String clientId = order.getClientId();
+        log.info("Очищаем корзину пользователся с Id: {}", clientId);
+        cartService.deleteAllDish();
         return ResponseEntity.ok().body(idCreatedOrder);
     }
 
@@ -77,9 +80,10 @@ public class OrderController {
      * @return статус выполнения операции
      */
     @PutMapping("/{orderId}/payment")
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> paymentOfOrderById(@PathVariable Long orderId) {
         log.info("Оплачиваем заказ с id {}", orderId);
-        orderServiceClient.paymentOfOrderById(orderId);
+        orderService.paymentOfOrderById(orderId);
 
         return ResponseEntity.accepted().build();
     }
@@ -92,10 +96,11 @@ public class OrderController {
      * @return статус выполнения операции
      */
     @PutMapping("/{orderId}/cancel")
+    @PreAuthorize("hasRole('client_user')")
     public ResponseEntity<?> cancelOrder(@PathVariable Long orderId, @RequestBody String cancelReason) {
         log.info("Отменяет заказ с id: {}", orderId);
 
-        orderServiceClient.cancelOrder(orderId, cancelReason);
+        orderService.cancelOrder(orderId, cancelReason);
 
         return ResponseEntity.accepted().build();
     }
