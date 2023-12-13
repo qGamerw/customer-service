@@ -64,6 +64,7 @@ export interface IUser {
 }
 
 export interface IUserResponse {
+    refresh_token: Boolean;
     accessToken: string;
     id: number;
     username: string;
@@ -82,7 +83,7 @@ export interface IRegistration {
 }
 
 export interface ILogin {
-    email: string;
+    username: string;
     password: string;
 }
 

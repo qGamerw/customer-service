@@ -1,6 +1,5 @@
-package ru.sber.backend.services;
+package ru.sber.backend.clients.orders;
 
-import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
 
@@ -35,7 +34,7 @@ public interface OrderService {
     /**
      * Отменяет заказ, обращаясь к сервису заказов
      *
-     * @param orderId ID заказа
+     * @param orderId      ID заказа
      * @param cancelReason причина отмены заказа
      */
     void cancelOrder(Long orderId, Message cancelReason);

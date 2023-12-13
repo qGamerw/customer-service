@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.clients.restaurants.RestaurantService;
 import ru.sber.backend.clients.restaurants.RestaurantServiceClient;
 import ru.sber.backend.models.Dish;
 
@@ -20,11 +21,11 @@ import java.util.List;
 @RequestMapping("/dishes")
 public class DishController {
 
-    private final RestaurantServiceClient restaurantServiceClient;
+    private final RestaurantService restaurantService;
 
     @Autowired
-    public DishController(RestaurantServiceClient restaurantServiceClient) {
-        this.restaurantServiceClient = restaurantServiceClient;
+    public DishController(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
     }
 
     /**
@@ -35,7 +36,7 @@ public class DishController {
     @GetMapping("/any")
     public ResponseEntity<List<Dish>> getDishes(@RequestParam int page, @RequestParam int size) {
         log.info("Получаем меню ресторана");
-        Page<Dish> listDishes = restaurantServiceClient.getListAllDish(page, size);
+        Page<Dish> listDishes = restaurantService.getListAllDish(page, size);
         log.info("Суммарное кол-во страниц: {}", listDishes.getTotalPages());
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-total-pages", String.valueOf(listDishes.getTotalPages()));

@@ -1,4 +1,4 @@
-package ru.sber.backend.services;
+package ru.sber.backend.clients.orders;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import ru.sber.backend.clients.orders.OrderServiceClient;
 import ru.sber.backend.entities.OrderToken;
 import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
+import ru.sber.backend.services.JwtService;
+import ru.sber.backend.services.OrderTokenService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,12 +31,10 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Autowired
-    public OrderServiceImpl(OrderServiceClient orderServiceClient,  JwtService jwtService
+    public OrderServiceImpl(OrderServiceClient orderServiceClient, JwtService jwtService
             , OrderTokenService orderTokenService) {
         this.orderServiceClient = orderServiceClient;
-
         this.jwtService = jwtService;
-
         this.orderTokenService = orderTokenService;
     }
 
@@ -71,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         checkAndUpdateOrderTokens();
         List<OrderToken> orderToken = orderTokenService.findAll();
         orderServiceClient.cancelOrder("Bearer " + orderToken.get(0).getAccessToken(),
-                                                                                        orderId, cancelReason);
+                orderId, cancelReason);
     }
 
     private void checkAndUpdateOrderTokens() {

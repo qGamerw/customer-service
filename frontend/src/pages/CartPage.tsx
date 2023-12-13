@@ -3,7 +3,6 @@ import ListDishesFromCart from '../components/CartPage/ListDishesFromCart';
 import DeliveryForm from '../components/CartPage/DeliveryForm';
 import CartService from "../services/cartService";
 import './styles/CartPage.css';
-import {user} from "../constants/constants";
 import { IDishFromCart} from "../types/types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
@@ -25,7 +24,7 @@ const CartPage: FC = () => {
 
         useEffect(() => {
             const getCart = () => {
-                CartService.getCart(user?.id, dispatch)
+                CartService.getCart(dispatch)
             };
             getCart();
         }, []);

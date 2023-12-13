@@ -1,4 +1,5 @@
 import {user} from "../constants/constants";
+import header from "../components/generals/Header";
 
 /**
  * Аутентификационный заголовок
@@ -6,9 +7,16 @@ import {user} from "../constants/constants";
  */
 export default function authHeader() {
 
-    if (user && user.accessToken) {
-        return { Authorization: "Bearer " + user.accessToken };
+    const userStr = sessionStorage.getItem("user");
+    console.log("header: " + userStr)
+    let user = null;
+    if (userStr) {
+        user = JSON.parse(userStr);
+    }
+
+    if (user && user.access_token) {
+        return { Authorization: 'Bearer ' + user.access_token };
     } else {
-        return {};
+        return { Authorization: '' };
     }
 }

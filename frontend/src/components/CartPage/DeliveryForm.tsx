@@ -50,7 +50,7 @@ const DeliveryForm: FC<DeliveryForm> = ({
             listDishesFromOrder: listDishesFromOrder
         };
         OrderService.createOrder(order, dispatch).then((orderId) => {
-            OrderService.paymentOfOrderById(user?.id ?? 0, orderId, dispatch)
+            OrderService.paymentOfOrderById(orderId)
         })
         alert("Заказ совершен")
     };

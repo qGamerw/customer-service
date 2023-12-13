@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.clients.restaurants.RestaurantService;
 import ru.sber.backend.clients.restaurants.RestaurantServiceClient;
 import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.models.DishFromCart;
@@ -24,11 +25,11 @@ public class CartController {
 
     private final CartService cartService;
 
-    private final RestaurantServiceClient restaurantServiceClient;
+    private final RestaurantService restaurantService;
     @Autowired
-    public CartController(CartService cartService, RestaurantServiceClient restaurantServiceClient) {
+    public CartController(CartService cartService, RestaurantService restaurantService) {
         this.cartService = cartService;
-        this.restaurantServiceClient = restaurantServiceClient;
+        this.restaurantService = restaurantService;
     }
 
     /**
@@ -48,7 +49,7 @@ public class CartController {
 
         log.info("Получаем список блюд в корзине по строке с id блюд: {}", stringWithDishesIds);
 
-        List<DishFromCart> dishes = restaurantServiceClient.getListDishesById(stringWithDishesIds).stream()
+        List<DishFromCart> dishes = restaurantService.getListDishesById(stringWithDishesIds).stream()
                 .peek(dish -> {
                     CartItem cartItem = cartItems.stream()
                             .filter(item -> item.getDishId() == dish.getId())

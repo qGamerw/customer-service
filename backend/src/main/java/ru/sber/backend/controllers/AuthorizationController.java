@@ -23,6 +23,7 @@ import ru.sber.backend.services.JwtService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -145,7 +146,7 @@ public class AuthorizationController {
 
     @PreAuthorize("hasRole('client_user')")
     @GetMapping
-    public ResponseEntity<String> getUserDetails() {
+    public ResponseEntity<UserResponse> getUserDetails() {
         HttpHeaders userHeaders = new HttpHeaders();
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -153,15 +154,13 @@ public class AuthorizationController {
         UserResponse userDetails = new UserResponse(jwtService.getPreferredUsernameClaim(jwt),
                 jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
 
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String userDetailsJson;
-        try {
-            userDetailsJson = objectMapper.writeValueAsString(userDetails);
-        } catch (JsonProcessingException e) {
-            return new ResponseEntity<>("Error processing user details", HttpStatus.INTERNAL_SERVER_ERROR);
+        Optional<User> client = clientService.getClientById();
+        if(client.isPresent()){
+            userDetails.setId(client.get().getId());
+            userDetails.setDateOfBirth(client.get().getDateOfBirth());
         }
+        log.info("Данные о пользователе {}",userDetails);
 
-        return new ResponseEntity<>(userDetailsJson, userHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
 }

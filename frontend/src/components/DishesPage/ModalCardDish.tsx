@@ -27,7 +27,7 @@ const ModalCardDish: FC<ModalCardDishProps> =
         console.log(dishFromCartById)
         const handleAddClick = () => {
             isLogged && (
-                CartService.addToCart(user?.id, dish.id, dispatch)
+                CartService.addToCart(dish.id, dispatch)
             )
         }
 
@@ -35,9 +35,9 @@ const ModalCardDish: FC<ModalCardDishProps> =
             const newQuantity = {
                 quantity: quantity,
             };
-            CartService.updateQuantity(user?.id, dishId, newQuantity, dispatch)
+            CartService.updateQuantity(dishId, newQuantity, dispatch)
             if (quantity === 0) {
-                CartService.deleteFromCart(user?.id, dishId, dispatch)
+                CartService.deleteFromCart(dishId, dispatch)
             }
         }
         return (

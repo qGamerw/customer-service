@@ -36,7 +36,7 @@ const createOrder = (order: IOrderResponse, dispatch: AppDispatch) => {
     console.log(`Создание заказа: ${API_URL}`, {order}, {headers: authHeader()})
     return axios.post(API_URL, order, {headers: authHeader()}).then(
         (response) => {
-            CartService.getCart(user?.id, dispatch)
+            CartService.getCart(dispatch)
             return response.data;
         },
         (error) => {
@@ -72,7 +72,7 @@ const cancelOrder = (userId: number, orderId: number, message: string, dispatch:
  * Запрос для оплаты заказа
  * @constructor
  */
-const paymentOfOrderById = (userId: number, orderId: number, dispatch: AppDispatch) => {
+const paymentOfOrderById = (orderId: number) => {
     console.log(`Оплата заказа ${API_URL}/${orderId}/payment`, {headers: authHeader()})
     return axios.put(`${API_URL}/${orderId}/payment`, "",{headers: authHeader()}).then(
         (response) => {

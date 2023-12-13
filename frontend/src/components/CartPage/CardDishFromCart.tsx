@@ -5,7 +5,6 @@ import {CloseCircleOutlined} from "@ant-design/icons";
 import "./styles/CardDishFromCart.css";
 import CartService from "../../services/cartService";
 import {IDishFromCart} from "../../types/types";
-import {user} from "../../constants/constants";
 import {useAppDispatch} from "../../hooks";
 
 /**
@@ -22,11 +21,11 @@ const CardDishFromCart: FC<CardDishFromCart> = ({dish}) => {
         const newQuantity = {
             quantity: quantity,
         };
-        CartService.updateQuantity(user?.id, dishId, newQuantity, dispatch)
+        CartService.updateQuantity(dishId, newQuantity, dispatch)
     }
 
     const handleRemoveClick = (dishId: number) => {
-        CartService.deleteFromCart(user?.id, dishId, dispatch)
+        CartService.deleteFromCart(dishId, dispatch)
     }
 
     return (

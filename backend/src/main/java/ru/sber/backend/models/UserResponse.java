@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.sber.backend.entities.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -16,12 +17,8 @@ public class UserResponse {
     private String username;
     private String email;
     private String number;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    public UserResponse(User user) {
-        this.id = user.getId();
-        this.dateOfBirth = user.getDateOfBirth();
-    }
 
     public UserResponse(String username, String email, String number) {
         this.email = email;

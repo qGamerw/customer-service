@@ -6,12 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.sber.backend.clients.orders.OrderServiceClient;
 import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
 import ru.sber.backend.services.CartService;
 import ru.sber.backend.services.EmailService;
-import ru.sber.backend.services.OrderService;
+import ru.sber.backend.clients.orders.OrderService;
 
 import java.util.List;
 

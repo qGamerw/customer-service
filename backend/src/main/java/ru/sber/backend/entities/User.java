@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +35,7 @@ public class User {
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
 //    @Size(max = 100)
 //    @Column(nullable = false, unique = true)
@@ -53,7 +55,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String id, Date dateOfBirth) {
+    public User(String id, LocalDate dateOfBirth) {
         this.id = id;
         this.dateOfBirth = dateOfBirth;
 
