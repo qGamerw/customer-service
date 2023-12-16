@@ -12,8 +12,8 @@ const API_URL = "/orders";
  * Запрос для получения заказов пользователя
  * @constructor
  */
-const getOrders = (userId: number, dispatch: AppDispatch) => {
-    return axios.get(API_URL + `/client/${userId}`, {headers: authHeader()}).then(
+const getOrders = (dispatch: AppDispatch) => {
+    return axios.get(API_URL + `/client`, {headers: authHeader()}).then(
         (response: AxiosResponse<IOrderFromHistory[]>) => {
             console.log(response.data)
             dispatch(setOrders(response.data));
@@ -52,12 +52,12 @@ const createOrder = (order: IOrderResponse, dispatch: AppDispatch) => {
  * Запрос на отмену заказа
  * @constructor
  */
-const cancelOrder = (userId: number, orderId: number, message: string, dispatch: AppDispatch) => {
+const cancelOrder = (orderId: number, message: string, dispatch: AppDispatch) => {
     console.log(`Отмена заказа: ${API_URL}/${orderId}/cancel`, {orderId, message}, {headers: authHeader()})
 
     return axios.put(`${API_URL}/${orderId}/cancel`, {orderId, message}, {headers: authHeader()}).then(
         (response) => {
-            getOrders(userId, dispatch);
+            getOrders(dispatch);
         },
         (error) => {
             const _content = (error.response && error.response.data) ||

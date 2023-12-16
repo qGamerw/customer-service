@@ -7,6 +7,7 @@ import java.util.List;
 public interface OrderTokenService {
     /**
      * сохраняет токен в БД
+     *
      * @param orderToken - токен для клиента сервиса заказов
      * @return true в случае успеха
      */
@@ -14,6 +15,7 @@ public interface OrderTokenService {
 
     /**
      * Возвращает токены клиента заказов
+     *
      * @return токены
      */
     List<OrderToken> findAll();

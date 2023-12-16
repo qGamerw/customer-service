@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.sber.backend.entities.Notify;
 import ru.sber.backend.repositories.NotifyRepository;
 
-
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class NotifyServiceImpl implements NotifyService {
     @Override
     public boolean delete(long idNotify) {
         log.info("Удаление уведомления с id: {}", idNotify);
-        if(notifyRepository.existsById(idNotify)){
+        if (notifyRepository.existsById(idNotify)) {
             notifyRepository.delete(new Notify(idNotify));
             return true;
         }

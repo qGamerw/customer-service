@@ -20,9 +20,9 @@ public interface RestaurantServiceClient {
      *
      * @return получение страницы блюд
      */
-    @GetMapping(value = "/any", produces = "application/json")
+    @GetMapping(value = "/customer/any", produces = "application/json")
     Page<Dish> getListAllDish(@RequestParam int page, @RequestParam int size);
 
-    @GetMapping(value = "/basket", produces = "application/json")
+    @GetMapping(value = "/customer/basket", produces = "application/json")
     List<DishFromCart> getListDishesById(@RequestParam String list);
 }

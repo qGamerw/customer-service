@@ -1,17 +1,14 @@
 package ru.sber.backend.services;
-import org.springframework.mail.SimpleMailMessage;
-import ru.sber.backend.models.DishOrder;
-import ru.sber.backend.models.OrderResponse;
 
-import java.math.BigDecimal;
-import java.util.List;
+import org.springframework.mail.SimpleMailMessage;
+import ru.sber.backend.models.OrderResponse;
 
 /**
  * Сервис отправки письма на электронную почту
  */
 public interface EmailService {
     /**
-     * Отпрвляет письмо на указанную электронную почту
+     * Отправляет письмо на указанную электронную почту
      *
      * @param email электронная почта клиента
      */

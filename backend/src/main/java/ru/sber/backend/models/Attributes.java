@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Attributes {
-    private String phoneNumber;    
+    private String phoneNumber;
 }

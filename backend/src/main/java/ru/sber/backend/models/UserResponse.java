@@ -2,10 +2,8 @@ package ru.sber.backend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.sber.backend.entities.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Клиент с ограниченной информацией
@@ -18,7 +16,6 @@ public class UserResponse {
     private String email;
     private String number;
     private LocalDate dateOfBirth;
-
 
     public UserResponse(String username, String email, String number) {
         this.email = email;

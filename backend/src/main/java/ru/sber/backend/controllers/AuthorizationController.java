@@ -22,7 +22,6 @@ import ru.sber.backend.services.JwtService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -114,7 +113,7 @@ public class AuthorizationController {
             clientService.signUp(user);
 
             return new ResponseEntity<>(userResponseEntity.getStatusCode());
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -155,11 +154,11 @@ public class AuthorizationController {
                 jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
 
         Optional<User> client = clientService.getClientById();
-        if(client.isPresent()){
+        if (client.isPresent()) {
             userDetails.setId(client.get().getId());
             userDetails.setDateOfBirth(client.get().getDateOfBirth());
         }
-        log.info("Данные о пользователе {}",userDetails);
+        log.info("Данные о пользователе {}", userDetails);
 
         return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }

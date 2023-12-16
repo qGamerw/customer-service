@@ -10,6 +10,7 @@ import java.util.List;
 public interface NotifyService {
     /**
      * Создает уведомление для пользователя
+     *
      * @param notify уведомление
      * @return true в случае успеха
      */
@@ -17,6 +18,7 @@ public interface NotifyService {
 
     /**
      * Удаляет уведомление пользователя
+     *
      * @param idNotify индификатор уведомления
      * @return true в случае успеха
      */
@@ -24,6 +26,7 @@ public interface NotifyService {
 
     /**
      * Ищет все уведомления по id пользователя
+     *
      * @return список уведомлений
      */
     List<Notify> findNotifyByClientId();

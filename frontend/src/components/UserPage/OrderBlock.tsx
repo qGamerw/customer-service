@@ -30,11 +30,10 @@ const OrderBlock: FC<OrderBlockProps> = ({order}) => {
 
     const handleOk = () => {
         if (cancelReason) {
-            const userId = order.clientId;
             const orderId = order.id;
 
             orderService
-                .cancelOrder(userId, orderId, cancelReason, dispatch)
+                .cancelOrder(orderId, cancelReason, dispatch)
                 .then(() => {
                     setIsModalVisible(false);
                     message.success('Заказ успешно отменен');

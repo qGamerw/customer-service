@@ -6,12 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.sber.backend.clients.restaurants.RestaurantService;
-import ru.sber.backend.clients.restaurants.RestaurantServiceClient;
 import ru.sber.backend.entities.CartItem;
 import ru.sber.backend.models.DishFromCart;
 import ru.sber.backend.services.CartService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +24,7 @@ public class CartController {
     private final CartService cartService;
 
     private final RestaurantService restaurantService;
+
     @Autowired
     public CartController(CartService cartService, RestaurantService restaurantService) {
         this.cartService = cartService;
@@ -45,7 +44,7 @@ public class CartController {
         log.info("Получаем список id блюд в корзине");
         List<Long> listDishesIds = cartService.getListOfDishIdsInCart();
         String stringWithDishesIds = listDishesIds.toString()
-                .substring(1, listDishesIds.toString().length() - 1).replaceAll("\\s","");
+                .substring(1, listDishesIds.toString().length() - 1).replaceAll("\\s", "");
 
         log.info("Получаем список блюд в корзине по строке с id блюд: {}", stringWithDishesIds);
 
@@ -68,11 +67,10 @@ public class CartController {
     }
 
 
-
     /**
      * Добавляет блюдо в корзину
      *
-     * @param dishId   id блюда
+     * @param dishId id блюда
      * @return корзину с добавленными блюдами
      */
     @PreAuthorize("hasRole('client_user')")

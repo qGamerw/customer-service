@@ -2,7 +2,6 @@ package ru.sber.backend.services;
 
 import ru.sber.backend.entities.User;
 
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -37,7 +36,6 @@ public interface ClientService {
      * @return true при удачном удалении и false, если пользователя не существует
      */
     boolean deleteClientById();
-
 
 
     /**

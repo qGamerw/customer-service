@@ -4,7 +4,6 @@ import { IOrderFromHistory} from '../../types/types';
 import {OrderBlock} from './OrderBlock';
 import './styles/OrderHistory.css';
 import OrderService from "../../services/orderService";
-import {user} from "../../constants/constants";
 import {useAppDispatch} from "../../hooks";
 
 interface OrderHistory {
@@ -17,13 +16,12 @@ interface OrderHistory {
  */
 const OrderHistory: FC<OrderHistory> =
     ({listOrdersFromHistory}) => {
-    const client = user;
     const dispatch = useAppDispatch();
 
 
     useEffect(() => {
         const getCart = () => {
-            OrderService.getOrders(client?.id ?? 0, dispatch)
+            OrderService.getOrders(dispatch)
         };
         getCart();
     }, []);

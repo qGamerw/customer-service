@@ -5,6 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DishFromCart extends Dish{
+public class DishFromCart extends Dish {
     private int quantity;
 }

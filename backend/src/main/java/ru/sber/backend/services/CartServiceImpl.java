@@ -12,7 +12,6 @@ import ru.sber.backend.repositories.CartItemRepository;
 import ru.sber.backend.repositories.CartRepository;
 import ru.sber.backend.repositories.ClientRepository;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,6 +93,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean deleteAllDish() {
         Optional<Cart> cart = cartRepository.findCartByClient_Id(getIdClient());
+        log.info("Удаление товара из корзины: {} по id: {}", cart, getIdClient());
         if (cart.isPresent()) {
             cartItemRepository.deleteAllByCart_Id(cart.get().getId());
             return true;

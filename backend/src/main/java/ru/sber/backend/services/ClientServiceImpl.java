@@ -1,6 +1,5 @@
 package ru.sber.backend.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.sber.backend.entities.User;
 import ru.sber.backend.repositories.ClientRepository;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service

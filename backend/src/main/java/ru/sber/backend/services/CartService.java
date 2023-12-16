@@ -11,7 +11,7 @@ public interface CartService {
     /**
      * Добавление блюда в корзину
      *
-     * @param dishId   Уникальный идентификатор блюда
+     * @param dishId Уникальный идентификатор блюда
      * @return Возвращает статус добавления блюда в корзину
      */
     boolean addToCart(long dishId);
@@ -19,35 +19,32 @@ public interface CartService {
     /**
      * Удаление блюда из корзины
      *
-     * @param dishId   Уникальный идентификатор блюда
+     * @param dishId Уникальный идентификатор блюда
      * @return Возвращает статус удаления блюда из корзины
      */
     boolean deleteDish(long dishId);
 
     /**
      * Удаляет все блюда из корзины по id клиента
-     *
      */
     boolean deleteAllDish();
 
     /**
      * Изменение количества блюда в корзине
      *
-     * @param dishId     Уникальный идентификатор блюда
-     * @param quantity   Количество добавляемого блюда
+     * @param dishId   Уникальный идентификатор блюда
+     * @param quantity Количество добавляемого блюда
      * @return Возвращает статус обновления количества блюда в корзине
      */
     boolean updateDishAmount(long dishId, int quantity);
 
     /**
      * Удаление корзины по ID клиента
-     *
      */
     void deleteCart();
 
     /**
      * Выдает список идентификаторов блюд в корзине пользователя
-     *
      */
     List<Long> getListOfDishIdsInCart();
 
