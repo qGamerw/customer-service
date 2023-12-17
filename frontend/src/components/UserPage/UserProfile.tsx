@@ -81,9 +81,7 @@ const UserProfile: FC = () => {
                             <p>
                                 <span className={"infoTitle"}>Номер телефона:</span>
                             </p>
-                            <p>
-                                {isEditing && (<span className={"infoTitle"}>Подтвердите пароль:</span>)}
-                            </p>
+
                         </div>
                     </div>
                     <div className="userProfile__right">
@@ -132,17 +130,7 @@ const UserProfile: FC = () => {
                                 >
                                     <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx"/>
                                 </Form.Item>
-                                <Form.Item
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Пожалуйста, подтвердите пароль",
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password placeholder="Пароль"/>
-                                </Form.Item>
+
                                 <Form.Item>
                                     <Button type="primary" htmlType="submit"
                                             className={"userProfile__button_save"}

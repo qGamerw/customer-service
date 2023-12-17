@@ -20,6 +20,7 @@ import ru.sber.backend.services.JwtService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -44,31 +45,24 @@ public class AuthorizationController {
     public ResponseEntity<?> updateUserInfo(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
         log.info("Выводим новые данные о клиенте {}", signupRequest);
         Jwt jwt = jwtService.getJwtSecurityContext();
-        UserRequest userRequest = new UserRequest();
-        userRequest.setUsername(jwtService.getPreferredUsernameClaim(jwt));
-        userRequest.setEmail(signupRequest.getEmail());
-        userRequest.setEnabled(true);
+
+        UpdateResponse updateResponse = new UpdateResponse();
+
+        updateResponse.setEmail(
+                Optional.ofNullable(signupRequest.getEmail())
+                        .orElseGet(() -> jwtService.getEmailClaim(jwt))
+        );
 
         Attributes attributes = new Attributes();
-        attributes.setPhoneNumber(signupRequest.getNumber());
-        attributes.setDateBirthday(jwtService.getDateBirthdayClaim(jwt));
-        userRequest.setAttributes(attributes);
 
-        Credential credential = new Credential();
-        credential.setType(grantType);
-        credential.setValue(signupRequest.getPassword());
+        attributes.setPhoneNumber(
+                Optional.ofNullable(signupRequest.getNumber())
+                        .orElseGet(() -> jwtService.getPhoneNumberClaim(jwt))
+        );
+        updateResponse.setAttributes(attributes);
 
-        List<Credential> credentials = new ArrayList<>();
-        credentials.add(credential);
-        userRequest.setCredentials(credentials);
-
-        HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(signInUser(new LoginRequest("admin", "11111")).getBody());
-        String accessToken = rootNode.path("access_token").asText();
-        userHeaders.setBearerAuth(accessToken);
-        HttpEntity<UserRequest> userEntity = new HttpEntity<>(userRequest, userHeaders);
+        HttpHeaders userHeaders = getHttpHeadersAdmin();
+        HttpEntity<UpdateResponse> userEntity = new HttpEntity<>(updateResponse, userHeaders);
 
         log.info("Http entity: {}", userEntity);
         try {
@@ -132,12 +126,7 @@ public class AuthorizationController {
         credentials.add(credential);
         userRequest.setCredentials(credentials);
 
-        HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setContentType(MediaType.APPLICATION_JSON);
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(signInUser(new LoginRequest("admin", "11111")).getBody());
-        String accessToken = rootNode.path("access_token").asText();
-        userHeaders.setBearerAuth(accessToken);
+        HttpHeaders userHeaders = getHttpHeadersAdmin();
         HttpEntity<UserRequest> userEntity = new HttpEntity<>(userRequest, userHeaders);
 
         log.info("Http entity: {}", userEntity);
@@ -192,4 +181,15 @@ public class AuthorizationController {
 
         return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
+
+    private HttpHeaders getHttpHeadersAdmin() throws JsonProcessingException {
+        HttpHeaders userHeaders = new HttpHeaders();
+        userHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(signInUser(new LoginRequest("admin", "11111")).getBody());
+        String accessToken = rootNode.path("access_token").asText();
+        userHeaders.setBearerAuth(accessToken);
+        return userHeaders;
+    }
+
 }
