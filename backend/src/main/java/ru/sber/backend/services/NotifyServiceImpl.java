@@ -44,7 +44,7 @@ public class NotifyServiceImpl implements NotifyService {
     public List<Notify> findNotifyByClientId() {
         log.info("Удаление уведомления с id: {}", jwtService.getSubClaim(jwtService.getJwtSecurityContext()));
         String subClaim = jwtService.getSubClaim(jwtService.getJwtSecurityContext());
-        return notifyRepository.findNotifiesByUser_Id(subClaim);
+        return notifyRepository.findNotifiesByUser(subClaim);
     }
 
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Уведомление пользователя {@link User}
+ * Уведомление пользователя
  */
 @Entity
 @Data
@@ -18,9 +18,8 @@ public class Notify {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private String user;
 
     @Column(name = "order_id", nullable = false)
     private long orderId;
@@ -30,9 +29,7 @@ public class Notify {
     }
 
     public Notify(String userId, long orderId) {
-        User userModel = new User();
-        userModel.setId(userId);
-        this.user = userModel;
+        this.user = userId;
         this.orderId = orderId;
     }
 }

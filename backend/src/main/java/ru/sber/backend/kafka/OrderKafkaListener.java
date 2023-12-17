@@ -29,7 +29,7 @@ public class OrderKafkaListener {
     void courierOrderListener(ConsumerRecord<String, Object> record) throws JsonProcessingException {
         log.info("Создает уведомление о смене статуса заказа {}", record);
         String value = record.value().toString();
-         ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         OrderNotify orderNotify = objectMapper.readValue(value, OrderNotify.class);
         log.info("Получили: {}", orderNotify);
         notifyService.create(new Notify(orderNotify.getClientId(), orderNotify.getId()));

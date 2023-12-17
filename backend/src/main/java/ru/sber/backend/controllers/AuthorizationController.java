@@ -13,16 +13,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import ru.sber.backend.entities.User;
 import ru.sber.backend.entities.request.LoginRequest;
 import ru.sber.backend.entities.request.SignupRequest;
 import ru.sber.backend.models.*;
-import ru.sber.backend.services.ClientService;
 import ru.sber.backend.services.JwtService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -34,13 +31,11 @@ public class AuthorizationController {
     private final String clientId = "login-app";
     private final String grantType = "password";
 
-    private final ClientService clientService;
     private final JwtService jwtService;
 
 
     @Autowired
-    public AuthorizationController(ClientService clientService, JwtService jwtService) {
-        this.clientService = clientService;
+    public AuthorizationController(JwtService jwtService) {
         this.jwtService = jwtService;
     }
 
@@ -105,13 +100,6 @@ public class AuthorizationController {
             ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
                     keycloakCreateUserUrl, HttpMethod.POST, userEntity, String.class);
             log.info("Результат отправки на keycloak: {}", userResponseEntity.getStatusCode());
-            String responseHeader = userResponseEntity.getHeaders().get("Location").get(0);
-
-            int lastSlashIndex = responseHeader.lastIndexOf("/");
-            String userId = responseHeader.substring(lastSlashIndex + 1);
-            User user = new User(userId, signupRequest.getDateOfBirth());
-
-            clientService.signUp(user);
 
             return new ResponseEntity<>(userResponseEntity.getStatusCode());
         } catch (Exception e) {
