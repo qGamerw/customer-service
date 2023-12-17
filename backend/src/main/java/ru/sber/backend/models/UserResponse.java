@@ -17,9 +17,11 @@ public class UserResponse {
     private String number;
     private LocalDate dateOfBirth;
 
-    public UserResponse(String username, String email, String number) {
+    public UserResponse(String id, String username, String email, String number, String dateOfBirth) {
+        this.id = id;
         this.email = email;
         this.username = username;
         this.number = number;
+        this.dateOfBirth = LocalDate.parse(dateOfBirth);
     }
 }

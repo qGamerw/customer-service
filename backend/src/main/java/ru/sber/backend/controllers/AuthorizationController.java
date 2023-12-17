@@ -81,6 +81,7 @@ public class AuthorizationController {
         Attributes attributes = new Attributes();
         attributes.setPhoneNumber(signupRequest.getNumber()
         );
+        attributes.setDateBirthday(signupRequest.getDateOfBirth().toString());
         userRequest.setAttributes(attributes);
 
         Credential credential = new Credential();
@@ -150,15 +151,11 @@ public class AuthorizationController {
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         Jwt jwt = jwtService.getJwtSecurityContext();
-        UserResponse userDetails = new UserResponse(jwtService.getPreferredUsernameClaim(jwt),
-                jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt));
-
-        Optional<User> client = clientService.getClientById();
-        if (client.isPresent()) {
-            userDetails.setId(client.get().getId());
-            userDetails.setDateOfBirth(client.get().getDateOfBirth());
-        }
-        log.info("Данные о пользователе {}", userDetails);
+        UserResponse userDetails = new UserResponse(
+                jwtService.getSubClaim(jwt), jwtService.getPreferredUsernameClaim(jwt),
+                jwtService.getEmailClaim(jwt), jwtService.getPhoneNumberClaim(jwt),
+                jwtService.getDateBirthdayClaim(jwt)
+        );
 
         return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
