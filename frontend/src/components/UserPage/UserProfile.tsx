@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {Button, Card, Input, Form, message} from "antd";
 import {
     CalendarOutlined,
@@ -11,10 +11,12 @@ import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
 import {Link} from "react-router-dom";
-import userService from "../../services/userService";
-import {IUserResponse} from "../../types/types";
+import authService from "../../services/authService";
+import {IUser, IUserResponse} from "../../types/types";
 import {useAppDispatch} from "../../hooks";
 import './styles/UserProfile.css';
+import {RootState} from "../../store";
+import {useSelector} from "react-redux";
 
 /**
  * Вкладка профиля пользователя
@@ -23,8 +25,7 @@ import './styles/UserProfile.css';
 const UserProfile: FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const dispatch = useAppDispatch();
-    const user: IUserResponse = JSON.parse(localStorage.getItem("user") || "null");
-    const [userData, setUserData] = useState<IUserResponse>(user);
+    const user = useSelector((store: RootState) => store.auth.user);
 
     const handleLogout = () => {
         AuthService.logout();
@@ -39,14 +40,13 @@ const UserProfile: FC = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleSave = async (values: IUserResponse) => {
+    const handleSave = (values: IUserResponse) => {
         try {
-            await userService.updateUser(user?.id, values, dispatch);
+            authService.updateUser(values, dispatch);
+            window.location.reload();
             setIsEditing(false);
             message.success("Данные успешно сохранены!");
-            const updatedUser = {...user, ...values};
-            localStorage.setItem("user", JSON.stringify(updatedUser));
-            setUserData(updatedUser);
+
         } catch (error) {
             message.error("Произошла ошибка при сохранении данных.");
         }
@@ -81,11 +81,14 @@ const UserProfile: FC = () => {
                             <p>
                                 <span className={"infoTitle"}>Номер телефона:</span>
                             </p>
+                            <p>
+                                {isEditing && (<span className={"infoTitle"}>Подтвердите пароль:</span>)}
+                            </p>
                         </div>
                     </div>
                     <div className="userProfile__right">
-                        {isEditing ? (
-                            <Form initialValues={userData} onFinish={handleSave} className={"userProfile__form-fields"}>
+                        {user && isEditing ? (
+                            <Form initialValues={user} onFinish={handleSave} className={"userProfile__form-fields"}>
                                 <Form.Item
                                     name="username"
                                     rules={[
@@ -95,10 +98,15 @@ const UserProfile: FC = () => {
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input disabled={true}/>
                                 </Form.Item>
-                                <Form.Item name="email">
-                                    <Input prefix={<MailOutlined />} disabled={isEditing} />
+                                <Form.Item name="email" rules={[
+                                    {
+                                        required: true,
+                                        message: "Пожалуйста, введите почту!",
+                                    },
+                                ]}>
+                                    <Input prefix={<MailOutlined/>}/>
                                 </Form.Item>
                                 <Form.Item
                                     name="dateOfBirth"
@@ -109,7 +117,8 @@ const UserProfile: FC = () => {
                                         },
                                     ]}
                                 >
-                                    <Input prefix={<CalendarOutlined />} type="date" placeholder="Дата рождения" />
+                                    <Input prefix={<CalendarOutlined/>} disabled={true} type="date"
+                                           placeholder="Дата рождения"/>
                                 </Form.Item>
                                 <Form.Item
                                     name="number"
@@ -121,14 +130,25 @@ const UserProfile: FC = () => {
                                         },
                                     ]}
                                 >
-                                    <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx" />
+                                    <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx"/>
+                                </Form.Item>
+                                <Form.Item
+                                    name="password"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Пожалуйста, подтвердите пароль",
+                                        },
+                                    ]}
+                                >
+                                    <Input.Password placeholder="Пароль"/>
                                 </Form.Item>
                                 <Form.Item>
                                     <Button type="primary" htmlType="submit"
-                                        className={"userProfile__button_save"}
+                                            className={"userProfile__button_save"}
 
                                     >
-                                        <SaveOutlined />
+                                        <SaveOutlined/>
                                         Сохранить
                                     </Button>
                                 </Form.Item>
@@ -136,27 +156,27 @@ const UserProfile: FC = () => {
                         ) : (
                             <div>
                                 <p>
-                                    <span>{user.username}</span>
+                                    <span>{user && user.username}</span>
                                 </p>
                                 <p>
-                                    <span>{user.email}</span>
+                                    <span>{user && user.email}</span>
                                 </p>
                                 <p>
-                                    <span>{user.dateOfBirth.toString()}</span>
+                                    <span>{user && user.dateOfBirth.toString()}</span>
                                 </p>
                                 <p>
-                                    <span>{formatPhoneNumber(user.number)}</span>
+                                    <span>{user && formatPhoneNumber(user.number)}</span>
                                 </p>
                             </div>
                         )}
                     </div>
                 </div>
                 <Button className={"userProfile__button_editing"} onClick={toggleEditing}>
-                    {isEditing ? <span>Отменить</span> : <EditOutlined />}
+                    {isEditing ? <span>Отменить</span> : <EditOutlined/>}
                 </Button>
                 <Link to="/">
                     <Button
-                        icon={<LogoutOutlined style={{ fontSize: '30px' }} />}
+                        icon={<LogoutOutlined style={{fontSize: '30px'}}/>}
                         onClick={handleLogout}
                         className={"userProfile__button_logout"}
                     />

@@ -28,15 +28,60 @@ public class AuthorizationController {
 
     private final String keycloakTokenUrl = "http://localhost:8080/realms/customer-realm/protocol/openid-connect/token";
     private final String keycloakCreateUserUrl = "http://localhost:8080/admin/realms/customer-realm/users";
+    private final String keycloakUpdateUserUrl = "http://localhost:8080/admin/realms/customer-realm/users/";
     private final String clientId = "login-app";
     private final String grantType = "password";
-
     private final JwtService jwtService;
 
 
     @Autowired
     public AuthorizationController(JwtService jwtService) {
         this.jwtService = jwtService;
+    }
+
+    @PreAuthorize("hasRole('client_user')")
+    @PutMapping
+    public ResponseEntity<?> updateUserInfo(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
+        log.info("Выводим новые данные о клиенте {}", signupRequest);
+        Jwt jwt = jwtService.getJwtSecurityContext();
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUsername(jwtService.getPreferredUsernameClaim(jwt));
+        userRequest.setEmail(signupRequest.getEmail());
+        userRequest.setEnabled(true);
+
+        Attributes attributes = new Attributes();
+        attributes.setPhoneNumber(signupRequest.getNumber());
+        attributes.setDateBirthday(jwtService.getDateBirthdayClaim(jwt));
+        userRequest.setAttributes(attributes);
+
+        Credential credential = new Credential();
+        credential.setType(grantType);
+        credential.setValue(signupRequest.getPassword());
+
+        List<Credential> credentials = new ArrayList<>();
+        credentials.add(credential);
+        userRequest.setCredentials(credentials);
+
+        HttpHeaders userHeaders = new HttpHeaders();
+        userHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(signInUser(new LoginRequest("admin", "11111")).getBody());
+        String accessToken = rootNode.path("access_token").asText();
+        userHeaders.setBearerAuth(accessToken);
+        HttpEntity<UserRequest> userEntity = new HttpEntity<>(userRequest, userHeaders);
+
+        log.info("Http entity: {}", userEntity);
+        try {
+            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
+                    keycloakUpdateUserUrl+jwtService.getSubClaim(jwtService.getJwtSecurityContext()),
+                    HttpMethod.PUT, userEntity, String.class);
+            log.info("Результат отправки на keycloak: {}", userResponseEntity.getStatusCode());
+
+            return new ResponseEntity<>(userResponseEntity.getStatusCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/signin")
@@ -64,7 +109,7 @@ public class AuthorizationController {
         }
     }
 
-    @Transactional
+
     @PostMapping("/signup")
     public ResponseEntity<String> signUpUser(@RequestBody SignupRequest signupRequest) throws JsonProcessingException {
         log.info("Выводим данные о клиенте {}", signupRequest);
