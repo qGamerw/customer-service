@@ -3,7 +3,6 @@ package ru.sber.backend.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -13,14 +12,19 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ru.sber.backend.constants.GeneratePassword;
 import ru.sber.backend.entities.request.LoginRequest;
 import ru.sber.backend.entities.request.SignupRequest;
+import ru.sber.backend.exceptions.UserNotFound;
 import ru.sber.backend.models.*;
+import ru.sber.backend.services.EmailService;
+import ru.sber.backend.services.EmailServiceImpl;
 import ru.sber.backend.services.JwtService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Slf4j
 @RestController
@@ -33,12 +37,14 @@ public class AuthorizationController {
     private final String clientId = "login-app";
     private final String grantType = "password";
     private final JwtService jwtService;
-
+    private final EmailService emailService;
 
     @Autowired
-    public AuthorizationController(JwtService jwtService) {
+    public AuthorizationController(JwtService jwtService, EmailService emailService) {
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
+
 
     @PreAuthorize("hasRole('client_user')")
     @PutMapping
@@ -67,7 +73,7 @@ public class AuthorizationController {
         log.info("Http entity: {}", userEntity);
         try {
             ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
-                    keycloakUpdateUserUrl+jwtService.getSubClaim(jwtService.getJwtSecurityContext()),
+                    keycloakUpdateUserUrl + jwtService.getSubClaim(jwtService.getJwtSecurityContext()),
                     HttpMethod.PUT, userEntity, String.class);
             log.info("Результат отправки на keycloak: {}", userResponseEntity.getStatusCode());
 
@@ -182,6 +188,47 @@ public class AuthorizationController {
         return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
 
+    @PutMapping("/reset-password")
+    private ResponseEntity<Void> resetPassword(@RequestBody ResetPassword resetPassword) throws JsonProcessingException {
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
+        resetPasswordRequest.setType("password");
+        resetPasswordRequest.setTemporary(false);
+        String newPassword = GeneratePassword.generateRandomPassword(20);
+        resetPasswordRequest.setValue(newPassword);
+        HttpHeaders userHeaders = getHttpHeadersAdmin();
+        HttpEntity<ResetPasswordRequest> resetEntity = new HttpEntity<>(resetPasswordRequest, userHeaders);
+        log.info("Http entity: {}", resetEntity);
+        try {
+            ResponseEntity<String> userResponseEntity = new RestTemplate().exchange(
+                    keycloakCreateUserUrl + "?email=" + resetPassword.getEmail(),
+                    HttpMethod.GET, resetEntity, String.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode usersNode = objectMapper.readTree(userResponseEntity.getBody());
+            if (!usersNode.isArray() || usersNode.size() <= 0){
+                throw new UserNotFound();
+            }
+            JsonNode userNode = usersNode.get(0);
+            String userId = userNode.get("id").asText();
+
+            log.info("user: {}", userResponseEntity.getBody());
+
+            ResponseEntity<String> resetResponseEntity = new RestTemplate().exchange(
+                    keycloakUpdateUserUrl +
+                            userId +
+                            "/reset-password",
+                    HttpMethod.PUT, resetEntity, String.class);
+            log.info("Результат отправки на keycloak: {}", resetResponseEntity.getStatusCode());
+            resetPassword.setPassword(newPassword);
+            log.info("email service: {}", emailService);
+            emailService.sendResetPassword(resetPassword);
+            return new ResponseEntity<>(resetResponseEntity.getStatusCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private HttpHeaders getHttpHeadersAdmin() throws JsonProcessingException {
         HttpHeaders userHeaders = new HttpHeaders();
         userHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -191,5 +238,4 @@ public class AuthorizationController {
         userHeaders.setBearerAuth(accessToken);
         return userHeaders;
     }
-
 }
