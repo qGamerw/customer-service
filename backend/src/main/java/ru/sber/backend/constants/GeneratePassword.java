@@ -9,7 +9,7 @@ public class GeneratePassword {
     private static final String LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String NUMBERS = "0123456789";
-    private static final String SPECIAL_CHARACTERS = "!@#$%^&*()_-+=<>?";
+    private static final String SPECIAL_CHARACTERS = "!@#$%?";
 
     public static String generateRandomPassword(int length) {
         List<Character> passwordChars = new ArrayList<>();
