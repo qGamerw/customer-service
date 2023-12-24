@@ -36,6 +36,7 @@ export const authSlice = createSlice({
             state.user = null;
             localStorage.removeItem('user');
             sessionStorage.removeItem('user');
+            window.location.reload();
         }
     },
 })

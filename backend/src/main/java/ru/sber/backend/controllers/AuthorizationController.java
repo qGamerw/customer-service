@@ -163,7 +163,7 @@ public class AuthorizationController {
         try {
             ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
                     keycloakTokenUrl, HttpMethod.POST, tokenEntity, String.class);
-
+            log.info("result refresh: {}", tokenResponseEntity.getStatusCode());
             return new ResponseEntity<>(tokenResponseEntity.getBody(),
                     tokenResponseEntity.getStatusCode());
         } catch (Exception e) {
@@ -189,7 +189,7 @@ public class AuthorizationController {
     }
 
     @PutMapping("/reset-password")
-    private ResponseEntity<Void> resetPassword(@RequestBody ResetPassword resetPassword) throws JsonProcessingException {
+    public ResponseEntity<Void> resetPassword(@RequestBody ResetPassword resetPassword) throws JsonProcessingException {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
         resetPasswordRequest.setType("password");
         resetPasswordRequest.setTemporary(false);
@@ -210,6 +210,7 @@ public class AuthorizationController {
             }
             JsonNode userNode = usersNode.get(0);
             String userId = userNode.get("id").asText();
+            String username = userNode.get("username").asText();
 
             log.info("user: {}", userResponseEntity.getBody());
 
@@ -220,6 +221,7 @@ public class AuthorizationController {
                     HttpMethod.PUT, resetEntity, String.class);
             log.info("Результат отправки на keycloak: {}", resetResponseEntity.getStatusCode());
             resetPassword.setPassword(newPassword);
+            resetPassword.setUsername(username);
             log.info("email service: {}", emailService);
             emailService.sendResetPassword(resetPassword);
             return new ResponseEntity<>(resetResponseEntity.getStatusCode());

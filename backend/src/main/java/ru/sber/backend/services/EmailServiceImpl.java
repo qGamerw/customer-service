@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,6 +26,8 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
 
     private final JwtService jwtService;
+    @Value("${spring.mail.username}")
+    private String email;
 
     @Autowired
     public EmailServiceImpl(JavaMailSender mailSender, JwtService jwtService) {
@@ -44,7 +47,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
-            helper.setFrom("sergei.katern@yandex.ru");
+            helper.setFrom(this.email);
 
             String email = jwtService.getEmailClaim(jwtService.getJwtSecurityContext());
             helper.setTo(email);
@@ -73,11 +76,13 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("sergei.katern@yandex.ru");
+        helper.setFrom(this.email);
 
         helper.setTo(resetPassword.getEmail());
         helper.setSubject("Восстановление пароля");
-        helper.setText("Новый пароль от аккаунта: " + resetPassword.getPassword());
+        StringBuilder emailText = new StringBuilder(String.format("username: %s\n", resetPassword.getUsername()));
+        emailText.append(String.format("Новый пароль от аккаунта: %s", resetPassword.getPassword()));
+        helper.setText(emailText.toString());
         mailSender.send(message);
 
     }

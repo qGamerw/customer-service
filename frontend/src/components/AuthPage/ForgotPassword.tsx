@@ -69,7 +69,7 @@ const ForgotPassword: FC = () => {
                                     className="forgotPassword__button"
                                     loading={loading}
                                 >
-                                    Отправить ссылку для сброса пароля
+                                    Отправить новый пароль на почту
                                 </Button>
                             </Form.Item>
                         </div>

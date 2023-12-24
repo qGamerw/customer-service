@@ -51,14 +51,14 @@ const refresh = async (refresh_token: String, dispatch: Dispatch): Promise<IUser
         .post<IUser>(API_URL + "/refresh", {
             refresh_token
         });
-
+    console.log(response)
     dispatch(login(response.data));
 
     const headers = authHeader();
 
     let detailsResponse = await axios
         .get<IUser>("api/auth", { headers });
-
+    console.log(response)
     dispatch(setUserData(detailsResponse.data));
 
     return detailsResponse.data;

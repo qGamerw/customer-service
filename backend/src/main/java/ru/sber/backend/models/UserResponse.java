@@ -22,6 +22,9 @@ public class UserResponse {
         this.email = email;
         this.username = username;
         this.number = number;
+        if(dateOfBirth == null) {
+            dateOfBirth = "2000-01-01";
+        }
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
     }
 }
