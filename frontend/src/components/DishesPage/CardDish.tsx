@@ -1,15 +1,19 @@
 import React, {FC, useState} from 'react';
 import {Button} from "antd";
 import "./styles/CardDish.css"
-import {IDish} from "../../types/types";
+import {IDish, IDishFromCart} from "../../types/types";
 import ModalCardDish from "./ModalCardDish";
 
 interface DishItemProps {
-    dish: IDish
+    dish: IDish | IDishFromCart,
     showUseButton: boolean;
     children?: React.ReactNode;
 }
 
+/**
+ * Карточка блюда в меню
+ * @constructor
+ */
 const CardDish: FC<DishItemProps> =
     ({
          dish,

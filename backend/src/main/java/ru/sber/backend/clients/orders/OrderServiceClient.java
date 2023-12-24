@@ -1,8 +1,8 @@
 package ru.sber.backend.clients.orders;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sber.backend.models.Message;
 import ru.sber.backend.models.OrderResponse;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface OrderServiceClient {
      * @return список заказов клиента
      */
     @GetMapping(value = "/client/{clientId}", produces = "application/json")
-    List<OrderResponse> getOrdersByClientId(@PathVariable Long clientId);
+    List<OrderResponse> getOrdersByClientId(@RequestHeader("Authorization") String bearerToken, @PathVariable String clientId);
 
     /**
      * Создает заказ клиента и передает его сервису заказов
@@ -28,19 +28,24 @@ public interface OrderServiceClient {
      * @return объект созданного заказа
      */
     @PostMapping(consumes = "application/json", produces = "application/json")
-    Long createOrder(@RequestBody OrderResponse orderResponse);
+    Long createOrder(@RequestHeader("Authorization") String bearerToken, @RequestBody OrderResponse orderResponse);
 
+    /**
+     * Оплачивает заказ
+     *
+     * @param orderId ID оплачеваемого заказа
+     */
     @PutMapping(value = "/{orderId}/payment", consumes = "application/json")
-    void paymentOfOrderById(@PathVariable Long orderId);
+    void paymentOfOrderById(@RequestHeader("Authorization") String bearerToken, @PathVariable Long orderId);
 
     /**
      * Отменяет заказ, обращаясь к сервису заказов
      *
-     * @param orderId ID заказа
+     * @param orderId      ID заказа
      * @param cancelReason причина отмены заказа
      */
     @PutMapping(value = "/{orderId}/cancel", consumes = "application/json")
-    void cancelOrder(@PathVariable Long orderId, @RequestBody String cancelReason);
+    void cancelOrder(@RequestHeader("Authorization") String bearerToken, @PathVariable Long orderId, @RequestBody Message cancelReason);
 }
 
 

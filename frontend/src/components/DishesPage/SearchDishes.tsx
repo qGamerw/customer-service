@@ -8,6 +8,10 @@ interface SearchDishesProps {
     onSearch: (value: string) => void;
 }
 
+/**
+ * Поисковик блюд в меню
+ * @constructor
+ */
 const SearchDishes: FC<SearchDishesProps> =
     ({
          onSearch

@@ -6,8 +6,13 @@ import CurrentOrders from '../components/UserPage/CurrentOrders';
 import {Tabs} from 'antd';
 import {IOrderFromHistory} from "../types/types";
 import {useAppSelector} from "../hooks";
+import './styles/UserPage.css'
 const {TabPane} = Tabs;
 
+/**
+ * Страница пользователя
+ * @constructor
+ */
 const UserPage: FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -29,7 +34,7 @@ const UserPage: FC = () => {
 
     return (
         <div>
-            <Tabs tabPosition="left" activeKey={activeTabParam} onChange={handleTabChange}>
+            <Tabs  className="userProfile__tabs" tabPosition="left" activeKey={activeTabParam} onChange={handleTabChange}>
                 <TabPane tab="Профиль" key="profile">
                     <h3>Профиль</h3>
                     <UserProfile/>

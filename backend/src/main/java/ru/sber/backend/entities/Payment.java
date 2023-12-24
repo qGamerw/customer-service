@@ -21,7 +21,7 @@ public class Payment {
     private long id;
 
     @Column(nullable = false)
-    private long clientId;
+    private String clientId;
 
     @NotBlank
     @Size(max = 100)

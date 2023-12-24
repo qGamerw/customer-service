@@ -5,9 +5,13 @@ import {AppDispatch} from "../store";
 
 const API_URL = "/cart";
 
-const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
+/**
+ * Запрос для получения корзины
+ * @constructor
+ */
+const getCart = (dispatch: AppDispatch) => {
 
-    return axios.get(API_URL + `/${cartId}`, {headers: authHeader()}).then(
+    return axios.get(API_URL, {headers: authHeader()}).then(
         (response) => {
             console.log(response.data)
             dispatch(setCart(response.data))
@@ -24,13 +28,17 @@ const getCart = (cartId: number | undefined, dispatch: AppDispatch) => {
         });
 }
 
-const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
+/**
+ * Запрос для добавления блюда в корзину
+ * @constructor
+ */
+const addToCart = (dishId: number, dispatch: AppDispatch) => {
 
-    console.log(`Добавление товара ${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
+    console.log(`Добавление товара ${API_URL}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()})
 
-    return axios.post(`${API_URL}/${cartId}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()}).then(
+    return axios.post(`${API_URL}/dish/${dishId}`, {quantity: 1}, {headers: authHeader()}).then(
         () => {
-            getCart(cartId, dispatch)
+            getCart(dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -41,15 +49,17 @@ const addToCart = (cartId: number | undefined, dishId: number, dispatch: AppDisp
         });
 };
 
-const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
+/**
+ * Запрос для обновления кол-ва блюд в корзине
+ * @constructor
+ */
+const updateQuantity = (dishId: number, quantity: {
     quantity: number
 }, dispatch: AppDispatch) => {
-
-    console.log(`Обновление кол-ва ${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()})
-
-    return axios.put(`${API_URL}/${cartId}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
+    console.log(`Обновление кол-ва ${API_URL}/dish/${dishId}`, quantity, {headers: authHeader()})
+    return axios.put(`${API_URL}/dish/${dishId}`, quantity, {headers: authHeader()}).then(
         () => {
-            getCart(cartId, dispatch)
+            getCart(dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||
@@ -60,11 +70,15 @@ const updateQuantity = (cartId: number | undefined, dishId: number, quantity: {
         });
 };
 
-const deleteFromCart = (cartId: number | undefined, dishId: number, dispatch: AppDispatch) => {
-    console.log(`Удаление ${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()})
-    return axios.delete(`${API_URL}/${cartId}/dish/${dishId}`, {headers: authHeader()}).then(
+/**
+ * Запрос для удаления блюда из корзины
+ * @constructor
+ */
+const deleteFromCart = (dishId: number, dispatch: AppDispatch) => {
+    console.log(`Удаление ${API_URL}/dish/${dishId}`, {headers: authHeader()})
+    return axios.delete(`${API_URL}/dish/${dishId}`, {headers: authHeader()}).then(
         () => {
-            getCart(cartId, dispatch)
+            getCart(dispatch)
         },
         (error) => {
             const _content = (error.response && error.response.data) ||

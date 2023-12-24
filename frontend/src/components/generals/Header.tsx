@@ -3,6 +3,10 @@ import { Modal, Input, Row, Col } from 'antd';
 import { EnvironmentOutlined, PhoneOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import './styles/Header.css';
 
+/**
+ * Компонент-header
+ * @constructor
+ */
 const Header: FC = () => {
     const [details, setDetails] = useState<any | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

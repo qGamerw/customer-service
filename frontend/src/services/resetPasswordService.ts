@@ -1,7 +1,11 @@
 import axios from "axios";
 
+/**
+ * Запрос для сброса пароля по email
+ * @constructor
+ */
 const forgotPassword = (email: string) => {
-    return axios.post(`/forgot?email=${email}`)
+    return axios.put(`/api/auth/reset-password`, {email: email})
         .then((response) => response.data)
         .catch((error) => {
             console.error(error);
@@ -9,8 +13,12 @@ const forgotPassword = (email: string) => {
         });
 };
 
-const resetPassword = (token: string | undefined, password: string) => {
-    return axios.post(`/reset?token=${token}`, {token, password})
+/**
+ * Запрос для обновления пароля
+ * @constructor
+ */
+const resetPassword = (token: string | undefined, password: string, confirmPassword: string) => {
+    return axios.put(`/reset-password?token=${token}`, {password, confirmPassword})
         .then((response) => response.data)
         .catch((error) => {
             console.error(error);

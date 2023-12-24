@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class SignupRequest {
     @Size(max = 100)
     private String number;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private Set<String> role;
 

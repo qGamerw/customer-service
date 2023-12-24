@@ -11,16 +11,8 @@ export interface IDish {
     weight: number;
 }
 
-export interface ICartItem {
-    id: number;
-    dishId: number;
-    quantity: number;
-    cartId: number;
-}
-
 export interface IDishFromCart extends IDish {
     quantity: number;
-    cartItemId: number;
 }
 
 export interface IDishFromOrderResponse {
@@ -72,6 +64,7 @@ export interface IUser {
 }
 
 export interface IUserResponse {
+    refresh_token: Boolean;
     accessToken: string;
     id: number;
     username: string;
@@ -90,7 +83,7 @@ export interface IRegistration {
 }
 
 export interface ILogin {
-    email: string;
+    username: string;
     password: string;
 }
 

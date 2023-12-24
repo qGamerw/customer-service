@@ -7,6 +7,10 @@ interface ListDishesFromCart {
     dishes: IDishFromCart[];
 }
 
+/**
+ * Список карточек-блюд в корзине
+ * @constructor
+ */
 const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -31,7 +35,7 @@ const ListDishesFromCart: FC<ListDishesFromCart> = ({dishes}) => {
                     <CardDishFromCart dish={dish} key={dish.id}/>
                 ))}
             </div>
-            {dishes.length &&
+            {dishes.length > 0 &&
                 <Pagination
                     current={currentPage}
                     total={dishes.length}

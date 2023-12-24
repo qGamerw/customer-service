@@ -6,6 +6,10 @@ interface ListDishes {
     dishes: IDish[];
 }
 
+/**
+ * Список карточек блюд в меню
+ * @constructor
+ */
 const ListDishes: FC<ListDishes> =
     ({
          dishes

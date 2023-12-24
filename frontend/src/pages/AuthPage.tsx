@@ -8,21 +8,25 @@ import {useDispatch} from "react-redux";
 import {ILogin} from "../types/types";
 import './styles/AuthPage.css';
 
+/**
+ * Страница аутентификации пользователя
+ * @constructor
+ */
 const AuthPage: FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const onFinish = (values: ILogin) => {
-        authService.login(values).then((user) => {
+        authService.loginUser(values, dispatch).then((user) => {
             console.log(user)
-            dispatch(login(user))
+            //dispatch(login(user))
             message.success("Вы успешно вошли в систему! Здравствуйте!")
-            navigate("/")
+             navigate("/")
             const reloadTime = 1;
             setTimeout(() => {
-                window.location.reload();
-            }, reloadTime);
+                 window.location.reload();
+             }, reloadTime);
 
         }, (error) => {
             const _content = (error.response && error.response.data) || error.message || error.toString();
@@ -63,10 +67,10 @@ const AuthPage: FC = () => {
                             onFinish={onFinish}
                         >
                             <Form.Item
-                                name="email"
-                                rules={[{required: true, message: 'Пожалуйста, введите email!'}]}
+                                name="username"
+                                rules={[{required: true, message: 'Пожалуйста, введите username!'}]}
                             >
-                                <Input prefix={<MailOutlined/>} type="email" placeholder="Email"/>
+                                <Input/>
                             </Form.Item>
                             <Form.Item
                                 name="password"

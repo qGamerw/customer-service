@@ -2,9 +2,8 @@ package ru.sber.backend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.sber.backend.entities.User;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Клиент с ограниченной информацией
@@ -12,15 +11,20 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class UserResponse {
-    private long id;
+    private String id;
     private String username;
+    private String email;
     private String number;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    public UserResponse(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.dateOfBirth = user.getDateOfBirth();
-        this.number = user.getNumber();
+    public UserResponse(String id, String username, String email, String number, String dateOfBirth) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.number = number;
+        if(dateOfBirth == null) {
+            dateOfBirth = "2000-01-01";
+        }
+        this.dateOfBirth = LocalDate.parse(dateOfBirth);
     }
 }

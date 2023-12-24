@@ -9,6 +9,10 @@ interface PaymentProps {
     onFinish: () => void;
 }
 
+/**
+ * Форма для оплаты
+ * @constructor
+ */
 const Payment: FC<PaymentProps> =
     ({
          totalPrice,

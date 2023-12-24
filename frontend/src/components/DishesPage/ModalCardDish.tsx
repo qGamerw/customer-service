@@ -3,15 +3,19 @@ import {Button, InputNumber, Modal, Tooltip} from "antd";
 import {Link} from "react-router-dom";
 import CartService from "../../services/cartService";
 import {user} from "../../constants/constants";
-import {ICartItem, IDish} from "../../types/types";
+import { IDish, IDishFromCart} from "../../types/types";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 
 interface ModalCardDishProps {
-    dish: IDish;
+    dish: IDish | IDishFromCart;
     isModalOpen: boolean;
     onClose: () => void;
 }
 
+/**
+ * Модальное окно с подробной информацией о блюде
+ * @constructor
+ */
 const ModalCardDish: FC<ModalCardDishProps> =
     ({
          dish, isModalOpen, onClose
@@ -19,11 +23,11 @@ const ModalCardDish: FC<ModalCardDishProps> =
 
         const [isLogged] = useState<boolean>(user !== null);
         const dispatch = useAppDispatch();
-        const itemFromCartById: ICartItem | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.dishId === dish.id))
-
+        const dishFromCartById: IDishFromCart | undefined = useAppSelector((state) => state.cart.cartItems.find(item => item.id === dish.id))
+        console.log(dishFromCartById)
         const handleAddClick = () => {
             isLogged && (
-                CartService.addToCart(user?.id, dish.id, dispatch)
+                CartService.addToCart(dish.id, dispatch)
             )
         }
 
@@ -31,9 +35,9 @@ const ModalCardDish: FC<ModalCardDishProps> =
             const newQuantity = {
                 quantity: quantity,
             };
-            CartService.updateQuantity(user?.id, dishId, newQuantity, dispatch)
+            CartService.updateQuantity(dishId, newQuantity, dispatch)
             if (quantity === 0) {
-                CartService.deleteFromCart(user?.id, dishId, dispatch)
+                CartService.deleteFromCart(dishId, dispatch)
             }
         }
         return (
@@ -71,9 +75,9 @@ const ModalCardDish: FC<ModalCardDishProps> =
                         </Tooltip>
                         <div>
                             <p>{dish.price} ₽</p>
-                            {itemFromCartById ? (
+                            {dishFromCartById ? (
                                 <InputNumber
-                                    value={itemFromCartById?.quantity ?? 0}
+                                    value={dishFromCartById?.quantity ?? 0}
                                     min={0}
                                     onChange={(quantity: number | null) => handleUpdateAmount(dish.id, quantity ?? 0)}
                                 />

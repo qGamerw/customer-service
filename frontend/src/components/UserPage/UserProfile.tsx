@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {Button, Card, Input, Form, message} from "antd";
 import {
     CalendarOutlined,
@@ -11,16 +11,21 @@ import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
 import {Link} from "react-router-dom";
-import userService from "../../services/userService";
-import {IUserResponse} from "../../types/types";
+import authService from "../../services/authService";
+import {IUser, IUserResponse} from "../../types/types";
 import {useAppDispatch} from "../../hooks";
 import './styles/UserProfile.css';
+import {RootState} from "../../store";
+import {useSelector} from "react-redux";
 
+/**
+ * Вкладка профиля пользователя
+ * @constructor
+ */
 const UserProfile: FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const dispatch = useAppDispatch();
-    const user: IUserResponse = JSON.parse(localStorage.getItem("user") || "null");
-    const [userData, setUserData] = useState<IUserResponse>(user);
+    const user = useSelector((store: RootState) => store.auth.user);
 
     const handleLogout = () => {
         AuthService.logout();
@@ -35,14 +40,13 @@ const UserProfile: FC = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleSave = async (values: IUserResponse) => {
+    const handleSave = (values: IUserResponse) => {
         try {
-            await userService.updateUser(user?.id, values, dispatch);
+            authService.updateUser(values, dispatch);
+            window.location.reload();
             setIsEditing(false);
             message.success("Данные успешно сохранены!");
-            const updatedUser = {...user, ...values};
-            localStorage.setItem("user", JSON.stringify(updatedUser));
-            setUserData(updatedUser);
+
         } catch (error) {
             message.error("Произошла ошибка при сохранении данных.");
         }
@@ -61,96 +65,106 @@ const UserProfile: FC = () => {
 
     return (
         <div className={"userProfile"}>
-            <Card
-                hoverable
-                className={"userProfile__card"}
-            >
-                {isEditing ? (
-                    <Form
-                        initialValues={userData}
-                        onFinish={handleSave}
-                        className={"userProfile__form-fields"}
-                    >
-                        <Form.Item
-                            label="Имя"
-                            name="username"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Пожалуйста, введите имя пользователя!",
-                                },
-                            ]}
-                        >
-                            <Input/>
-                        </Form.Item>
-                        <Form.Item label="E-mail" name="email">
-                            <Input
-                                prefix={<MailOutlined/>}
-                                disabled={isEditing}
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            label="Дата рождения"
-                            name="dateOfBirth"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Пожалуйста, введите дату рождения!",
-                                },
-                            ]}
-                        >
-                            <Input prefix={<CalendarOutlined/>} type="date" placeholder="Дата рождения"/>
-                        </Form.Item>
-                        <Form.Item
-                            label="Номер телефона"
-                            name="number"
-                            validateTrigger={["onBlur"]}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Введите номер телефона",
-                                },
-                            ]}
-                        >
-                            <PhoneInput
-                                country="ru"
-                                onlyCountries={["ru"]}
-                                placeholder="+7-xxx-xxx-xx-xx"
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                <SaveOutlined/>
-                                Сохранить
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                ) : (
-                    <div className={"userProfile__fields"}>
-                        <p>
-                            Имя: <span>{user.username}</span>
-                        </p>
-                        <p>
-                            E-mail: <span>{user.email}</span>
-                        </p>
-                        <p>
-                            Дата рождения: <span>{user.dateOfBirth.toString()}</span>
-                        </p>
-                        <p>
-                            Номер телефона: <span> {formatPhoneNumber(user.number)}</span>
-                        </p>
-                    </div>
-                )}
+            <Card hoverable className={"userProfile__card"}>
+                <div className="userProfile__content">
+                    <div className="userProfile__left">
+                        <div className={"userProfile__fields"}>
+                            <p>
+                                <span className={"infoTitle"}>Имя:</span>
+                            </p>
+                            <p>
+                                <span className={"infoTitle"}>E-mail:</span>
+                            </p>
+                            <p>
+                                <span className={"infoTitle"}>Дата рождения:</span>
+                            </p>
+                            <p>
+                                <span className={"infoTitle"}>Номер телефона:</span>
+                            </p>
 
-                <Button
-                    className={"userProfile__button_editing"}
-                    onClick={toggleEditing}
-                >
+                        </div>
+                    </div>
+                    <div className="userProfile__right">
+                        {user && isEditing ? (
+                            <Form initialValues={user} onFinish={handleSave} className={"userProfile__form-fields"}>
+                                <Form.Item
+                                    name="username"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Пожалуйста, введите имя пользователя!",
+                                        },
+                                    ]}
+                                >
+                                    <Input disabled={true}/>
+                                </Form.Item>
+                                <Form.Item name="email" rules={[
+                                    {
+                                        required: true,
+                                        message: "Пожалуйста, введите почту!",
+                                    },
+                                ]}>
+                                    <Input prefix={<MailOutlined/>}/>
+                                </Form.Item>
+                                <Form.Item
+                                    name="dateOfBirth"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Пожалуйста, введите дату рождения!",
+                                        },
+                                    ]}
+                                >
+                                    <Input prefix={<CalendarOutlined/>} disabled={true} type="date"
+                                           placeholder="Дата рождения"/>
+                                </Form.Item>
+                                <Form.Item
+                                    name="number"
+                                    validateTrigger={["onBlur"]}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Введите номер телефона",
+                                        },
+                                    ]}
+                                >
+                                    <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx"/>
+                                </Form.Item>
+
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit"
+                                            className={"userProfile__button_save"}
+
+                                    >
+                                        <SaveOutlined/>
+                                        Сохранить
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        ) : (
+                            <div>
+                                <p>
+                                    <span>{user && user.username}</span>
+                                </p>
+                                <p>
+                                    <span>{user && user.email}</span>
+                                </p>
+                                <p>
+                                    <span>{user && user.dateOfBirth.toString()}</span>
+                                </p>
+                                <p>
+                                    <span>{user && formatPhoneNumber(user.number)}</span>
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <Button className={"userProfile__button_editing"} onClick={toggleEditing}>
                     {isEditing ? <span>Отменить</span> : <EditOutlined/>}
                 </Button>
                 <Link to="/">
                     <Button
-                        icon={<LogoutOutlined/>}
+                        icon={<LogoutOutlined style={{fontSize: '30px'}}/>}
                         onClick={handleLogout}
                         className={"userProfile__button_logout"}
                     />

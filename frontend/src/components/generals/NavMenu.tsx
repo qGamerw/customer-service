@@ -11,9 +11,13 @@ import './styles/NavMenu.css';
 import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
 import {user} from "../../constants/constants";
-import ResetPassword from "../../pages/ResetPassword";
-import ForgotPassword from "../../pages/ForgotPassword";
+import ResetPassword from "../AuthPage/ResetPassword";
+import ForgotPassword from "../AuthPage/ForgotPassword";
 
+/**
+ * Навигационное меню
+ * @constructor
+ */
 const NavigationMenu: FC = () => {
     const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
 
