@@ -125,7 +125,7 @@ public class CartController {
         boolean isDeleted = cartService.deleteDish(dishId);
 
         if (isDeleted) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("Удаление блюда " + dishId);
         } else {
             return ResponseEntity.badRequest().body("Не удалось удалить блюдо");
         }

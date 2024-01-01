@@ -59,7 +59,6 @@ public class CartServiceImpl implements CartService {
             newCartItem.setCart(shoppingCart);
             newCartItem.setDishId(dishId);
             newCartItem.setQuantity(1);
-            log.info("cart: {}", shoppingCart);
             if(shoppingCart.getCartItems() == null) {
                 shoppingCart.setCartItems(new ArrayList<>());
             }
@@ -88,8 +87,8 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean deleteAllDish() {
         Optional<Cart> cart = cartRepository.findCartByClient(getIdClient());
-        log.info("Удаление товара из корзины: {} по id: {}", cart.get().getId(), getIdClient());
         if (cart.isPresent()) {
+            log.info("Удаление товара из корзины: {} по id: {}", cart.get().getId(), getIdClient());
             cartItemRepository.deleteAllByCart_Id(cart.get().getId());
             return true;
         }
