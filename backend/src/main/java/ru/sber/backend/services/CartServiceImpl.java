@@ -155,6 +155,10 @@ public class CartServiceImpl implements CartService {
         return Collections.emptyList();
     }
 
+    /**
+     * Возвращает id пользователя по токену
+     * @return id пользователя
+     */
     private String getIdClient() {
         Jwt jwt = jwtService.getJwtSecurityContext();
         return jwtService.getSubClaim(jwt);

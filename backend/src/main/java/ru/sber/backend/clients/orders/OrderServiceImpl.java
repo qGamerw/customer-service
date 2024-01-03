@@ -20,6 +20,9 @@ import ru.sber.backend.services.OrderTokenService;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Реализация бизнес логики для взаимодействия с микросервисом заказа
+ */
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -75,6 +78,9 @@ public class OrderServiceImpl implements OrderService {
                 orderId, cancelReason);
     }
 
+    /**
+     * Проверяет треубется ли обновить токен для пользователя сервиса заказа
+     */
     private void checkAndUpdateOrderTokens() {
         List<OrderToken> orderToken = orderTokenService.findAll();
 
@@ -93,6 +99,9 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    /**
+     * Обновляет токен пользователя сервиса заказа
+     */
     @Transactional
     public void updateOrderTokens() {
         HttpHeaders tokenHeaders = new HttpHeaders();
