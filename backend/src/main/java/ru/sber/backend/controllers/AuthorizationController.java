@@ -114,18 +114,58 @@ public class AuthorizationController {
         try {
             ResponseEntity<String> tokenResponseEntity = new RestTemplate().exchange(
                     keycloakTokenUrl, HttpMethod.POST, tokenEntity, String.class);
-
+            log.info("status: {}", tokenResponseEntity.getStatusCode());
             return new ResponseEntity<>(tokenResponseEntity.getBody(),
                     tokenResponseEntity.getStatusCode());
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
     }
 
+    /**
+     * Осуществляет смену пароля пользователя
+     *
+     * @param changePassword данные для смены пароля
+     * @return результат
+     * @throws JsonProcessingException
+     */
+    @PreAuthorize("hasRole('client_user')")
+    @PutMapping("/change-password")
+    public ResponseEntity<Void> changePasswordUser(@RequestBody ChangePassword changePassword) throws JsonProcessingException {
+        LoginRequest authAccount = new LoginRequest(jwtService.getPreferredUsernameClaim(
+                jwtService.getJwtSecurityContext()
+        )
+                , changePassword.getOldPassword());
+
+        if (signInUser(authAccount).getStatusCode().equals(HttpStatus.BAD_REQUEST)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
+        resetPasswordRequest.setType("password");
+        resetPasswordRequest.setTemporary(false);
+        resetPasswordRequest.setValue(changePassword.getNewPassword());
+        HttpHeaders userHeaders = getHttpHeadersAdmin();
+        HttpEntity<ResetPasswordRequest> resetEntity = new HttpEntity<>(resetPasswordRequest, userHeaders);
+        String userId = jwtService.getSubClaim(jwtService.getJwtSecurityContext());
+        try {
+            ResponseEntity<String> resetResponseEntity = new RestTemplate().exchange(
+                    keycloakUpdateUserUrl +
+                            userId +
+                            "/reset-password",
+                    HttpMethod.PUT, resetEntity, String.class);
+            return new ResponseEntity<>(resetResponseEntity.getStatusCode());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
 
     /**
      * Реализует логику регистрации пользователя
+     *
      * @param signupRequest данные для регистрации
      * @return результат регистрации
      * @throws JsonProcessingException
@@ -170,6 +210,7 @@ public class AuthorizationController {
 
     /**
      * Обновляет токен пользователя
+     *
      * @param refreshToken токен для обновления access токена
      * @return новый токен
      */
@@ -199,6 +240,7 @@ public class AuthorizationController {
 
     /**
      * Возвращает данные пользователя
+     *
      * @return данные пользователя
      */
     @PreAuthorize("hasRole('client_user')")
@@ -214,11 +256,13 @@ public class AuthorizationController {
                 jwtService.getDateBirthdayClaim(jwt)
         );
 
+
         return new ResponseEntity<>(userDetails, userHeaders, HttpStatus.OK);
     }
 
     /**
      * Сбрасывает пароль пользователя
+     *
      * @param resetPassword данные необходимые для сброса пароля
      * @throws JsonProcessingException
      */
@@ -239,7 +283,7 @@ public class AuthorizationController {
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode usersNode = objectMapper.readTree(userResponseEntity.getBody());
-            if (!usersNode.isArray() || usersNode.size() <= 0){
+            if (!usersNode.isArray() || usersNode.size() <= 0) {
                 throw new UserNotFound();
             }
             JsonNode userNode = usersNode.get(0);
@@ -261,12 +305,13 @@ public class AuthorizationController {
             return new ResponseEntity<>(resetResponseEntity.getStatusCode());
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
     }
 
     /**
      * Получает данные администратора
+     *
      * @return
      * @throws JsonProcessingException
      */
