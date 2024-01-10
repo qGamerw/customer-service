@@ -26,7 +26,7 @@ public class SignupRequest {
     @Size(max = 100)
     private String number;
 
-    private LocalDate dateOfBirth;
+    private LocalDate birthdate;
 
     private Set<String> role;
 

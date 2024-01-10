@@ -12,11 +12,12 @@ import PhoneInput from "react-phone-input-2";
 import AuthService from "../../services/authService";
 import {Link} from "react-router-dom";
 import authService from "../../services/authService";
-import {IUser, IUserResponse} from "../../types/types";
+import {IUserResponse} from "../../types/types";
 import {useAppDispatch} from "../../hooks";
 import './styles/UserProfile.css';
 import {RootState} from "../../store";
 import {useSelector} from "react-redux";
+import resetPasswordService from "../../services/resetPasswordService";
 
 /**
  * Вкладка профиля пользователя
@@ -26,7 +27,7 @@ const UserProfile: FC = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const user = useSelector((store: RootState) => store.auth.user);
-
+    const [success, setSuccess] = useState<boolean>(false);
     const handleLogout = () => {
         AuthService.logout();
         message.success("Вы успешно вышли! До свидания!");
@@ -37,7 +38,27 @@ const UserProfile: FC = () => {
     };
 
     const toggleEditing = () => {
+        setSuccess(false);
         setIsEditing(!isEditing);
+    };
+
+    const handleFormSubmit = async (values: { oldPassword: string, password: string, newPassword: string }) => {
+
+
+        if (values.password !== values.newPassword) {
+            message.error('Введенные пароли не совпадают');
+            return;
+        } else if(values.oldPassword === values.newPassword){
+            message.error('Новый пароль не должен соответсвовать старому!');
+            return;
+        }
+
+        try {
+            await resetPasswordService.resetPassword(values.oldPassword, values.newPassword);
+            setSuccess(true);
+        } catch (error) {
+            message.error('Ошибка при сбросе пароля');
+        }
     };
 
     const handleSave = (values: IUserResponse) => {
@@ -86,61 +107,120 @@ const UserProfile: FC = () => {
                     </div>
                     <div className="userProfile__right">
                         {user && isEditing ? (
-                            <Form initialValues={user} onFinish={handleSave} className={"userProfile__form-fields"}>
-                                <Form.Item
-                                    name="username"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Пожалуйста, введите имя пользователя!",
-                                        },
-                                    ]}
-                                >
-                                    <Input disabled={true}/>
-                                </Form.Item>
-                                <Form.Item name="email" rules={[
-                                    {
-                                        required: true,
-                                        message: "Пожалуйста, введите почту!",
-                                    },
-                                ]}>
-                                    <Input prefix={<MailOutlined/>}/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="dateOfBirth"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Пожалуйста, введите дату рождения!",
-                                        },
-                                    ]}
-                                >
-                                    <Input prefix={<CalendarOutlined/>} disabled={true} type="date"
-                                           placeholder="Дата рождения"/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="number"
-                                    validateTrigger={["onBlur"]}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Введите номер телефона",
-                                        },
-                                    ]}
-                                >
-                                    <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx"/>
-                                </Form.Item>
-
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit"
-                                            className={"userProfile__button_save"}
-
+                            <>
+                                <Form initialValues={user} onFinish={handleSave} className={"userProfile__form-fields"}>
+                                    <Form.Item
+                                        name="username"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Пожалуйста, введите имя пользователя!",
+                                            },
+                                        ]}
                                     >
-                                        <SaveOutlined/>
-                                        Сохранить
-                                    </Button>
-                                </Form.Item>
-                            </Form>
+                                        <Input disabled={true}/>
+                                    </Form.Item>
+                                    <Form.Item name="email" rules={[
+                                        {
+                                            required: true,
+                                            message: "Пожалуйста, введите почту!",
+                                        },
+                                    ]}>
+                                        <Input prefix={<MailOutlined/>}/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="birthdate"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Пожалуйста, введите дату рождения!",
+                                            },
+                                        ]}
+                                    >
+                                        <Input prefix={<CalendarOutlined/>} disabled={true} type="date"
+                                               placeholder="Дата рождения"/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="number"
+                                        validateTrigger={["onBlur"]}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Введите номер телефона",
+                                            },
+                                        ]}
+                                    >
+                                        <PhoneInput country="ru" onlyCountries={["ru"]} placeholder="+7-xxx-xxx-xx-xx"/>
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                        <Button type="primary" htmlType="submit"
+                                                className={"userProfile__button_save"}
+
+                                        >
+                                            <SaveOutlined/>
+                                            Сохранить
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+
+                                <h1 className="resetPassword-h1">Установка нового пароля</h1>
+                                <Form className="resetPassword__form-content" onFinish={handleFormSubmit}>
+                                    <Form.Item
+                                        name="oldPassword"
+                                        label="Старый пароль"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Пожалуйста, введите старый пароль!',
+                                            },
+                                        ]}
+                                    >
+                                        <Input type="password"/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="password"
+                                        label="Новый пароль"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Пожалуйста, введите новый пароль!',
+                                            },
+                                        ]}
+                                    >
+                                        <Input type="password"/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="newPassword"
+                                        label="Подтверждение"
+                                        dependencies={['password']}
+                                        hasFeedback
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'Пожалуйста, подтвердите пароль!',
+                                            },
+                                            ({getFieldValue}) => ({
+                                                validator(_, value) {
+                                                    if (!value || getFieldValue('password') === value) {
+                                                        return Promise.resolve();
+                                                    }
+                                                    return Promise.reject(new Error('Введенные пароли не совпадают!'));
+                                                },
+                                            }),
+                                        ]}
+                                    >
+                                        <Input type="password"/>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type="primary" htmlType="submit"
+                                                className={"userProfile__button_save"}>
+                                            Изменить
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                                {success && <h1 className="resetPassword-h1" style={{color:"green", textAlign:"center"}}> Успех!</h1>}
+                            </>
                         ) : (
                             <div>
                                 <p>
@@ -150,7 +230,7 @@ const UserProfile: FC = () => {
                                     <span>{user && user.email}</span>
                                 </p>
                                 <p>
-                                    <span>{user && user.dateOfBirth.toString()}</span>
+                                    <span>{user && user.birthdate.toString()}</span>
                                 </p>
                                 <p>
                                     <span>{user && formatPhoneNumber(user.number)}</span>

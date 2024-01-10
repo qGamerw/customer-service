@@ -14,5 +14,5 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Attributes {
     private String phoneNumber;
-    private String dateBirthday;
+    private String birthdate;
 }

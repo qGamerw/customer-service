@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "username": "test4",
   "number": "89432849392",
-  "dateOfBirth": "2000-12-12",
+  "birthdate": "2000-12-12",
   "email": "ke.s344345s@yandex.ruu",
   "password": "password"
 }

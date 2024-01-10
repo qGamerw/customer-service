@@ -181,7 +181,7 @@ public class AuthorizationController {
         Attributes attributes = new Attributes();
         attributes.setPhoneNumber(signupRequest.getNumber()
         );
-        attributes.setDateBirthday(signupRequest.getDateOfBirth().toString());
+        attributes.setBirthdate(signupRequest.getBirthdate().toString());
         userRequest.setAttributes(attributes);
 
         Credential credential = new Credential();

@@ -36,7 +36,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String getDateBirthdayClaim(Jwt jwt) {
-        return jwt.getClaim("date_birthday");
+        return jwt.getClaim("birthdate");
     }
 
     public Jwt getJwtSecurityContext() {
