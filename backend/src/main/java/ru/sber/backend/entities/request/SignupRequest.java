@@ -2,14 +2,15 @@ package ru.sber.backend.entities.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 
+/**
+ * Данные для регистрации
+ */
 @Data
 public class SignupRequest {
     @NotBlank
@@ -25,7 +26,7 @@ public class SignupRequest {
     @Size(max = 100)
     private String number;
 
-    private LocalDate dateOfBirth;
+    private LocalDate birthdate;
 
     private Set<String> role;
 

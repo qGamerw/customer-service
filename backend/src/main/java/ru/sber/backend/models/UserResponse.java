@@ -15,16 +15,13 @@ public class UserResponse {
     private String username;
     private String email;
     private String number;
-    private LocalDate dateOfBirth;
+    private LocalDate birthdate;
 
-    public UserResponse(String id, String username, String email, String number, String dateOfBirth) {
+    public UserResponse(String id, String username, String email, String number, String birthdate) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.number = number;
-        if(dateOfBirth == null) {
-            dateOfBirth = "2000-01-01";
-        }
-        this.dateOfBirth = LocalDate.parse(dateOfBirth);
+        this.birthdate = LocalDate.parse(birthdate);
     }
 }

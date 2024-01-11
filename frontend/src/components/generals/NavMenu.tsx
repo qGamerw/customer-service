@@ -11,7 +11,6 @@ import './styles/NavMenu.css';
 import RegisterPage from "../../pages/RegisterPage";
 import AuthPage from "../../pages/AuthPage";
 import {user} from "../../constants/constants";
-import ResetPassword from "../AuthPage/ResetPassword";
 import ForgotPassword from "../AuthPage/ForgotPassword";
 
 /**
@@ -93,7 +92,6 @@ const NavigationMenu: FC = () => {
                 )}
                 <Route path="*" element={<NotFoundPage/>}/>
                 <Route path="/forgot" element={<ForgotPassword/>}/>
-                <Route path="/reset" element={<ResetPassword/>}/>
             </Routes>
         </div>
     );
