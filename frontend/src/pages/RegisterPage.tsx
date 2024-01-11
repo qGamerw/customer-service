@@ -85,7 +85,7 @@ const RegisterPage: FC = () => {
                                 />
                             </Form.Item>
                             <Form.Item
-                                name="dateOfBirth"
+                                name="birthdate"
                                 rules={[
                                     {required: true, message: 'Пожалуйста, введите дату рождения!'},
                                     ({getFieldValue}) => ({
