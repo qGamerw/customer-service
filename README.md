@@ -12,14 +12,12 @@
 * Возможность дать обратную связь и оценить работу
 
 # Интеграция с другими сервисами:
-# Сервис Ресторан
-https://github.com/qGamerw/restaurant-service
+# Сервис [Ресторан](https://github.com/qGamerw/restaurant-service)
 
 * Получает заказ от Сервиса Клиента
 * Получает обратную связь ресторану
 
-# Сервис Доставки
-https://github.com/qGamerw/delivery-service
+# Сервис [Доставки](https://github.com/qGamerw/delivery-service)
 
 * Доставляет заказ клиенту
 
@@ -42,8 +40,6 @@ https://github.com/qGamerw/delivery-service
 
 # БД
 * PostgreSQL
-
-
 
 # Исполнители 
  ***Смирнов Павел, Елизавета Шувалова, Саунин Даниил, Катернюк Сергей***
